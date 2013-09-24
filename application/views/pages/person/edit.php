@@ -17,45 +17,23 @@
 
 	<fieldset>
 		<legend>Contact Information</legend>
-		<div class="panel">
+		<div class="panel ping-contact">
 			<div class="row">
 					<div class="large-4 columns">
 						<label>Type</label>
-						<select id="customDropdown1" class="medium">
-							<option>-- Select One --</option>
-							<option>Cell Phone</option>
-							<option>Twitter</option>
-							<option>Email</option>
-							<option>WhatsApp</option>
-						</select>				
+						<?php echo Form::select("contact[0][type]", Pingapp_Form::contact_types(), (isset($post['contact'][0]['type'])) ? $post['contact'][0]['type'] : '', array("id" => "contact[0][type]", "required" => "required", "minlength" => "3", "class" => "medium")); ?>				
 					</div>
 					<div class="large-4 columns">
 						<label>Account</label>
-						<input type="text" name="last_name" value="" id="last_name">				
-					</div>
-					<div class="large-4 columns">&nbsp;</div>
-			</div>
-		</div>
-
-		<div class="panel">
-			<div class="row">
-					<div class="large-4 columns">
-						<label>Type</label>
-						<select id="customDropdown1" class="medium">
-							<option>-- Select One --</option>
-							<option>Cell Phone</option>
-							<option>Twitter</option>
-							<option>Email</option>
-							<option>WhatsApp</option>
-						</select>				
+						<?php echo Form::input("contact[0][account]", (isset($post['contact'][0]['account'])) ? $post['contact'][0]['account'] : '', array("required" => "required", "minlength" => "3")); ?>			
 					</div>
 					<div class="large-4 columns">
-						<label>Account</label>
-						<input type="text" name="last_name" value="" id="last_name">				
+						<label>&nbsp;</label>
+						<a class="small button secondary" id="ping-del-contact">Remove</a>
 					</div>
-					<div class="large-4 columns">&nbsp;</div>
 			</div>
 		</div>
+		<a class="small button secondary" id="ping-add-contact">Add Another Contact [+]</a>
 	</fieldset>
 	<div class="row">
 		<div class="large-12 columns">

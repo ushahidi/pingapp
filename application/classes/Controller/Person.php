@@ -18,6 +18,7 @@ class Controller_Person extends Controller_PingApp {
 	public function action_edit()
 	{
 		$this->template->content = View::factory('pages/person/edit');
+		$this->template->footer->js = View::factory('pages/person/js/edit');
 	}
 
 	/**
