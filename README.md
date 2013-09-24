@@ -30,9 +30,9 @@ To install the platform on your computer/server, the target system must meet the
 			'type'       => 'mysql',
 			'connection' => array(
 				'hostname'   => 'localhost',
-				'database'   => 'lamu',
-				'username'   => 'lamu',
-				'password'   => 'lamu',
+				'database'   => 'pingapp',
+				'username'   => 'pingapp',
+				'password'   => 'pingapp',
 				'persistent' => FALSE,
 			),
 			'table_prefix' => '',
@@ -53,6 +53,7 @@ To install the platform on your computer/server, the target system must meet the
 8. Copy ```application/config/modules.template``` to ```application/config/modules.php```
 9. Copy ```httpdocs/template.htaccess``` to ```httpdocs/.htaccess```
 10. Edit ```httpdocs/.htaccess``` and change the RewriteBase value to match your deployment url
+11. Create directories ```application/cache``` and ```application/logs``` and make them writable
 
 ### Configuration
 
