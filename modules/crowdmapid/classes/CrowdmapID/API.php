@@ -42,7 +42,6 @@ class CrowdmapID_API {
 		return self::$_singleton;
 	}
 
-
 	/**
 	 * Creates an instance of this class
 	 * A private function so that only one instance is created
@@ -510,9 +509,11 @@ class CrowdmapID_API {
 				}
 			}
 
+			/*
 			echo $url;
 			var_dump($raw);
 			exit;
+			*/
 
 			Kohana::$log->add(Log::ERROR, "RiverID api call failed. :error", array('error' => curl_error($api)));
 
