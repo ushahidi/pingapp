@@ -30,14 +30,12 @@
 					<legend>Log In</legend>
 					<div class="row">
 						<div class="large-12 columns">
-							<label>Username</label>
 							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username" placeholder="username / email">
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="large-12 columns">
-							<label>Password</label>
 							<input type="password" name="password" id="password" placeholder="password">
 						</div>
 					</div>
