@@ -8,6 +8,7 @@
 		<ul class="right">
 			<li class="divider hide-for-small"></li>
 			<li class=""><a href="/dashboard">Dashboard</a></li>
+			<li class=""><a href="#">Messages</a></li>
 			<li class=""><a href="#">Settings</a></li>
 			<li class="logged-in has-dropdown">
 				<a href="#">
