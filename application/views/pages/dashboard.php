@@ -1,4 +1,4 @@
-<a href="#" class="button success">New Message [+]</a> 
+<a href="/send" class="button success">New Message [+]</a> 
 <a href="/person/edit" class="button">New Person [+]</a>
 
 <table class="display dataTable" id="activity">
