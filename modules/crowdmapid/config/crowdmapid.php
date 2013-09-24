@@ -2,11 +2,11 @@
 
 return array(
 	// URL of the crowdmapid-server
-	'api_url' => 'https://crowdmapid.com',
+	'api_url' => 'https://crowdmapid.com/api',
 
 	// API secret for authenticating requests
 	'api_secret' => '',
 	
 	// List of users exempted from using CrowdmapID authentication
 	'auth_exempt'=> array(),
-)
+);
