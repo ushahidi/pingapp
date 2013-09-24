@@ -12,6 +12,7 @@
 </head>
 <body>
 	<div class="row">
-		<div class="large-12 columns">
+		<div class="logo-image">
 			<h2>Ping App</h2>
+		</div>
 			<?php echo $nav; ?>
