@@ -27,6 +27,16 @@ class Controller_Person extends Controller_PingApp {
 	 */
 	public function action_view()
 	{
-		$this->template->content = View::factory('pages/person/view');
+		$this->template->content = View::factory('pages/person/view')
+			->bind('person', $person);
+
+		$person_id = $this->request->param('id', 0);
+
+		$person = ORM::factory('Person', $person_id);
+
+		if ( ! $person->loaded() )
+		{
+			HTTP::redirect('dashboard');
+		}
 	}
 }
