@@ -22,6 +22,9 @@ class Migration_1_20130923115621 extends Minion_Migration_Base {
 		$db->query(NULL, "DROP TABLE IF EXISTS `roles`;");
 		$db->query(NULL, "DROP TABLE IF EXISTS `users`;");
 
+		// Make Sure We're Using UTF8 Encoding
+		$db->query(NULL, 'ALTER DATABASE DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci');
+
 		/**
 		 * Groups table - group people
 		 */
