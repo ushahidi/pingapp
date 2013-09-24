@@ -20,7 +20,7 @@ To install the platform on your computer/server, the target system must meet the
 
 1. Create a database
 2. Copy ```application/config/database.template``` to ```application/config/database.php```
-3. Edit ```application/config/environments/development/database.php``` and set database, username and password params
+3. Edit ```application/config/database.php``` and set database, username and password params
 
 	```
 	return array
