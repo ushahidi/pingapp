@@ -42,7 +42,6 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 				// Get the user object that matches the provided email and CrowdmapID
 				$user = ORM::factory('User')
 				    ->where('email', '=', $email)
-				    ->where('crowdmap_id', '=', $login_response['user_id'])
 				    ->find();
 							 
 				// User does not exist locally but authenticates via CrowdmapID, create user
@@ -55,15 +54,35 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 					            ->find();
 					
 					$user->username = $user->email = $email;
-					$user->riverid = $login_response['user_id'];
 					$user->save();
 					
-					// Allow the user be able to login immediately
-					$login_role = ORM::factory('Role',array('name'=>'login'));
-					
-					if ( ! $user->has('roles', $login_role))
+					try
 					{
-						$user->add('roles', $login_role);
+						// Allow the user be able to login immediately
+						$user_roles = ORM::factory('Role')
+						    ->where('name', 'IN', array('login', 'member'))
+						    ->find_all();
+					
+						$role_ids = array();
+						foreach ($user_roles as $role)
+						{
+							$role_ids[] = $role->id;
+						}
+					
+						if ( ! $user->has('roles', $role_ids))
+						{
+							$user->add('roles', $role_ids);
+						}
+					}
+					catch (Exception $e)
+					{
+						// An error has occurred, delete the user
+						$user->delete();
+						
+						// Log the error
+						Kohana::$log->add(Log::ERROR, $e->getMessage());
+						
+						return FALSE;
 					}
 				} 
 				
