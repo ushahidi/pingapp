@@ -21,8 +21,11 @@ class Pingapp_SMS_Provider_Twilio extends Pingapp_SMS_Provider {
 		
 		if ( ! isset($this->_client))
 		{
-			$this->_client = new Services_Twilio($this->auth_params['account_sid'], $this->auth_params['auth_token']);
+			$this->_client = new Services_Twilio($this->params['account_sid'], $this->params['auth_token']);
 		}
+		
+		// Get the sender number
+		$from = $this->params['sender'];
 		
 		// Send!
 		$message = $this->_client->account->messages->sendMessage($from, $to, $message);

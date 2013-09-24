@@ -8,15 +8,16 @@ return array(
 	'provider' => 'Twilio',
 	
 	/**
-	 * Authentication parameters for the default SMS provider
+	 * Additional parameters for the default SMS provider
 	 * In the case of Twilio, the value for this key would take
 	 * on the following form
 	 *
 	 * 	array(
+	 *		'sender' => '+254707123456',
 	 *		'account_sid' => 'TwilioAccountSID20130924',
 	 *		'auth_token'  => 'TwilioAuthToken20130924'
 	 *	)
 	 */
 	
-	'auth_params' => array(),
+	'params' => array(),
 );

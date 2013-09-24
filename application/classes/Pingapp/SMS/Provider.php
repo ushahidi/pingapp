@@ -15,7 +15,7 @@ abstract class Pingapp_SMS_Provider {
 	 * Authentication parameters for the default SMS provider
 	 * @var array
 	 */
-	protected $auth_params = array();
+	protected $params = array();
 	
 	protected static $_instance = NULL;
 	
@@ -48,7 +48,7 @@ abstract class Pingapp_SMS_Provider {
 				array(":provider" => $class_name)));
 		}
 		
-		self::$_instance->set_auth_params($config['auth_params']);
+		self::$_instance->set_params($config['params']);
 		
 		return self::$_instance;
 	}
@@ -58,9 +58,9 @@ abstract class Pingapp_SMS_Provider {
 	 *
 	 * @param  array auth_params
 	 */
-	public function set_auth_params($auth_params)
+	public function set_params($params)
 	{
-		$this->auth_params = $auth_params;
+		$this->params = $params;
 	}
 	
 	/**
