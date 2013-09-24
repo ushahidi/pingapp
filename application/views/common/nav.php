@@ -13,7 +13,11 @@
 			<li class="logged-in has-dropdown">
 				<a href="#">
 					<div class="avatar">
-						<?php echo $user->first_name.' '.$user->last_name; ?>
+						<?php if (! $user->first_name AND !$user->last_name): ?>
+							<?php echo $user->email; ?>
+						<?php else: ?>
+							<?php echo $user->first_name.' '.$user->last_name; ?>
+						<?php endif; ?>
 					</div>
 				</a>
 				<ul class="dropdown">
