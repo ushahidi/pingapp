@@ -116,7 +116,7 @@ class Controller_PingApp extends Controller_Template {
 				// user is logged in but not on the secure_actions list
 				if ( ! $access)
 				{
-					$this->_access_required();
+					$this->_login_required();
 				}
 			}
 		}
