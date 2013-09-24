@@ -10,4 +10,5 @@ return array(
 	'unittest'   => MODPATH.'unittest',   // Unit testing
 	'minion'     => MODPATH.'minion',     // CLI Tasks
 	'migrations' => MODPATH.'migrations', // Minion Migrations
+	'crowdmapid' => MODPATH.'crowdmapid', // CrowdmapID Authentication
 );
