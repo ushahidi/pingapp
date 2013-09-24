@@ -35,7 +35,7 @@ class CrowdmapID_API {
 	{
 		if ( ! self::$_singleton)
 		{
-			self::$_singleton = new CrowdmapID_API(Kohana::$config->load('crowdmapid.api_url'), 
+			self::$_singleton = new CrowdmapID_API(Kohana::$config->load('crowdmapid.api_url'),
 				Kohana::$config->load('crowdmapid.api_secret'));
 		}
 
@@ -61,211 +61,471 @@ class CrowdmapID_API {
 	 */
 	public function is_registered($email)
 	{
-		$api_url = $this->api_endpoint.'/registered';
-
-		$response = $this->__call_api($api_url, array('email' => $email));
-
-		if ($response AND $response->success AND $response->response)
-			return TRUE;
+		if ($exists = $this->__api_call('GET', "/user/{$email}")) {
+			if ($exists = $this->__reduce_response($exists, 'user')) {
+				return TRUE;
+			}
+		}
 
 		return FALSE;
 	}
 
 	/**
-	 * Signs in a user via RiverID
+	 * Return a user profile.
+	 *
+	 * @param   string   $user_id  An email address or 128 character user hash.
+	 * @param   array    $params   Additional parameters to pass, such as a session token.
+	 * @return  array
+	 *
+	 * @access public
+	 */
+	public function get_profile($user_id, $params = array()) {
+
+		if ($user = $this->__api_call('GET', "/user/{$user_id}", $params)) {
+			if ($user = $this->__reduce_response($user, 'user')) {
+				return $user;
+			}
+		}
+
+		return FALSE;
+
+	}
+
+	/**
+	 * Logs in a user via RiverID
 	 *
 	 * @param   string   $email
 	 * @param   string   $password
 	 * @return  array
 	 */
-	public function signin($email, $password)
+	public function login($email, $password, $otp = NULL)
 	{
-		$api_url = $this->api_endpoint.'/signin';
+		$email    = filter_var($email, FILTER_SANITIZE_EMAIL);
+		$password = filter_var($password, FILTER_SANITIZE_STRING);
+		$otp      = ($otp ? filter_var($otp, FILTER_SANITIZE_STRING) : NULL);
 
-		$response = $this->__call_api($api_url, array('email' => $email, 'password' => $password));
+		if ($session = $this->__api_call('GET', "/user/{$email}/password", array('password' => $password, 'otp' => $otp))) {
 
-		if ($response AND $response->success)
-			return array('status' => TRUE, 'session_id' => $response->response->session_id, 'user_id' => $response->response->user_id);
+			if ($session AND isset($session->success) AND $session->success === TRUE) {
+				return (object)array(
+					'success'     => TRUE,
+					'user_id'     => $session->user_id,
+					'session_id'  => $session->session_id
+				);
+			}
 
-		if ($response AND ! $response->success)
-			return array('status' => FALSE, 'error' => $response->error);
+			if ($session AND isset($session->error)) {
+				return (object)array(
+					'success'   => FALSE,
+					'error'     => $session->error
+				);
+			}
 
+		}
 
-		return array('status' => FALSE, 'error' => __('Unknown error'));
+		return (object)array(
+			'success'  => FALSE,
+			'error'    => __('Unknown error')
+		);
 	}
 
 	/**
-	 * Change password
+	 * Create a CMID using an email/password pair.
 	 *
-	 * @param   string   email
-	 * @param   string   oldpassword
-	 * @param   string   newpassword
+	 * @param   string  $email     An email address of a registered user.
+	 * @param   string  $password  The password of a registered user.
 	 * @return  array
-	 */
-	public function change_password($email, $oldpassword, $newpassword)
-	{
-		$api_url = $this->api_endpoint.'/changepassword';
-
-		$response = $this->__call_api($api_url, array('email' => $email,
-													  'oldpassword' => $oldpassword,
-													  'newpassword' => $newpassword
-													  ));
-
-		if ($response AND $response->success)
-			return array('status' => TRUE);
-
-		if ($response AND ! $response->success)
-			return array('status' => FALSE, 'error' => $response->error);
-
-
-		return array('status' => FALSE, 'error' => __('Unknown error'));
-
-	}
-
-	/**
-	 * Request password via email
 	 *
-	 * @param   string   email
-	 * @param   string   mailbody
-	 * @return  array
+	 * @access public
 	 */
-	public function request_password($email, $mailbody, $mailsubject, $mailfrom)
-	{
-		$api_url = $this->api_endpoint.'/requestpassword';
+	public function register($email, $password) {
+		$email     = filter_var($email, FILTER_SANITIZE_EMAIL);
+		$password  = urlencode($password, FILTER_SANITIZE_STRING);
 
-		$response = $this->__call_api($api_url, array(
-			'email' => $email,
-			'mailbody' => $mailbody,
-			'mailsubject' => $mailsubject,
-			'mailfrom' => $mailfrom
-			));
+		if ($session = $this->__api_call('POST', "/user", array('email' => $email, 'password' => $password))) {
 
-		if ($response AND $response->success)
-			return array('status' => TRUE);
+			if ($session AND isset($session->success) AND $session->success === TRUE) {
+				return (object)array(
+					'success'     => TRUE,
+					'user_id'     => $session->user_id,
+					'session_id'  => $session->session_id
+				);
+			}
 
-		if ($response AND ! $response->success)
-			return array('status' => FALSE, 'error' => $response->error);
+			if ($session AND isset($session->error)) {
+				return (object)array(
+					'success'   => FALSE,
+					'error'     => $session->error
+				);
+			}
 
+		}
 
-		return array('status' => FALSE, 'error' => __('Unknown error'));
-	}
-
-	/**
-	 * Set password via a user token
-	 *
-	 * @param   string   email
-	 * @param   string   mailbody
-	 * @return  array
-	 */
-	public function set_password($email, $token, $password)
-	{
-		$api_url = $this->api_endpoint.'/setpassword';
-
-		$response = $this->__call_api($api_url, array('email' => $email, 'token' => $token, 'password' => $password));
-
-		if ($response AND $response->success)
-			return array('status' => TRUE);
-
-		if ($response AND ! $response->success)
-			return array('status' => FALSE, 'error' => $response->error);
-
-
-		return array('status' => FALSE, 'error' => __('Unknown error'));
-	}
-
-	/**
-	 * Request an email address change
-	 *
-	 * @param   string   oldemail
-	 * @param   string   newemail
-	 * @param   string   password
-	 * @param   string   mailbody
-	 * @return  array
-	 */
-	public function change_email($oldemail, $newemail, $password, $mailbody, $mailsubject, $mailfrom)
-	{
-		$api_url = $this->api_endpoint.'/changeemail';
-
-		$response = $this->__call_api($api_url,
-			array(
-				'oldemail' => $oldemail,
-				'newemail' => $newemail,
-				'password' => $password,
-				'mailbody' => $mailbody,
-				'mailsubject' => $mailsubject,
-				'mailfrom' => $mailfrom
-			)
+		return (object)array(
+			'success'  => FALSE,
+			'error'    => __('Unknown error')
 		);
 
-		if ($response AND $response->success)
-			return array('status' => TRUE);
-
-		if ($response AND ! $response->success)
-			return array('status' => FALSE, 'error' => $response->error);
-
-
-		return array('status' => FALSE, 'error' => __('Unknown error'));
 	}
 
 	/**
-	 * Confirm an email address change via user token
+	 * Returns all the email addresses associated with a user account.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function get_emails($user_id, $session_id) {
+
+		if ($emails = $this->__api_call('GET', "/user/{$user_id}/emails", array('user_id' => $user_id, 'session_id' => $session_id))) {
+			if(isset($emails->emails)) {
+				return $emails->emails;
+			}
+		}
+
+		return (object)array();
+
+	}
+
+	/**
+	 * Send the user a password recovery token in their email.
+	 *
+	 * @param   string   email
+	 * @param   array    params
+	 * @return  object
+	 *
+	 * @access public
+	 */
+	public function recover_password($email, $params = array()) {
+		return $this->__api_call('POST', "/user/{$email}/recover/", $params);
+	}
+
+	/**
+	 * Validate a password recovery token from email.
 	 *
 	 * @param   string   email
 	 * @param   string   token
-	 * @return  array
+	 * @param   array    params
+	 * @return  object
+	 *
+	 * @access public
 	 */
-	public function confirm_email($email, $token)
-	{
-		$api_url = $this->api_endpoint.'/confirmemail';
+	public function confirm_recover_password($email, $token, $params = array()) {
+		$params['token'] = $token;
+		return $this->__api_call('GET', "/user/{$email}/recover/", $params);
+	}
 
-		$response = $this->__call_api($api_url, array('email' => $email, 'token' => $token));
+	/**
+	 * Update the user's password.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $password    A urlencoded representation of the desired password.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function change_password($user_id, $session_id, $password) {
+		$params = array(
+			'user_id'    => $user_id,
+			'session_id' => $session_id,
+			'password'   => $password
+		);
 
-		if ($response AND $response->success)
-			return array('status' => TRUE);
+		return $this->__api_call('PUT', "/user/{$user_id}/password/", $params);
+	}
 
-		if ($response AND ! $response->success)
-			return array('status' => FALSE, 'error' => $response->error);
+	/**
+	 * Return a storage value.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $key         The storage object's key.
+	 * @param   string   $default     The default value to return if the store doesn't exist.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function storage_get($user_id, $session_id, $key, $default = FALSE) {
+		$key = trim($key);
 
+		if ($store = $this->__api_call('GET', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id))) {
+			if(isset($store->response) && strlen($store->response)) {
+				return $store->response;
+			}
+		}
 
-		return array('status' => FALSE, 'error' => __('Unknown error'));
+		return $default;
+	}
+
+	/**
+	 * Save or update a storage key/value pair.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $key         The storage pair's key.
+	 * @param   string   $value       The new value for the pair.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function storage_put($user_id, $session_id, $key, $value) {
+		$key = trim($key);
+
+		if ($store = $this->__api_call('POST', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id, 'value' => trim($value)))) {
+			if(isset($store->success)) {
+				return $store->success;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Delete a storage key/value pair.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $key         The storage pair's key.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function storage_delete($user_id, $session_id, $key) {
+		$key = trim($key);
+
+		if ($store = $this->__api_call('DELETE', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id))) {
+			if(isset($store->success)) {
+				return $store->success;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Update user avatar.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $avatar      The URI pointing to the user's avatar.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function avatar_put($user_id, $session_id, $avatar_uri) {
+		if ($avatar = $this->__api_call('PUT', "/user/{$user_id}/avatar/", array('user_id' => $user_id, 'session_id' => $session_id, 'avatar' => $avatar_uri))) {
+			if(isset($avatar->success)) {
+				return $avatar->success;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Delete user avatar.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function avatar_delete($user_id, $session_id) {
+		if ($response = $this->__api_call('DELETE', "/user/{$user_id}/avatar/", array('user_id' => $user_id, 'session_id' => $session_id))) {
+			if(isset($response->success)) {
+				return $response->success;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Returns basic information about attached Yubikey devices to user accounts.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function yubikey_status($user_id, $session_id) {
+		return $this->__api_call('GET', "/user/{$user_id}/security/yubikey", array( 'user_id' => $user_id, 'session_id' => $session_id ));
+	}
+
+	/**
+	 * Attach a Yubikey device to the user account.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $otp         A opt (one-time password) hash from a Yubikey device.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function yubikey_pair($user_id, $session_id, $otp) {
+		return $this->__api_call('POST', "/user/{$user_id}/security/yubikey", array( 'otp' => $otp, 'user_id' => $user_id, 'session_id' => $session_id ));
+	}
+
+	/**
+	 * Remove an attached Yubikey device from the user account.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function yubikey_delete($user_id, $session_id) {
+		return $this->__api_call('DELETE', "/user/{$user_id}/security/yubikey", array( 'user_id' => $user_id, 'session_id' => $session_id ));
+	}
+
+	/**
+	 * Returns basic information about attached Google Authenticators to user accounts.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function googauth_status($user_id, $session_id) {
+		return $this->__api_call('GET', "/user/{$user_id}/security/googleauth", array( 'user_id' => $user_id, 'session_id' => $session_id ));
+	}
+
+	/**
+	 * Attach a Google Authenticator to the user account.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @param   string   $otp         A opt (one-time password) hash from a Yubikey device.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function googauth_pair($user_id, $session_id, $otp) {
+		return $this->__api_call('POST', "/user/{$user_id}/security/googleauth", array( 'otp' => $otp, 'user_id' => $user_id, 'session_id' => $session_id ));
+	}
+
+	/**
+	 * Remove an attached Google Authenticator from the user account.
+	 *
+	 * @param   string   $user_id     A 128 character user hash.
+	 * @param   string   $session_id  A 64 character session hash.
+	 * @return  object   API response.
+	 *
+	 * @access public
+	 */
+	public function googauth_delete($user_id, $session_id) {
+		return $this->__api_call('DELETE', "/user/{$user_id}/security/googleauth", array( 'user_id' => $user_id, 'session_id' => $session_id ));
+	}
+
+	/**
+	 * Retrieve basic information about the API endpoint.
+	 *
+	 * @return  object  API response.
+	 *
+	 * @access public
+	 */
+	public function about() {
+		return $this->__api_call('GET', '/about');
+	}
+
+	/**
+	 * Determine how many hits this API key has remaining.
+	 *
+	 * @return  object  API response.
+	 *
+	 * @access public
+	 */
+	public function limit() {
+		return $this->__api_call('GET', '/limit');
 	}
 
 	/**
 	 * Send HTTP request to the api endpoint
 	 *
-	 * @param   string   api_url
-	 * @param   array    params
+	 * @param   string   url      Endpoint path to target with request.
+	 * @param   string   method   HTTP request method (i.e. GET, POST, DELETE)
+	 * @param   array    params   Parameters to supply the API for this request.
 	 * @return  mixed    The response or false in case of failure
 	 */
-	private function __call_api($api_url, $params) {
+	private function __api_call($method = 'GET', $url ='/about', $params = array()) {
 
-		$params['api_secret'] = $this->api_secret;
+		$api = curl_init();
 
-		$curl_options = array(
-			CURLOPT_URL => $api_url,
-			CURLOPT_FAILONERROR => TRUE,
-			CURLOPT_RETURNTRANSFER => TRUE,
-			CURLOPT_POST => TRUE,
-			CURLOPT_POSTFIELDS => $params,
-			CURLOPT_CONNECTTIMEOUT => 60,
-			CURLOPT_SSL_VERIFYPEER => TRUE
-		);
+		if ($api) {
 
-		$ch = curl_init($this->api_endpoint);
-		curl_setopt_array($ch, $curl_options);
-		$response = curl_exec($ch);
+			$params = array_merge(array(
+				'api_secret'  => $this->api_secret
+			), $params);
 
-		if ( ! $response) {
-			Kohana::$log->add(Log::ERROR, "RiverID api call failed. :error", array('error' => curl_error($ch)));
+			$url .= '?';
+
+			switch($method)
+			{
+				case 'POST':
+					curl_setopt($api, CURLOPT_POST, TRUE);
+					curl_setopt($api, CURLOPT_POSTFIELDS, $params);
+					break;
+
+				case 'PUT':
+					curl_setopt($api, CURLOPT_CUSTOMREQUEST, 'PUT');
+					break;
+
+				case 'DELETE':
+					curl_setopt($api, CURLOPT_CUSTOMREQUEST, 'DELETE');
+					break;
+			}
+
+			if ($method !== 'POST' AND count($params)) {
+				foreach($params as $p => $v) {
+					$url .= $p . '=' . urlencode($v) . '&';
+				}
+			}
+
+			$url = rtrim($this->api_endpoint, '/') . '/v2' . rtrim($url, '?&');
+
+			curl_setopt_array($api, array(
+				CURLOPT_URL            => $url,
+				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_SSL_VERIFYHOST => FALSE,
+				CURLOPT_SSL_VERIFYPEER => FALSE,
+				CURLOPT_FOLLOWLOCATION => TRUE,
+				CURLOPT_FAILONERROR    => TRUE,
+				CURLOPT_USERAGENT      => (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) PingApp Chrome/19.0.1084.9 Safari/536.5'),
+				CURLOPT_MAXREDIRS      => 12,
+				CURLOPT_TIMEOUT        => 5
+				));
+
+			if ($raw = curl_exec($api)) {
+				@curl_close($api);
+
+				if ($resp = json_decode($raw)) {
+					return $resp;
+				}
+			}
+
+			echo $url;
+			var_dump($raw);
+			exit;
+
+			Kohana::$log->add(Log::ERROR, "RiverID api call failed. :error", array('error' => curl_error($api)));
+
+			return false;
 		}
-		else
-		{
-			$response = json_decode($response);
-		}
 
-		curl_close($ch);
+	}
 
-		return $response;
+	private function __reduce_response($haystack, $needle) {
+		if (isset($haystack->$needle))
+			return $haystack->$needle;
+
+		return false;
 	}
 
 }
