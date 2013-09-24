@@ -1,0 +1,8 @@
+.*swp
+*~
+*.DS_Store
+composer.lock
+application/logs/*
+application/cache/*
+application/config/*.php
+.htaccess
