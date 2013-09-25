@@ -19,6 +19,7 @@ class Controller_Person extends Controller_PingApp {
 	{
 		$this->template->content = View::factory('pages/person/edit')
 			->bind('person', $person)
+			->bind('parent', $parent)
 			->bind('post', $post)
 			->bind('errors', $errors)
 			->bind('done', $done);
@@ -26,7 +27,29 @@ class Controller_Person extends Controller_PingApp {
 		$this->template->footer->js = View::factory('pages/person/js/edit');
 
 		$person_id = $this->request->param('id', 0);
-		$person = ORM::factory('Person', $person_id);
+		$parent_id = (int) $this->request->query('parent_id');
+		$person = ORM::factory('Person')
+			->where('id', '=', $person_id)
+			->where('user_id', '=', $this->user->id)
+			->find();
+
+		// If Parent ID is set, make sure it exists
+		if ($parent_id)
+		{
+			$parent = ORM::factory('Person')
+				->where('id', '=', $parent_id)
+				->where('user_id', '=', $this->user->id)
+				->find();
+
+			if ( ! $parent->loaded() )
+			{
+				HTTP::redirect('dashboard');
+			}
+		}
+		else
+		{
+			$parent = $person->parent;
+		}
 
 		if ( ! empty($_POST) )
 		{
@@ -43,6 +66,12 @@ class Controller_Person extends Controller_PingApp {
 					'first_name', 'last_name',
 					));
 				$person->check($extra_validation);
+
+				// Save parent_id only if this is the first time
+				if ( ! $person->loaded() )
+				{
+					$person->parent_id = $parent_id;
+				}
 				$person->user_id = $this->user->id;
 				$person->save();
 
@@ -109,7 +138,8 @@ class Controller_Person extends Controller_PingApp {
 	public function action_view()
 	{
 		$this->template->content = View::factory('pages/person/view')
-			->bind('person', $person);
+			->bind('person', $person)
+			->bind('children', $children);
 
 		$person_id = $this->request->param('id', 0);
 
@@ -119,6 +149,79 @@ class Controller_Person extends Controller_PingApp {
 		{
 			HTTP::redirect('dashboard');
 		}
+
+		$children = $person->children->find_all();
+	}
+
+	/**
+	 * Use datatables to generate dashboard list
+	 */
+	public function action_ajax_list()
+	{
+		$this->template = '';
+		$this->auto_render = FALSE;
+
+		// Data table columns
+		$columns = array('first_name', 'status', 'pings', 'last_name');
+
+		$pings = DB::select('person_id', array(DB::expr('COUNT("id")'), 'pings'))
+			->from('pings')
+			->group_by('person_id');
+
+		$query = ORM::factory('Person')
+			->select(array(DB::expr('CONCAT(person.first_name, " ", person.last_name)'), 'name'))
+			->select('pings.pings')
+			->join(array($pings, 'pings'), 'LEFT')->on('person.id', '=', 'pings.person_id')
+			->where('user_id', '=', $this->user->id);
+
+		$query2 = clone $query;
+
+		// Searching & Filtering
+		if (  isset( $_GET['sSearch'] ) AND $_GET['sSearch'] != "" )
+		{
+			$query->where_open();
+			for ( $i=0 ; $i < count($columns) ; $i++ )
+			{
+				$query->or_where($columns[$i], 'LIKE', '%'.$_GET['sSearch'].'%');
+			}
+			$query->where_close();
+		}
+
+		// Paging
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$query->offset($_GET['iDisplayStart']);
+			$query->limit($_GET['iDisplayLength']);
+		}
+
+		// Ordering
+		if ( isset( $_GET['iSortCol_0'] ) AND $_GET['iSortCol_0'] != 0 )
+		{
+			$query->order_by($columns[$_GET['iSortCol_0']], $_GET['sSortDir_0']);
+		}
+
+		$people = $query->find_all()->as_array();
+
+		//Output
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => count($people),
+			"iTotalDisplayRecords" => $query2->count_all(),
+			"aaData" => array()
+		);
+
+		foreach ($people as $person)
+		{
+			$row = array(
+				0 => '<a href="/person/view/'.$person->id.'"><strong>'.strtoupper($person->name).'</strong></a>',
+				1 => '<span class="radius secondary label">'.strtoupper($person->status).'</status>',
+				2 => '<span class="radius secondary label">'.(int) $person->pings.'</span>',
+				);
+
+			$output['aaData'][] = $row;
+		}
+
+		echo json_encode($output);
 	}
 
 	/**
