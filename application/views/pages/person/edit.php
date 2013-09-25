@@ -2,24 +2,23 @@
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
 		<legend>Name</legend>
-		<div class="row">
-			<div class="large-4 columns">
+		<div class="new-name-row">
+			<div class="new-name-first">
 				<label>First Name</label>
 				<input type="text" name="first_name" value="" id="first_name">
 			</div>
-			<div class="large-4 columns">
+			<div class="new-name-last">
 				<label>Last Name</label>
 				<input type="text" name="last_name" value="" id="last_name">
 			</div>
-			<div class="large-4 columns">&nbsp;</div>
 		</div>
 	</fieldset>
 
 	<fieldset>
 		<legend>Contact Information</legend>
 		<div class="panel">
-			<div class="row">
-					<div class="large-4 columns">
+			<div class="contact-info-row">
+					<div class="contact-info-type">
 						<label>Type</label>
 						<select id="customDropdown1" class="medium">
 							<option>-- Select One --</option>
@@ -29,17 +28,16 @@
 							<option>WhatsApp</option>
 						</select>				
 					</div>
-					<div class="large-4 columns">
+					<div class="contact-info-account">
 						<label>Account</label>
 						<input type="text" name="last_name" value="" id="last_name">				
 					</div>
-					<div class="large-4 columns">&nbsp;</div>
 			</div>
 		</div>
 
 		<div class="panel">
-			<div class="row">
-					<div class="large-4 columns">
+			<div class="contact-info-row">
+					<div class="contact-info-type">
 						<label>Type</label>
 						<select id="customDropdown1" class="medium">
 							<option>-- Select One --</option>
@@ -49,17 +47,16 @@
 							<option>WhatsApp</option>
 						</select>				
 					</div>
-					<div class="large-4 columns">
+					<div class="contact-info-account">
 						<label>Account</label>
 						<input type="text" name="last_name" value="" id="last_name">				
 					</div>
-					<div class="large-4 columns">&nbsp;</div>
 			</div>
 		</div>
 	</fieldset>
-	<div class="row">
-		<div class="large-12 columns">
-			<button class="button">Submit</button>
-		</div>
+
+	<div class="add-new-person-submit">
+		<button class="button  expand">Submit</button>
 	</div>
+
 <?php echo Form::close(); ?>

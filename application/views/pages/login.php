@@ -10,8 +10,8 @@
   <script src="/media/js/vendor/custom.modernizr.js"></script>
 </head>
 <body>
-	<div class="row">
-		<div class="large-6  large-centered  columns">
+	<div class="main-content-login-row">
+		<div class="main-content-login">
 			<div class="logo-image">
 				<h2>Ping App</h2>
 			</div>
@@ -28,23 +28,21 @@
 				<?php echo Form::hidden('token', Security::token()); ?>
 				<fieldset>
 					<legend>Log In</legend>
-					<div class="row">
-						<div class="large-12 columns">
+
+						<div class="login-box-username">
 							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username" placeholder="username / email">
 						</div>
-					</div>
 
-					<div class="row">
-						<div class="large-12 columns">
+						<div class="login-box-password">
 							<input type="password" name="password" id="password" placeholder="password">
 						</div>
-					</div>
+
 				</fieldset>
-				<div class="row">
-					<div class="large-12 columns">
-						<button class="button  expand">Submit</button>
-					</div>
+
+				<div class="login-submit-button">
+					<button class="button  expand">Submit</button>
 				</div>
+
 			<?php echo Form::close(); ?>	
 		</div>
 	</div>
