@@ -22,9 +22,7 @@
 	<script src="/media/js/vendor/dataTables.foundation.js"></script>
 	<script>
 		$(document).foundation();
-		$(document).ready(function() {
-			$('#activity').dataTable();
-		});
+		<?php echo $js; ?>
 	</script>
 </body>
 </html>
