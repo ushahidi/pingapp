@@ -10,8 +10,8 @@
   <script src="/media/js/vendor/custom.modernizr.js"></script>
 </head>
 <body>
-	<div class="main-content-login-row">
-		<div class="main-content-login">
+	<div class="row">
+		<div class="large-6  large-centered  columns">
 			<div class="logo-image">
 				<h2>Ping App</h2>
 			</div>
@@ -27,23 +27,49 @@
 			<?php echo Form::open(NULL, array('class' => 'custom')); ?>
 				<?php echo Form::hidden('token', Security::token()); ?>
 				<fieldset>
-					<legend>Log In</legend>
+					<legend>Register an account</legend>
 
-						<div class="login-box-username">
-							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username" placeholder="username / email">
+					<div class="row">
+						<div class="large-6 columns">
+							<p>First name:<br />
+							<input type="text" name="first_name" value="<?php echo (isset($first_name)) ? $first_name : ''; ?>" id="first_name"></p>
 						</div>
 
-						<div class="login-box-password">
-							<input type="password" name="password" id="password" placeholder="password">
+						<div class="large-6 columns">
+							<p>Last name:<br />
+							<input type="text" name="last_name" value="<?php echo (isset($last_name)) ? $last_name : ''; ?>" id="last_name"></p>
 						</div>
+					</div>
+
+					<div class="row">
+						<div class="large-12 columns">
+							<p>Username:<br />
+							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username"></p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="large-12 columns">
+							<p>Email Address:<br />
+							<input type="text" name="email" value="<?php echo (isset($email)) ? $email : ''; ?>" id="email"></p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="large-12 columns">
+							<p>Password:<br />
+							<input type="password" name="password" id="password"></p>
+						</div>
+					</div>
 
 				</fieldset>
+
 				<div class="row">
 					<div class="large-6 columns">
-						<button class="button expand">Login</button>
+						<button class="button expand">Register</button>
 					</div>
 					<div class="large-6 columns">
-						<button class="button expand secondary" onclick="window.location = '/register'; return false;">Register &hellip;</button>
+						<button class="button expand secondary" onclick="window.location = '/login'; return false;">Login &hellip;</button>
 					</div>
 				</div>
 			<?php echo Form::close(); ?>

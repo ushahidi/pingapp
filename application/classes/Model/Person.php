@@ -22,4 +22,20 @@ class Model_Person extends ORM {
 	// Insert/Update Timestamps
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
 	protected $_updated_column = array('column' => 'updated', 'format' => 'Y-m-d H:i:s');
+
+	public function rules()
+	{
+		return array(
+			'first_name' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 2)),
+				array('max_length', array(':value', 100)),
+			),
+			'last_name' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 2)),
+				array('max_length', array(':value', 100)),
+			),
+		);
+	}
 }
