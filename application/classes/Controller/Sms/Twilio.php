@@ -56,7 +56,7 @@ class Controller_Sms_Twilio extends Controller {
 				// Record the pong
 				$pong = new Model_Pong();
 				$pong->set('person_id', $person_contact->person->id)
-				    ->set('ping_id', $ping->id)
+				    ->set('ping_id', $ping_id)
 				    ->set('contact', $message)
 				    ->set('type', 'sms')
 				    ->save();
