@@ -1,14 +1,18 @@
-<?php echo Form::open(NULL, array('class' => 'custom')); ?>	
+<?php echo Form::open('messages', array('class' => 'custom', 'method'=> 'post')); ?>	
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
+		<legend>New Message</legend>
 		<div class="row">
 			<div class="large-4 columns">
-				<textarea name="message" maxlength="120" value="" id="message">
+				<label>To (Use "," to separate recipients)</label>
+				<?php echo Form::input('recipients'); ?>
 			</div>
-			<div>
-				<label>Are You Ok?</label>
+		</div>
+		<div class="row">
+			<div class="large-4 columns">
+				<label>Message</label>
+				<?php echo Form::textarea('message_text', NULL); ?>
 			</div>
-			<div class="large-4 columns">&nbsp;</div>
 		</div>
 	</fieldset>
 	<div class="row">

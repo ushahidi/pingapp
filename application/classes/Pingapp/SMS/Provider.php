@@ -26,7 +26,7 @@ abstract class Pingapp_SMS_Provider {
 			return $_instance;
 		}
 
-		$provider_name = ucfirst(strtolower(Pingapp::$provider_name));
+		$provider_name = ucfirst(strtolower(Pingapp::$sms_provider));
 		
 		$class_name = 'Pingapp_SMS_Provider_'.$provider_name;
 		
