@@ -17,7 +17,6 @@ class Controller_Sms_Twilio extends Controller {
 			}
 			
 			$message_text  = $this->request->post('Body');
-			$message_date = $this->request->post('Date');
 			
 			$person_contact = Model_Person::get_contact($from, 'phone');
 			if ( ! $person_contact)
@@ -57,7 +56,7 @@ class Controller_Sms_Twilio extends Controller {
 				$pong = new Model_Pong();
 				$pong->set('person_id', $person_contact->person->id)
 				    ->set('ping_id', $ping_id)
-				    ->set('contact', $message)
+				    ->set('content', $message_text)
 				    ->set('type', 'sms')
 				    ->save();
 				
