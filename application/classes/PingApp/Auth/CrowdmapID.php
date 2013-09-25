@@ -13,7 +13,7 @@
  * @copyright   Ushahidi - http://www.ushahidi.com
  * @license     http://www.gnu.org/licenses/gpl.html GNU General Public License (GPL)
  */
-class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
+class PingApp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 
 	/**
 	 * Logs a user in.

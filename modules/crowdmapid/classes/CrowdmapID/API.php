@@ -13,7 +13,7 @@
 class CrowdmapID_API {
 
 	/**
-	 * RiverID API endpoint
+	 * CrowdmapID API endpoint
 	 *
 	 * @var string
 	 */
@@ -22,14 +22,14 @@ class CrowdmapID_API {
 
 	/**
 	 * Singleton instance for this class
-	 * @var RiverID_API
+	 * @var CrowdmapID_API
 	 */
 	private static $_singleton;
 
 	/**
-	 * Creates a singleton instance for the RiverID_API class
+	 * Creates a singleton instance for the CrowdmapID_API class
 	 *
-	 * @return RiverID_API
+	 * @return CrowdmapID_API
 	 */
 	public static function instance()
 	{
@@ -95,7 +95,7 @@ class CrowdmapID_API {
 	}
 
 	/**
-	 * Logs in a user via RiverID
+	 * Logs in a user via CrowdmapID
 	 *
 	 * @param   string   $email
 	 * @param   string   $password
@@ -554,13 +554,7 @@ class CrowdmapID_API {
 				}
 			}
 
-			/*
-			echo $url;
-			var_dump($raw);
-			exit;
-			*/
-
-			Kohana::$log->add(Log::ERROR, "RiverID api call failed. :error", array('error' => curl_error($api)));
+			Kohana::$log->add(Log::ERROR, "CrowdmapID api call failed. :error", array('error' => curl_error($api)));
 
 			return false;
 		}

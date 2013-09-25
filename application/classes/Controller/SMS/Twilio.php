@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Controller_Sms_Twilio extends Controller {
+class Controller_SMS_Twilio extends Controller {
 	
 	public function action_reply()
 	{
@@ -33,7 +33,7 @@ class Controller_Sms_Twilio extends Controller {
 			    ->where('provider', '=', strtolower(Pingapp::$sms_provider))
 			    ->where('type', '=', 'phone')
 			    ->where('person_contact_id', '=', $person_contact->id)
-			    ->where('status', '=', 'pending');
+			    ->where('status', '=', 'pending')
 			    ->find();
 			
 			// Any result?

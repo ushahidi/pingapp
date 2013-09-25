@@ -3,7 +3,7 @@
 /**
  * Twilio SMS provider
  */
-class Pingapp_SMS_Provider_Twilio extends Pingapp_SMS_Provider {
+class PingApp_SMS_Provider_Twilio extends Pingapp_SMS_Provider {
 	
 	/**
 	 * Client to talk to the Twilio API

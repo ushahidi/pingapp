@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access');
 
-final class Pingapp {
+final class PingApp {
 	
 	/**
 	 * Name of the SMS provider

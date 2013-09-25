@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed');
 
-class Controller_Messages extends Controller_Pingapp {
+class Controller_Messages extends Controller_PingApp {
 	
 	public function action_index()
 	{
@@ -35,7 +35,7 @@ class Controller_Messages extends Controller_Pingapp {
 					->save();
 				
 				// Broadcast the message to recipients. The Ping
-				$provider = Pingapp_SMS_Provider::instance();
+				$provider = PingApp_SMS_Provider::instance();
 				$ping_count = 0;
 				
 				$query = DB::insert('pings',
@@ -43,13 +43,13 @@ class Controller_Messages extends Controller_Pingapp {
 					
 				foreach ($recipients as $recipient)
 				{
-					if (($tracking_id = $provider->send(Pingapp::$sms_sender, $recipient, $message->message)) !== FALSE)
+					if (($tracking_id = $provider->send(PingApp::$sms_sender, $recipient, $message->message)) !== FALSE)
 					{
 						$query->values(array(
 						    'message_id' => $message->id,
 						    'tracking_id' => $tracking_id,
 						    'person_contact_id' => $person_contact_ids[$recipient],
-						    'provider' => strtolower(Pingapp::$sms_provider),
+						    'provider' => strtolower(PingApp::$sms_provider),
 						    'type' => 'phone',
 						    'status' => 'pending',
 						    'created' => date('Y-m-d H:i:s')
