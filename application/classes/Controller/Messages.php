@@ -54,7 +54,7 @@ class Controller_Messages extends Controller_PingApp {
 						    'status' => 'pending',
 						    'created' => date('Y-m-d H:i:s')
 						));
-							$ping_count++;
+						$ping_count++;
 					}
 				}
 				

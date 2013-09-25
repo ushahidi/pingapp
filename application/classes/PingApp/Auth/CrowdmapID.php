@@ -230,8 +230,8 @@ class PingApp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 			try
 			{
 				$user->save();
-				$user->add('roles', ORM::factory('Role')->where('name', '=', 'login')->find() );
-				$user->add('roles', ORM::factory('Role')->where('name', '=', 'member')->find() );
+				$user->add('roles', ORM::factory('Role', array('name' => 'login')));
+				$user->add('roles', ORM::factory('Role', array('name' => 'member')));
 
 				// Finish the login
 				$this->complete_login($user);
