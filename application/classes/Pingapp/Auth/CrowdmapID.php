@@ -33,12 +33,14 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 
 		// Check if they provided a username as opposed to an email:
 		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
-		if( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		if ( ! filter_var($email, FILTER_VALIDATE_EMAIL))
+		{
 			$user = ORM::factory('User')
 			    ->where('username', '=', $email)
 			    ->find();
 
-			if(isset($user->email)) {
+			if(isset($user->email))
+			{
 				$email = $user->email;
 			}
 		}
@@ -151,11 +153,12 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 
 		// Check if the email address is already registered.
 		$collision = ORM::factory('User')
-			->where('email', '=', $email)
-			->find();
+		    ->where('email', '=', $email)
+		    ->find();
 
 		if ($collision->loaded()) {
-			if( ! $this->_login($email, $password, FALSE)) {
+			if ( ! $this->_login($email, $password, FALSE))
+			{
 				define('REGISTER_ERROR', 'EMAIL_COLLISION');
 				return FALSE;
 			}
@@ -163,10 +166,11 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 
 		// Check if the username is already in use.
 		$collision = ORM::factory('User')
-			->where('username', '=', $username)
-			->find();
+		    ->where('username', '=', $username)
+		    ->find();
 
-		if ($collision->loaded()) {
+		if ($collision->loaded())
+		{
 			define('REGISTER_ERROR', 'USERNAME_COLLISION');
 			return FALSE;
 		}
@@ -181,22 +185,27 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 			// It is. Confirm their supplied password.
 			$session = $crowdmapid_api->login($email, $password);
 
-			if (!$session OR !$session->success) {
+			if ( ! $session OR ! $session->success) {
 				// Password provided does not match the one attached to the existing CrowdmapID
 				define('REGISTER_ERROR', 'PASSWORD_COLLISION');
 				return FALSE;
 			}
 
-		} else {
+		}
+		else
+		{
 			// It isn't. Attempt to register it.
 			$session = $crowdmapid_api->register($email, $password);
 
-			if (!$session OR !$session->success)
+			if ( ! $session OR ! $session->success)
 			{
 				// There was a problem registering the account with CMID.
-				if(isset($session->error)) {
+				if (isset($session->error))
+				{
 					define('REGISTER_ERROR', $session->error);
-				} else {
+				}
+				else
+				{
 					define('REGISTER_ERROR', 'GENERIC_ERROR');
 				}
 				return FALSE;
@@ -205,8 +214,8 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 		}
 
 		// Do we have a session, one way or another?
-		if($session AND isset($session->user_id) AND isset($session->session_id)) {
-
+		if ($session AND isset($session->user_id) AND isset($session->session_id))
+		{
 			// Yup. Create the local account.
 			$user = ORM::factory('User');
 			$user->values(array(
@@ -233,9 +242,7 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 			{
 				$errors = $e->errors('users');
 			}
-
 		}
-
 		return FALSE;
 	}
 
