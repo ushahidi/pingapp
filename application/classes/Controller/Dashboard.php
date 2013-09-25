@@ -39,7 +39,8 @@ class Controller_Dashboard extends Controller_PingApp {
 		$query = ORM::factory('Person')
 			->select(array(DB::expr('CONCAT(person.first_name, " ", person.last_name)'), 'name'))
 			->select('pings.pings')
-			->join(array($pings, 'pings'), 'LEFT')->on('person.id', '=', 'pings.person_id');
+			->join(array($pings, 'pings'), 'LEFT')->on('person.id', '=', 'pings.person_id')
+			->where('user_id', '=', $this->user->id);
 
 		$query2 = clone $query;
 
