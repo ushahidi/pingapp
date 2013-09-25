@@ -166,6 +166,7 @@ class Controller_Person extends Controller_PingApp {
 
 		$pings = DB::select('person_id', array(DB::expr('COUNT("id")'), 'pings'))
 			->from('pings')
+			->join('person_contacts')->on('pings.person_contact_id', '=', 'person_contacts.person_id')
 			->group_by('person_id');
 
 		$query = ORM::factory('Person')
