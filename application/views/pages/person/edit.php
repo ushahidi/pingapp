@@ -16,6 +16,8 @@
 		<?php echo __('Saved Successfully'); ?>
 		<a href="#" class="close">&times;</a>
 	</div>
+	<a href="/dashboard" class="small button" id="ping-add-contact">&laquo; Back</a>
+	<a href="/person/edit" class="small button" id="ping-add-contact">New Person [+]</a>
 	<?php endif; ?>
 
 	<?php echo Form::hidden('token', Security::token()); ?>
