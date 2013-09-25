@@ -25,6 +25,11 @@ abstract class PingApp_SMS_Provider {
 		{
 			return $_instance;
 		}
+		
+		if (empty(PingApp::$sms_provider))
+		{
+			throw new PingApp_Exception("SMS Provider not configured");
+		}
 
 		$provider_name = ucfirst(strtolower(PingApp::$sms_provider));
 		

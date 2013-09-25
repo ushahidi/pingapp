@@ -2,6 +2,8 @@
 
 class Controller_Messages extends Controller_PingApp {
 	
+	private $_provider = NULL;
+	
 	public function action_index()
 	{
 		$this->auto_render = FALSE;
@@ -10,6 +12,21 @@ class Controller_Messages extends Controller_PingApp {
 		switch ($this->request->method())
 		{
 			case 'POST':
+				// Broadcast the message to recipients. The Ping
+				try
+				{
+					$this->_provider = PingApp_SMS_Provider::instance();
+				}
+				catch (PingApp_Exception $e)
+				{
+					Kohana::$log->add(Log::ERROR, $e->getMessage());
+					
+					// TODO: Set error messages
+					
+					// Redirect
+					HTTP::redirect('/messages/new');
+				}
+			
 				// Get the request parameters
 				$message_text = $this->request->post('message_text');
 				$recipients = $this->request->post('recipients');
@@ -34,8 +51,6 @@ class Controller_Messages extends Controller_PingApp {
 					->set('type', 'phone')
 					->save();
 				
-				// Broadcast the message to recipients. The Ping
-				$provider = PingApp_SMS_Provider::instance();
 				$ping_count = 0;
 				
 				$query = DB::insert('pings',
@@ -43,7 +58,7 @@ class Controller_Messages extends Controller_PingApp {
 					
 				foreach ($recipients as $recipient)
 				{
-					if (($tracking_id = $provider->send(PingApp::$sms_sender, $recipient, $message->message)) !== FALSE)
+					if (($tracking_id = $this->_provider->send(PingApp::$sms_sender, $recipient, $message->message)) !== FALSE)
 					{
 						$query->values(array(
 						    'message_id' => $message->id,

@@ -27,13 +27,25 @@ final class PingApp {
 	{
 		$sms_config = Kohana::$config->load('sms')->as_array();
 		
-		// SMS provider
-		self::$sms_provider = $sms_config['provider'];
+		try
+		{
+			// SMS provider
+			self::$sms_provider = $sms_config['provider'];
 		
-		// Sender number
-		self::$sms_sender = $sms_config['sender_number'];
+			// Sender number
+			self::$sms_sender = $sms_config['sender_number'];
 		
-		// Additional 
-		self::$sms_provider_options = $sms_config['options'];
+			// Additional 
+			self::$sms_provider_options = $sms_config['options'];
+		}
+		catch (ErrorException $e)
+		{
+			// There is an error in the config
+			Kohana::$log->add(Log::ERROR,
+			    __("Error in the configuration of the SMS provider. :error", array(":errror" => $e->getMessage())));
+			
+			// Unset the SMS provider
+			self::$sms_provider = NULL;
+		}
 	}
 }
