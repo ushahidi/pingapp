@@ -10,18 +10,25 @@
 class Pingapp_Form {
 	/**
 	 * Contact Methods
-	 * 
+	 *
+	 * @param bool $select add select?
 	 * @return	array
 	 */
-	public static function contact_types()
+	public static function contact_types($select = TRUE)
 	{
 		$array = array(
-			NULL => __('-- Select One --'),
 			'phone' => __('Cell Phone'),
 			'email' => __('Email'),
 			'twitter' => __('Twitter'),
 			'whatsapp' => __('WhatsApp'),
 			);
+
+		if ($select)
+		{
+			array_unshift($array, array(
+				NULL => __('-- Select One --'),
+				));
+		}
 
 		return $array;
 	}
