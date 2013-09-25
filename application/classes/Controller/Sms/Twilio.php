@@ -49,7 +49,7 @@ class Controller_Sms_Twilio extends Controller {
 				$ping_id = $pings[0]['ping_id'];
 				
 				// Mark the ping as having received a response
-				$ping = ORM::factory('Ping', $ping_id);
+				$ping = ORM::factory('Ping', $ping_id)
 				    ->set('status', 'replied')
 				    ->save();
 				
