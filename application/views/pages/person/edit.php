@@ -1,23 +1,24 @@
 <?php if ( $parent AND $parent->loaded() ): ?>
 <h4>Secondary Contact For: <?php echo $parent->first_name.' '.$parent->last_name; ?></h4>
 <?php endif; ?>
+
+<?php if (isset($errors)): ?>
+<div data-alert class="alert-box alert">
+	<?php foreach ($errors as $error): ?>
+	&middot; <?php echo $error; ?><br />
+	<?php endforeach; ?>
+	<a href="#" class="close">&times;</a>
+</div>
+<?php endif; ?>
+
+<?php if ($done): ?>
+<div data-alert class="alert-box success">
+	<?php echo __('Saved Successfully'); ?>
+	<a href="#" class="close">&times;</a>
+</div>
+<?php endif; ?>
+
 <?php echo Form::open(NULL, array('class' => 'custom')); ?>
-	<?php if (isset($errors)): ?>
-	<div data-alert class="alert-box alert">
-		<?php foreach ($errors as $error): ?>
-		&middot; <?php echo $error; ?><br />
-		<?php endforeach; ?>
-		<a href="#" class="close">&times;</a>
-	</div>
-	<?php endif; ?>
-
-	<?php if ($done): ?>
-	<div data-alert class="alert-box success">
-		<?php echo __('Saved Successfully'); ?>
-		<a href="#" class="close">&times;</a>
-	</div>
-	<?php endif; ?>
-
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
 		<legend>Name</legend>

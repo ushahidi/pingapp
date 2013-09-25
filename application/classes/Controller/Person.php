@@ -229,8 +229,9 @@ class Controller_Person extends Controller_PingApp {
 
 	/**
 	 * Valid Contact Type/Contact?
-	 * 
-	 * @return void
+	 *
+	 * @param array $contacts
+	 * @return bool
 	 */
 	public function valid_contact($contacts)
 	{

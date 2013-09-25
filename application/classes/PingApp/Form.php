@@ -32,4 +32,32 @@ class PingApp_Form {
 
 		return $array;
 	}
+
+	/**
+	 * Get People for Send Form
+	 * 
+	 * @param int $user_id
+	 * @returnarray
+	 */
+	public static function people($user)
+	{
+		$array = array(
+			'0' => '-- EVERYONE --'
+			);
+
+		if ( $user->loaded() )
+		{
+			$people = $user->people
+				->where('parent_id', '=', 0)
+				->order_by('first_name', 'ASC')
+				->find_all();
+
+			foreach ($people as $person)
+			{
+				$array[$person->id] = $person->first_name.' '.$person->last_name;
+			}
+		}
+
+		return $array;
+	}
 }
