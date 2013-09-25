@@ -30,7 +30,7 @@ class Controller_Dashboard extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('name', 'status', 'pings');
+		$columns = array('first_name', 'status', 'pings', 'last_name');
 
 		$pings = DB::select('person_id', array(DB::expr('COUNT("id")'), 'pings'))
 			->from('pings')
@@ -48,7 +48,7 @@ class Controller_Dashboard extends Controller_PingApp {
 		if (  isset( $_GET['sSearch'] ) AND $_GET['sSearch'] != "" )
 		{
 			$query->where_open();
-			for ( $i=1 ; $i < count($columns) ; $i++ )
+			for ( $i=0 ; $i < count($columns) ; $i++ )
 			{
 				$query->or_where($columns[$i], 'LIKE', '%'.$_GET['sSearch'].'%');
 			}
