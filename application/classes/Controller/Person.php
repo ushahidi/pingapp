@@ -164,16 +164,18 @@ class Controller_Person extends Controller_PingApp {
 		// Data table columns
 		$columns = array('first_name', 'status', 'pings', 'last_name');
 
-		$pings = DB::select('person_id', array(DB::expr('COUNT("id")'), 'pings'))
-			->from('pings')
-			->join('person_contacts')->on('pings.person_contact_id', '=', 'person_contacts.person_id')
-			->group_by('person_id');
+		$pings = DB::select('pc.person_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
+		    ->from('pings')
+		    ->join(array('person_contacts', 'pc'), 'INNER')
+		    ->on('pings.person_contact_id', '=', 'pc.id')
+		    ->group_by('person_id');
 
 		$query = ORM::factory('Person')
-			->select(array(DB::expr('CONCAT(person.first_name, " ", person.last_name)'), 'name'))
-			->select('pings.pings')
-			->join(array($pings, 'pings'), 'LEFT')->on('person.id', '=', 'pings.person_id')
-			->where('user_id', '=', $this->user->id);
+		    ->select(array(DB::expr('CONCAT(person.first_name, " ", person.last_name)'), 'name'))
+		    ->select('pings.pings')
+		    ->join(array($pings, 'pings'), 'LEFT')
+		    ->on('person.id', '=', 'pings.person_id')
+		    ->where('user_id', '=', $this->user->id);
 
 		$query2 = clone $query;
 
