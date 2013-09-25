@@ -111,7 +111,7 @@ Kohana::modules(Kohana::$config->load('modules')->as_array());
 /**
  * Initialize Pingapp, setting the defaults
  */
-Pingapp::init();
+PingApp::init();
 
 /**
  * Set cookie salt

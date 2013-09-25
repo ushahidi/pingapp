@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Controller_SMS_Twilio extends Controller {
+class Controller_Sms_Twilio extends Controller {
 	
 	public function action_reply()
 	{
@@ -9,7 +9,7 @@ class Controller_SMS_Twilio extends Controller {
 			$to = $this->request->post('To');
 			$from  = $this->request->post('From');
 			
-			if (! $to === Pingapp::$sms_sender)
+			if ($to !== PingApp::$sms_sender)
 			{
 				Kohana::$log->add(Log::ERROR, __("':to' was not used to send a message to ':from'",
 				    array(':to' => $to, ':from' => $from)));
@@ -29,27 +29,34 @@ class Controller_SMS_Twilio extends Controller {
 			
 			// Get the last message that was sent to $from via Twilio
 			// and has a pending status
-			$ping = ORM::factory('ping')
-			    ->where('provider', '=', strtolower(Pingapp::$sms_provider))
+			$pings = DB::select(array(DB::expr('MAX(id)'), 'ping_id'))
+			    ->from('pings')
+			    ->where('provider', '=', strtolower(PingApp::$sms_provider))
 			    ->where('type', '=', 'phone')
 			    ->where('person_contact_id', '=', $person_contact->id)
 			    ->where('status', '=', 'pending')
-			    ->find();
+			    ->execute()
+			    ->as_array();
 			
 			// Any result?
-			if ( ! $ping->loaded())
+			if ( ! count($pings))
 			{
 				Kohana::$log->add(Log::ERROR, __("No ping sent out to ':from'. Discarding message", array(":from" => $from)));
 			}
 			else
 			{
+				// Get the ping id
+				$ping_id = $pings[0]['ping_id'];
+				
 				// Mark the ping as having received a response
-				$ping->set('status', 'replied')->save();
+				$ping = ORM::factory('Ping', $ping_id);
+				    ->set('status', 'replied')
+				    ->save();
 				
 				// Record the pong
 				$pong = new Model_Pong();
 				$pong->set('person_id', $person_contact->person->id)
-				    ->set('ping_id', $ping->id)
+				    ->set('ping_id', $ping_id)
 				    ->set('contact', $message)
 				    ->set('type', 'sms')
 				    ->save();
