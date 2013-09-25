@@ -3,6 +3,6 @@ $(document).ready(function() {
 		"bJQueryUI": true,
 		"bProcessing": true,
 		"bServerSide": true,
-		"sAjaxSource": "/dashboard/ajax_list",
+		"sAjaxSource": "/person/ajax_list",
 	});
 });

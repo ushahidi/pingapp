@@ -1,3 +1,6 @@
+<?php if ( $parent AND $parent->loaded() ): ?>
+<h4>Secondary Contact For: <?php echo $parent->first_name.' '.$parent->last_name; ?></h4>
+<?php endif; ?>
 <?php echo Form::open(NULL, array('class' => 'custom')); ?>
 	<?php if (isset($errors)): ?>
 	<div data-alert class="alert-box alert">
