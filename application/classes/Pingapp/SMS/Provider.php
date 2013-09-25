@@ -15,7 +15,7 @@ abstract class Pingapp_SMS_Provider {
 	 * Authentication parameters for the default SMS provider
 	 * @var array
 	 */
-	protected $params = array();
+	protected $_options = array();
 	
 	protected static $_instance = NULL;
 	
@@ -25,10 +25,8 @@ abstract class Pingapp_SMS_Provider {
 		{
 			return $_instance;
 		}
-		// Load configuration params
-		$config = Kohana::$config->load('sms')->as_array();
 
-		$provider_name = ucfirst(strtolower($config['provider']));
+		$provider_name = ucfirst(strtolower(Pingapp::$provider_name));
 		
 		$class_name = 'Pingapp_SMS_Provider_'.$provider_name;
 		
@@ -48,8 +46,7 @@ abstract class Pingapp_SMS_Provider {
 				array(":provider" => $class_name)));
 		}
 		
-		self::$_instance->set_params($config['params']);
-		
+		self::$_instance->set_options(Pingapp::$sms_provider_options);
 		return self::$_instance;
 	}
 	
@@ -58,9 +55,9 @@ abstract class Pingapp_SMS_Provider {
 	 *
 	 * @param  array auth_params
 	 */
-	public function set_params($params)
+	public function set_options($options)
 	{
-		$this->params = $params;
+		$this->_options = $options;
 	}
 	
 	/**
