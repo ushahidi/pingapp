@@ -13,7 +13,7 @@
 class CrowdmapID_API {
 
 	/**
-	 * RiverID API endpoint
+	 * CrowdmapID API endpoint
 	 *
 	 * @var string
 	 */
@@ -22,14 +22,14 @@ class CrowdmapID_API {
 
 	/**
 	 * Singleton instance for this class
-	 * @var RiverID_API
+	 * @var CrowdmapID_API
 	 */
 	private static $_singleton;
 
 	/**
-	 * Creates a singleton instance for the RiverID_API class
+	 * Creates a singleton instance for the CrowdmapID_API class
 	 *
-	 * @return RiverID_API
+	 * @return CrowdmapID_API
 	 */
 	public static function instance()
 	{
@@ -60,8 +60,10 @@ class CrowdmapID_API {
 	 */
 	public function is_registered($email)
 	{
-		if ($exists = $this->__api_call('GET', "/user/{$email}")) {
-			if ($exists = $this->__reduce_response($exists, 'user')) {
+		if ($exists = $this->__api_call('GET', "/user/{$email}"))
+		{
+			if ($exists = $this->__reduce_response($exists, 'user'))
+			{
 				return TRUE;
 			}
 		}
@@ -80,8 +82,10 @@ class CrowdmapID_API {
 	 */
 	public function get_profile($user_id, $params = array()) {
 
-		if ($user = $this->__api_call('GET', "/user/{$user_id}", $params)) {
-			if ($user = $this->__reduce_response($user, 'user')) {
+		if ($user = $this->__api_call('GET', "/user/{$user_id}", $params))
+		{
+			if ($user = $this->__reduce_response($user, 'user'))
+			{
 				return $user;
 			}
 		}
@@ -91,7 +95,7 @@ class CrowdmapID_API {
 	}
 
 	/**
-	 * Logs in a user via RiverID
+	 * Logs in a user via CrowdmapID
 	 *
 	 * @param   string   $email
 	 * @param   string   $password
@@ -103,18 +107,21 @@ class CrowdmapID_API {
 		$password = filter_var($password, FILTER_SANITIZE_STRING);
 		$otp      = ($otp ? filter_var($otp, FILTER_SANITIZE_STRING) : NULL);
 
-		if ($session = $this->__api_call('GET', "/user/{$email}/password", array('password' => $password, 'otp' => $otp))) {
+		if ($session = $this->__api_call('GET', "/user/{$email}/password", array('password' => $password, 'otp' => $otp)))
+		{
 
-			if ($session AND isset($session->success) AND $session->success === TRUE) {
-				return (object)array(
+			if ($session AND isset($session->success) AND $session->success === TRUE)
+			{
+				return (object) array(
 					'success'     => TRUE,
 					'user_id'     => $session->user_id,
 					'session_id'  => $session->session_id
 				);
 			}
 
-			if ($session AND isset($session->error)) {
-				return (object)array(
+			if ($session AND isset($session->error))
+			{
+				return (object) array(
 					'success'   => FALSE,
 					'error'     => $session->error
 				);
@@ -122,7 +129,7 @@ class CrowdmapID_API {
 
 		}
 
-		return (object)array(
+		return (object) array(
 			'success'  => FALSE,
 			'error'    => __('Unknown error')
 		);
@@ -137,22 +144,25 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function register($email, $password) {
+	public function register($email, $password)
+	{
 		$email     = filter_var($email, FILTER_SANITIZE_EMAIL);
 		$password  = urlencode(filter_var($password, FILTER_SANITIZE_STRING));
 
-		if ($session = $this->__api_call('POST', "/user", array('email' => $email, 'password' => $password))) {
-
-			if ($session AND isset($session->success) AND $session->success === TRUE) {
-				return (object)array(
+		if ($session = $this->__api_call('POST', "/user", array('email' => $email, 'password' => $password)))
+		{
+			if ($session AND isset($session->success) AND $session->success === TRUE)
+			{
+				return (object) array(
 					'success'     => TRUE,
 					'user_id'     => $session->user_id,
 					'session_id'  => $session->session_id
 				);
 			}
 
-			if ($session AND isset($session->error)) {
-				return (object)array(
+			if ($session AND isset($session->error))
+			{
+				return (object) array(
 					'success'   => FALSE,
 					'error'     => $session->error
 				);
@@ -160,7 +170,7 @@ class CrowdmapID_API {
 
 		}
 
-		return (object)array(
+		return (object) array(
 			'success'  => FALSE,
 			'error'    => __('Unknown error')
 		);
@@ -176,10 +186,13 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function get_emails($user_id, $session_id) {
+	public function get_emails($user_id, $session_id)
+	{
 
-		if ($emails = $this->__api_call('GET', "/user/{$user_id}/emails", array('user_id' => $user_id, 'session_id' => $session_id))) {
-			if(isset($emails->emails)) {
+		if ($emails = $this->__api_call('GET', "/user/{$user_id}/emails", array('user_id' => $user_id, 'session_id' => $session_id)))
+		{
+			if (isset($emails->emails))
+			{
 				return $emails->emails;
 			}
 		}
@@ -197,7 +210,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function recover_password($email, $params = array()) {
+	public function recover_password($email, $params = array())
+	{
 		return $this->__api_call('POST', "/user/{$email}/recover/", $params);
 	}
 
@@ -211,7 +225,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function confirm_recover_password($email, $token, $params = array()) {
+	public function confirm_recover_password($email, $token, $params = array())
+	{
 		$params['token'] = $token;
 		return $this->__api_call('GET', "/user/{$email}/recover/", $params);
 	}
@@ -226,7 +241,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function change_password($user_id, $session_id, $password) {
+	public function change_password($user_id, $session_id, $password)
+	{
 		$params = array(
 			'user_id'    => $user_id,
 			'session_id' => $session_id,
@@ -247,11 +263,14 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function storage_get($user_id, $session_id, $key, $default = FALSE) {
+	public function storage_get($user_id, $session_id, $key, $default = FALSE)
+	{
 		$key = trim($key);
 
-		if ($store = $this->__api_call('GET', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id))) {
-			if(isset($store->response) AND strlen($store->response)) {
+		if ($store = $this->__api_call('GET', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id)))
+		{
+			if (isset($store->response) AND strlen($store->response))
+			{
 				return $store->response;
 			}
 		}
@@ -270,11 +289,14 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function storage_put($user_id, $session_id, $key, $value) {
+	public function storage_put($user_id, $session_id, $key, $value)
+	{
 		$key = trim($key);
 
-		if ($store = $this->__api_call('POST', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id, 'value' => trim($value)))) {
-			if(isset($store->success)) {
+		if ($store = $this->__api_call('POST', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id, 'value' => trim($value))))
+		{
+			if (isset($store->success))
+			{
 				return $store->success;
 			}
 		}
@@ -292,11 +314,14 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function storage_delete($user_id, $session_id, $key) {
+	public function storage_delete($user_id, $session_id, $key)
+	{
 		$key = trim($key);
 
-		if ($store = $this->__api_call('DELETE', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id))) {
-			if(isset($store->success)) {
+		if ($store = $this->__api_call('DELETE', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id)))
+		{
+			if (isset($store->success))
+			{
 				return $store->success;
 			}
 		}
@@ -314,9 +339,12 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function avatar_put($user_id, $session_id, $avatar_uri) {
-		if ($avatar = $this->__api_call('PUT', "/user/{$user_id}/avatar/", array('user_id' => $user_id, 'session_id' => $session_id, 'avatar' => $avatar_uri))) {
-			if(isset($avatar->success)) {
+	public function avatar_put($user_id, $session_id, $avatar_uri)
+	{
+		if ($avatar = $this->__api_call('PUT', "/user/{$user_id}/avatar/", array('user_id' => $user_id, 'session_id' => $session_id, 'avatar' => $avatar_uri)))
+		{
+			if (isset($avatar->success))
+			{
 				return $avatar->success;
 			}
 		}
@@ -333,9 +361,12 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function avatar_delete($user_id, $session_id) {
-		if ($response = $this->__api_call('DELETE', "/user/{$user_id}/avatar/", array('user_id' => $user_id, 'session_id' => $session_id))) {
-			if(isset($response->success)) {
+	public function avatar_delete($user_id, $session_id)
+	{
+		if ($response = $this->__api_call('DELETE', "/user/{$user_id}/avatar/", array('user_id' => $user_id, 'session_id' => $session_id)))
+		{
+			if (isset($response->success))
+			{
 				return $response->success;
 			}
 		}
@@ -352,7 +383,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function yubikey_status($user_id, $session_id) {
+	public function yubikey_status($user_id, $session_id)
+	{
 		return $this->__api_call('GET', "/user/{$user_id}/security/yubikey", array( 'user_id' => $user_id, 'session_id' => $session_id ));
 	}
 
@@ -366,7 +398,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function yubikey_pair($user_id, $session_id, $otp) {
+	public function yubikey_pair($user_id, $session_id, $otp)
+	{
 		return $this->__api_call('POST', "/user/{$user_id}/security/yubikey", array( 'otp' => $otp, 'user_id' => $user_id, 'session_id' => $session_id ));
 	}
 
@@ -379,7 +412,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function yubikey_delete($user_id, $session_id) {
+	public function yubikey_delete($user_id, $session_id)
+	{
 		return $this->__api_call('DELETE', "/user/{$user_id}/security/yubikey", array( 'user_id' => $user_id, 'session_id' => $session_id ));
 	}
 
@@ -392,7 +426,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function googauth_status($user_id, $session_id) {
+	public function googauth_status($user_id, $session_id)
+	{
 		return $this->__api_call('GET', "/user/{$user_id}/security/googleauth", array( 'user_id' => $user_id, 'session_id' => $session_id ));
 	}
 
@@ -406,7 +441,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function googauth_pair($user_id, $session_id, $otp) {
+	public function googauth_pair($user_id, $session_id, $otp)
+	{
 		return $this->__api_call('POST', "/user/{$user_id}/security/googleauth", array( 'otp' => $otp, 'user_id' => $user_id, 'session_id' => $session_id ));
 	}
 
@@ -419,7 +455,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function googauth_delete($user_id, $session_id) {
+	public function googauth_delete($user_id, $session_id)
+	{
 		return $this->__api_call('DELETE', "/user/{$user_id}/security/googleauth", array( 'user_id' => $user_id, 'session_id' => $session_id ));
 	}
 
@@ -430,7 +467,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function about() {
+	public function about()
+	{
 		return $this->__api_call('GET', '/about');
 	}
 
@@ -441,7 +479,8 @@ class CrowdmapID_API {
 	 *
 	 * @access public
 	 */
-	public function limit() {
+	public function limit()
+	{
 		return $this->__api_call('GET', '/limit');
 	}
 
@@ -453,11 +492,12 @@ class CrowdmapID_API {
 	 * @param   array    params   Parameters to supply the API for this request.
 	 * @return  mixed    The response or false in case of failure
 	 */
-	private function __api_call($method = 'GET', $url ='/about', $params = array()) {
-
+	private function __api_call($method = 'GET', $url ='/about', $params = array())
+	{
 		$api = curl_init();
 
-		if ($api) {
+		if ($api)
+		{
 
 			$params = array_merge(array(
 				'api_secret'  => $this->api_secret
@@ -481,10 +521,9 @@ class CrowdmapID_API {
 					break;
 			}
 
-			if ($method !== 'POST' AND count($params)) {
-				foreach($params as $p => $v) {
-					$url .= $p . '=' . urlencode($v) . '&';
-				}
+			if ($method !== 'POST' AND count($params))
+			{
+				$url .= http_build_query($params);
 			}
 
 			$url = rtrim($this->api_endpoint, '/') . '/v2' . rtrim($url, '?&');
@@ -496,37 +535,33 @@ class CrowdmapID_API {
 				CURLOPT_SSL_VERIFYPEER => FALSE,
 				CURLOPT_FOLLOWLOCATION => TRUE,
 				CURLOPT_FAILONERROR    => TRUE,
-				CURLOPT_USERAGENT      => (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) PingApp Chrome/19.0.1084.9 Safari/536.5'),
+				CURLOPT_USERAGENT      => (isset($_SERVER['HTTP_USER_AGENT'])
+				                              ? $_SERVER['HTTP_USER_AGENT']
+				                              : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) PingApp Chrome/19.0.1084.9 Safari/536.5'),
 				CURLOPT_MAXREDIRS      => 12,
 				CURLOPT_TIMEOUT        => 5
 				));
 
-			if ($raw = curl_exec($api)) {
+			if ($raw = curl_exec($api))
+			{
 				@curl_close($api);
 
-				if ($resp = json_decode($raw)) {
+				if ($resp = json_decode($raw))
+				{
 					return $resp;
 				}
 			}
 
-			/*
-			echo $url;
-			var_dump($raw);
-			exit;
-			*/
+			Kohana::$log->add(Log::ERROR, "CrowdmapID api call failed. :error", array('error' => curl_error($api)));
 
-			Kohana::$log->add(Log::ERROR, "RiverID api call failed. :error", array('error' => curl_error($api)));
-
-			return false;
+			return FALSE;
 		}
 
 	}
 
-	private function __reduce_response($haystack, $needle) {
-		if (isset($haystack->$needle))
-			return $haystack->$needle;
-
-		return false;
+	private function __reduce_response($haystack, $needle)
+	{
+		return isset($haystack->$needle) ? $haystack->$needle : FALSE;
 	}
 
 }

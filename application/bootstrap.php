@@ -109,6 +109,11 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::modules(Kohana::$config->load('modules')->as_array());
 
 /**
+ * Initialize Pingapp, setting the defaults
+ */
+Pingapp::init();
+
+/**
  * Set cookie salt
  * @TODO change this for your project
  */
@@ -122,6 +127,8 @@ Route::set('logout', 'logout')
 		'controller' => 'login',
 		'action'     => 'logout',
 	));
+
+Route::set('sms_callback_url', '<directory>(/<controller>(/<action>))', array('directory' => 'sms'));
 
 /**
  * Default Route

@@ -7,7 +7,7 @@
  * @copyright  Ushahidi - http://www.ushahidi.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License Version 3 (GPLv3)
  */
-class Pingapp_Form {
+class PingApp_Form {
 	/**
 	 * Contact Methods
 	 *
