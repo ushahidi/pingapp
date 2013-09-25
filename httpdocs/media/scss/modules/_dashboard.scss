@@ -1,0 +1,26 @@
+.dashboard-actions-wrapper {
+	@include grid-row();
+}
+
+.new-message {
+	@include grid-column(12, $collapse: true);
+		@media #{$small} {
+			@include grid-column(3);
+			padding-left: 0;
+		}
+}
+
+.new-person {
+	@include grid-column(12, $collapse: true);
+		@media #{$small} {
+			@include grid-column(3);
+		}
+	}
+
+.dashboard-display-table-wrapper {
+	@include grid-row();
+}
+
+.dashboard-display-table {
+	@include grid-column(12, $collapse: true);
+}

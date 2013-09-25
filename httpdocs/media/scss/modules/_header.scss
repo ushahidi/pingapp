@@ -1,3 +1,11 @@
+.main-content-row {
+	@include grid-row();
+}
+
+.main-content {
+	@include grid-column(12);
+}
+
 .logo-image {
 	text-indent: -9999px;
 	background: url( ../images/ping-logo.png ) no-repeat;

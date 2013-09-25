@@ -11,7 +11,8 @@
   <script src="/media/js/vendor/custom.modernizr.js"></script>
 </head>
 <body>
-	<div class="row">
+	<div class="main-content-row">
+		<div class="main-content">
 		<div class="logo-image">
 			<h2>Ping App</h2>
 		</div>
