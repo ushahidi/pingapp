@@ -13,7 +13,7 @@ class Migration_1_20130925044750 extends Minion_Migration_Base {
 		$db->query(NULL, 'DROP TABLE IF EXISTS `providers`;');
 		
 		// Pings
-		$db->query(NULL, 'ALTER TABLE `pings` DROP INDEX `idx_provider_id`;')
+		$db->query(NULL, 'ALTER TABLE `pings` DROP INDEX `idx_provider_id`;');
 		$db->query(NULL, 'ALTER TABLE `pings` CHANGE `provider_id` `provider` VARCHAR(20)  NOT NULL  DEFAULT '0';');
 		$db->query(NULL, 'ALTER TABLE `pings` ADD COLUMN `tracking_id` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `message_id`;');
 		$db->query(NULL, 'ALTER TABLE `pings` ADD UNIQUE INDEX `idx_provider_tracking_id` (`tracking_id`, `provider`);');
