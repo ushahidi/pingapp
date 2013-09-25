@@ -235,7 +235,7 @@ class Controller_Person extends Controller_PingApp {
 		{
 			if ( isset($contact['type']) AND isset($contact['contact']) )
 			{
-				if ( ! array_key_exists($contact['type'], Pingapp_Form::contact_types(FALSE)))
+				if ( ! array_key_exists($contact['type'], PingApp_Form::contact_types(FALSE)))
 				{
 					return FALSE;
 				}
