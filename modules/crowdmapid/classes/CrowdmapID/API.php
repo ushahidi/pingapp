@@ -523,9 +523,7 @@ class CrowdmapID_API {
 
 			if ($method !== 'POST' AND count($params))
 			{
-				foreach($params as $p => $v) {
-					$url .= $p . '=' . urlencode($v) . '&';
-				}
+				$url .= http_build_query($params);
 			}
 
 			$url = rtrim($this->api_endpoint, '/') . '/v2' . rtrim($url, '?&');
@@ -556,7 +554,7 @@ class CrowdmapID_API {
 
 			Kohana::$log->add(Log::ERROR, "CrowdmapID api call failed. :error", array('error' => curl_error($api)));
 
-			return false;
+			return FALSE;
 		}
 
 	}
