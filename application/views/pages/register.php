@@ -10,8 +10,8 @@
   <script src="/media/js/vendor/custom.modernizr.js"></script>
 </head>
 <body>
-	<div class="row">
-		<div class="large-6  large-centered  columns">
+	<div class="main-content-login-row">
+		<div class="main-content-login">
 			<div class="logo-image">
 				<h2>Ping App</h2>
 			</div>
@@ -29,49 +29,36 @@
 				<fieldset>
 					<legend>Register an account</legend>
 
-					<div class="row">
-						<div class="large-6 columns">
-							<p>First name:<br />
-							<input type="text" name="first_name" value="<?php echo (isset($first_name)) ? $first_name : ''; ?>" id="first_name"></p>
+						<div class="register-first-name">
+							<input type="text" name="first_name" value="<?php echo (isset($first_name)) ? $first_name : ''; ?>" id="first_name" placeholder="First Name">
 						</div>
 
-						<div class="large-6 columns">
-							<p>Last name:<br />
-							<input type="text" name="last_name" value="<?php echo (isset($last_name)) ? $last_name : ''; ?>" id="last_name"></p>
+						<div class="register-last-name">
+							<input type="text" name="last_name" value="<?php echo (isset($last_name)) ? $last_name : ''; ?>" id="last_name" placeholder="Last Name">
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="large-12 columns">
-							<p>Username:<br />
-							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username"></p>
+					
+						<div class="register-username">
+							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username" placeholder="Username">
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="large-12 columns">
-							<p>Email Address:<br />
-							<input type="text" name="email" value="<?php echo (isset($email)) ? $email : ''; ?>" id="email"></p>
+					
+						<div class="register-email">
+							<input type="text" name="email" value="<?php echo (isset($email)) ? $email : ''; ?>" id="email" placeholder="Email">
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="large-12 columns">
-							<p>Password:<br />
-							<input type="password" name="password" id="password"></p>
+					
+						<div class="register-password">
+							<input type="password" name="password" id="password" placeholder="Password">
 						</div>
-					</div>
 
 				</fieldset>
 
-				<div class="row">
-					<div class="large-6 columns">
+				
+					<div class="register-action">
 						<button class="button expand">Register</button>
 					</div>
-					<div class="large-6 columns">
-						<button class="button expand secondary" onclick="window.location = '/login'; return false;">Login &hellip;</button>
+					<div class="login-action">
+						<p>Already have an account?<a onclick="window.location = '/login'; return false;"> Login</a></p>
 					</div>
-				</div>
+				
 			<?php echo Form::close(); ?>
 		</div>
 	</div>

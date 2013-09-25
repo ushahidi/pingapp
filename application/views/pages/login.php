@@ -27,7 +27,7 @@
 			<?php echo Form::open(NULL, array('class' => 'custom')); ?>
 				<?php echo Form::hidden('token', Security::token()); ?>
 				<fieldset>
-					<legend>Log In</legend>
+					<legend>Login</legend>
 
 						<div class="login-box-username">
 							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username" placeholder="username / email">
@@ -38,13 +38,12 @@
 						</div>
 
 				</fieldset>
-				<div class="row">
-					<div class="large-6 columns">
-						<button class="button expand">Login</button>
-					</div>
-					<div class="large-6 columns">
-						<button class="button expand secondary" onclick="window.location = '/register'; return false;">Register &hellip;</button>
-					</div>
+				
+				<div class="login-action">
+					<button class="button expand">Login</button>
+				</div>
+				<div class="register-action">
+					<p>Don't have an account?<a onclick="window.location = '/register'; return false;"> Register</a></p>
 				</div>
 			<?php echo Form::close(); ?>
 		</div>

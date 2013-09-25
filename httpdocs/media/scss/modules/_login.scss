@@ -10,13 +10,21 @@
 }
 
 .login-box-username {
-	@include grid-column(12, $collapse: true);
+	@include grid-column(12);
 }
 
 .login-box-password {
+	@include grid-column(12);
+}
+
+.login-form-actions {
 	@include grid-column(12, $collapse: true);
 }
 
-.login-submit-button {
-	@include grid-column(12, $collapse: true);
+.login-action {
+		@include grid-column(12, $collapse: true);
 }
+
+
+
+
