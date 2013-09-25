@@ -1,6 +1,6 @@
 <div class="dashboard-actions-wrapper">
 	<div class="new-message">
-		<a href="#" class="button   expand  success">New Message [+]</a>
+		<a href="/messages/new" class="button   expand  success">New Message [+]</a>
 	</div>
 	<div class="new-person">
 		<a href="/person/edit" class="button  expand">New Person [+]</a>

@@ -20,4 +20,13 @@ class Model_Message extends ORM {
 	// Insert/Update Timestamps
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
 	protected $_updated_column = array('column' => 'updated', 'format' => 'Y-m-d H:i:s');
+	
+	public function rules()
+	{
+		return array(
+			'message' => array(
+				array('not_empty')
+			)
+		);
+	}
 }
