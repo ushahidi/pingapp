@@ -31,6 +31,18 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 		if (in_array($email, Kohana::$config->load('crowdmapid.auth_exempt')))
 			return parent::_login($email, $password, $remember);
 
+		// Check if they provided a username as opposed to an email:
+		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+		if( ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$user = ORM::factory('User')
+			    ->where('username', '=', $email)
+			    ->find();
+
+			if(isset($user->email)) {
+				$email = $user->email;
+			}
+		}
+
 		// Check if the email is registered on CrowdmapID
 		if ($crowdmapid_api->is_registered($email))
 		{
@@ -54,6 +66,9 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 					            ->find();
 
 					$user->username = $user->email = $email;
+					$user->password = md5(mt_rand() . microtime(true));
+					$user->first_name = '';
+					$user->last_name = '';
 					$user->save();
 
 					try
@@ -119,5 +134,109 @@ class Pingapp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 		return FALSE;
 	}
 
+	/**
+	 * Registers a user account.
+	 *
+	 * @param   string   email
+	 * @param   string   password
+	 * @param   string   username
+	 * @param   string   first_name
+	 * @param   string   last_name
+	 * @return  boolean
+	 */
+	public function register($email, $password, $username, $first_name = '', $last_name = '')
+	{
+		$crowdmapid_api = CrowdmapID_API::instance();
+		$session = NULL;
+
+		// Check if the email address is already registered.
+		$collision = ORM::factory('User')
+			->where('email', '=', $email)
+			->find();
+
+		if ($collision->loaded()) {
+			if( ! $this->_login($email, $password, FALSE)) {
+				define('REGISTER_ERROR', 'EMAIL_COLLISION');
+				return FALSE;
+			}
+		}
+
+		// Check if the username is already in use.
+		$collision = ORM::factory('User')
+			->where('username', '=', $username)
+			->find();
+
+		if ($collision->loaded()) {
+			define('REGISTER_ERROR', 'USERNAME_COLLISION');
+			return FALSE;
+		}
+
+		// Fallback to local auth if user is in the exemption list
+		if (in_array($email, Kohana::$config->load('crowdmapid.auth_exempt')))
+			return parent::_login($email, $password, $remember);
+
+		// Check if the email is registered on CrowdmapID
+		if ($crowdmapid_api->is_registered($email))
+		{
+			// It is. Confirm their supplied password.
+			$session = $crowdmapid_api->login($email, $password);
+
+			if (!$session OR !$session->success) {
+				// Password provided does not match the one attached to the existing CrowdmapID
+				define('REGISTER_ERROR', 'PASSWORD_COLLISION');
+				return FALSE;
+			}
+
+		} else {
+			// It isn't. Attempt to register it.
+			$session = $crowdmapid_api->register($email, $password);
+
+			if (!$session OR !$session->success)
+			{
+				// There was a problem registering the account with CMID.
+				if(isset($session->error)) {
+					define('REGISTER_ERROR', $session->error);
+				} else {
+					define('REGISTER_ERROR', 'GENERIC_ERROR');
+				}
+				return FALSE;
+			}
+
+		}
+
+		// Do we have a session, one way or another?
+		if($session AND isset($session->user_id) AND isset($session->session_id)) {
+
+			// Yup. Create the local account.
+			$user = ORM::factory('User');
+			$user->values(array(
+				'username'         => $username,
+				'password'         => $password,
+				'password_confirm' => $password,
+				'email'            => $email,
+				'first_name'       => $first_name,
+				'last_name'        => $last_name
+			));
+
+			try
+			{
+				$user->save();
+				$user->add('roles', ORM::factory('Role')->where('name', '=', 'login')->find() );
+				$user->add('roles', ORM::factory('Role')->where('name', '=', 'member')->find() );
+
+				// Finish the login
+				$this->complete_login($user);
+
+				return TRUE;
+			}
+			catch (ORM_Validation_Exception $e)
+			{
+				$errors = $e->errors('users');
+			}
+
+		}
+
+		return FALSE;
+	}
 
 }

@@ -139,7 +139,7 @@ class CrowdmapID_API {
 	 */
 	public function register($email, $password) {
 		$email     = filter_var($email, FILTER_SANITIZE_EMAIL);
-		$password  = urlencode($password, FILTER_SANITIZE_STRING);
+		$password  = urlencode(filter_var($password, FILTER_SANITIZE_STRING));
 
 		if ($session = $this->__api_call('POST', "/user", array('email' => $email, 'password' => $password))) {
 
@@ -251,7 +251,7 @@ class CrowdmapID_API {
 		$key = trim($key);
 
 		if ($store = $this->__api_call('GET', "/user/{$user_id}/store/{$key}", array('user_id' => $user_id, 'session_id' => $session_id))) {
-			if(isset($store->response) && strlen($store->response)) {
+			if(isset($store->response) AND strlen($store->response)) {
 				return $store->response;
 			}
 		}
