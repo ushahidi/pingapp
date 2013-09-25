@@ -1,0 +1,42 @@
+.new-name-row {
+	@include grid-row();
+}
+
+.new-name-first {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.new-name-last {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.contact-info-row {
+	@include grid-row();	
+}
+
+.contact-info-type {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.contact-info-account {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.add-new-person-submit {
+	@include grid-column(12, $collapse: true);
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+	}
+}

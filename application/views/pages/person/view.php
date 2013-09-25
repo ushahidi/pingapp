@@ -1,5 +1,6 @@
 <h3><?php echo $person->first_name.' '.$person->last_name; ?></h3>
 <a href="/person/edit/<?php echo $person->id; ?>" class="small button" id="ping-add-contact">Edit</a>
+<a href="/person/edit/?parent_id=<?php echo $person->id; ?>" class="small button" id="ping-add-contact">Add Secondary Contact</a>
 
 <div class="panel">
 	Status: <strong><?php echo strtoupper($person->status); ?></strong> (<?php echo date('Y-m-d', strtotime($person->updated)); ?>)

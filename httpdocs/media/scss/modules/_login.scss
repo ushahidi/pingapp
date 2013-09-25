@@ -1,0 +1,22 @@
+.main-content-login-row {
+	@include grid-row();
+}
+
+.main-content-login {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6, $center: true);
+	}
+}
+
+.login-box-username {
+	@include grid-column(12, $collapse: true);
+}
+
+.login-box-password {
+	@include grid-column(12, $collapse: true);
+}
+
+.login-submit-button {
+	@include grid-column(12, $collapse: true);
+}

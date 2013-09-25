@@ -1,5 +1,5 @@
-		</div>
-	</div>
+		</div> <!-- end .main-content -->
+	</div> <!-- end .main-content-row -->
 
 	<script src="/media/js/vendor/jquery.js"></script>
 	<script src="/media/js/foundation/foundation.js"></script>

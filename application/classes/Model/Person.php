@@ -11,12 +11,27 @@
 
 class Model_Person extends ORM {
 	/**
-	 * A person has many pings, person_contacts
+	 * A person has many pings, person_contacts, children
 	 */
 	protected $_has_many = array(
 		'pings' => array(),
 		'pongs' => array(),
 		'person_contacts' => array(),
+		'children' => array(
+			'model' => 'Person',
+			'foreign_key' => 'parent_id',
+			),
+		);
+
+	/**
+	 * A person belongs to a parent, user
+	 */
+	protected $_belongs_to = array(
+		'user' => array(),
+		'parent' => array(
+			'model'  => 'Person',
+			'foreign_key' => 'parent_id',
+			),
 		);
 
 	// Insert/Update Timestamps
