@@ -69,7 +69,7 @@
 						<button class="button expand">Register</button>
 					</div>
 					<div class="large-6 columns">
-						<button class="button expand" onclick="window.location = '/login'; return false;">Login &hellip;</button>
+						<button class="button expand secondary" onclick="window.location = '/login'; return false;">Login &hellip;</button>
 					</div>
 				</div>
 			<?php echo Form::close(); ?>
