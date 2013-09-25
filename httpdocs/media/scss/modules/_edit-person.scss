@@ -17,7 +17,15 @@
 }
 
 .contact-info-row {
-	@include grid-row();	
+	@include grid-row();
+	border-bottom: 1px solid $secondary-color;
+	padding-bottom: 20px;
+	margin-bottom: 30px;
+	@media #{$small} {
+		border-bottom: 0px;
+		padding-bottom: 0;
+		margin-bottom: 0;
+	}
 }
 
 .contact-info-type {
@@ -34,9 +42,21 @@
 	}
 }
 
+.remove-contact {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.add-contact {
+	margin-left: 15px;
+}
+
 .add-new-person-submit {
 	@include grid-column(12, $collapse: true);
 	@media #{$small} {
 		@include grid-column(2, $collapse: true);
+		float: right;
 	}
 }
