@@ -58,31 +58,22 @@ class Controller_Messages extends Controller_PingApp {
 		// Validate the recipients
 		$recipients = $this->request->post('recipients');
 		
-		$person_contact_ids = array();
-		$person_contacts = ORM::factory('Person_Contact')
-			->where('type', '=', 'phone');
-		
 		// If EVERYONE is selected, ignore the others
-		if ( ! in_array(0, $recipients))
+		$operator = 'IN';
+		if ( in_array(0, $recipients))
 		{
-			$person_contacts->where('contact', 'IN', $recipients);
+			$operator = '>';
+			$recipients = 0;
 		}
-		$person_contacts->find_all();
-		
-		// Check if the fetched Person_Contact entries = provided recipients
-		$_diff = count($recipients) - $person_contacts->count_all();
-		if ( ! in_array(0, $recipients) AND $_diff > 0)
-		{
-			$this->_errors[] = __(":diff of your selected recipients could not be validated. Please try again",
-			    array(":error" => $_diff));
+		$person_contacts = ORM::factory('Person_Contact')
+			->where('type', '=', 'phone')
+			->where('person_id', $operator, $recipients)
+			->find_all();
 
-			return FALSE;
-		}
-		
-		// Get the person contact ids
-		foreach ($person_contacts as $contact)
+		if ( ! $person_contacts->count() )
 		{
-			$person_contact_ids[$contact->contact] = $contact->id;
+			$this->_errors[] = 'None of your recipients have phone numbers to send to';
+			return FALSE;
 		}
 
 		// Create the message
@@ -102,16 +93,17 @@ class Controller_Messages extends Controller_PingApp {
 	
 			$_columns = array('message_id', 'tracking_id', 'person_contact_id', 'provider', 'type', 'status', 'created');
 			$query = DB::insert('pings', $_columns);
+
 			
 			// Ping!
-			foreach ($recipients as $recipient)
+			foreach ($person_contacts as $contact)
 			{
-				if (($tracking_id = $this->_provider->send(PingApp::$sms_sender, $recipient, $message->message)) !== FALSE)
+				if (($tracking_id = $this->_provider->send(PingApp::$sms_sender, $contact->contact, $message->message)) !== FALSE)
 				{
 					$query->values(array(
 					    'message_id' => $message->id,
 					    'tracking_id' => $tracking_id,
-					    'person_contact_id' => $person_contact_ids[$recipient],
+					    'person_contact_id' => $contact->id,
 					    'provider' => strtolower(PingApp::$sms_provider),
 					    'type' => 'phone',
 					    'status' => 'pending',
