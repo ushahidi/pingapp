@@ -28,7 +28,8 @@
 		<div class="message-row">
 			<div class="message">
 				<label>Message:</label>
-				<?php echo Form::textarea('message', $post['message']); ?>
+				<?php echo Form::textarea('message', $post['message'], array("id" => "message")); ?>
+				<div id="chars">140</div>
 			</div>
 		</div>
 
