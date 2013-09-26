@@ -78,6 +78,7 @@ class Controller_Person extends Controller_PingApp {
 				// 2. Save Contact Info
 				foreach ($post['contact'] as $key => $_contact)
 				{
+					$_contact = $this->_clean_contact($_contact);
 					$contact = ORM::factory('Contact')
 						->where('type', '=', $_contact['type'])
 						->where('contact', '=', $_contact['contact'])
@@ -269,5 +270,28 @@ class Controller_Person extends Controller_PingApp {
 		}
 
 		return TRUE;
+	}
+
+	/**
+	 * Clean Contact Details Before Save
+	 *
+	 * @param array $contact
+	 * @return array
+	 */
+	private function _clean_contact($contact)
+	{
+		if (isset($contact['type']) AND isset($contact['contact']))
+		{
+			if ($contact['type'] == 'phone')
+			{
+				$contact['contact'] = preg_replace("/[^0-9,.]/", "", $contact['contact']);
+			}
+			else
+			{
+				$contact['contact'] = strtolower($contact['contact']);
+			}
+		}
+
+		return $contact;
 	}
 }
