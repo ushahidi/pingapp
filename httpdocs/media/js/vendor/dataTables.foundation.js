@@ -1,12 +1,12 @@
 /* Set the defaults for DataTables initialisation */
 $.extend( true, $.fn.dataTable.defaults, {
 	"sDom":
-		"<'row'<'large-6 columns'l><'large-6 columns'f>r>"+
+		"<'table-filter-row'<'records-per-page-filter'l><'search-names-filter'f>r>"+
 		"t"+
 		"<'row'<'large-6 columns'i><'large-6 columns'p>>",
 	"sPaginationType": "bootstrap",
 	"oLanguage": {
-		"sLengthMenu": "_MENU_ records per page"
+		"sLengthMenu": "_MENU_ per page"
 	}
 } );
 
