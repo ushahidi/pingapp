@@ -30,4 +30,4 @@ It is important to know that the PING grid is semantic, meaning it is controlled
 
 When in doubt reference the existing code and the Foundation docs.
 
-***If you have any questions feel free to contact seth(at)ushahidi.com***
+***If you have any questions feel free to contact seth(at)ushahidi.com*** 
