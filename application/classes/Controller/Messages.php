@@ -67,12 +67,15 @@ class Controller_Messages extends Controller_PingApp {
 			$operator = '>';
 			$recipients = 0;
 		}
-		$person_contacts = ORM::factory('Person_Contact')
+		$contacts = ORM::factory('Contact')
 			->where('type', '=', 'phone')
-			->where('person_id', $operator, $recipients)
+			->join('contacts_people')->on('contact.id', '=', 'contacts_people.contact_id')
+			->join('people')->on('people.id', '=', 'contacts_people.person_id')
+			->where('people.user_id', '=', $this->user->id)
+			->where('people.id', $operator, $recipients)
 			->find_all();
 
-		if ( ! $person_contacts->count() )
+		if ( ! $contacts->count() )
 		{
 			$this->_errors[] = 'None of your recipients have phone numbers to send to';
 			return FALSE;
@@ -93,19 +96,18 @@ class Controller_Messages extends Controller_PingApp {
 			// Tracks the no. of pings sent out
 			$ping_count = 0;
 	
-			$_columns = array('message_id', 'tracking_id', 'person_contact_id', 'provider', 'type', 'status', 'created');
+			$_columns = array('message_id', 'tracking_id', 'contact_id', 'provider', 'type', 'status', 'created');
 			$query = DB::insert('pings', $_columns);
-
 			
 			// Ping!
-			foreach ($person_contacts as $contact)
+			foreach ($contacts as $contact)
 			{
 				if (($tracking_id = $this->_provider->send(PingApp::$sms_sender, $contact->contact, $message->message)) !== FALSE)
 				{
 					$query->values(array(
 					    'message_id' => $message->id,
 					    'tracking_id' => $tracking_id,
-					    'person_contact_id' => $contact->id,
+					    'contact_id' => $contact->id,
 					    'provider' => strtolower(PingApp::$sms_provider),
 					    'type' => 'phone',
 					    'status' => 'pending',

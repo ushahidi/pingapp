@@ -8,6 +8,7 @@ $(document).ready(function() {
 		clone.find(':input').each(function(){
 			$(this).attr('id', $(this).attr('id').replace(/\d+/, newID) );
 			$(this).attr('name', $(this).attr('name').replace(/\d+/, newID) );
+			$(this).val('');
 		});
 
 		clone.insertBefore($('#ping-add-contact'));
