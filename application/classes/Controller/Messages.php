@@ -22,6 +22,8 @@ class Controller_Messages extends Controller_PingApp {
 			->bind('errors', $this->_errors)
 			->bind('done', $done);
 
+		$this->template->footer->js = View::factory('pages/js/send');
+
 		if ($this->request->method() === 'POST')
 		{
 			if ($this->_broadcast_message())
