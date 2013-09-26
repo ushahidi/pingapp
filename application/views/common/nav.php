@@ -1,13 +1,12 @@
 <nav class="top-bar" style="">
 	<ul class="title-area">
 		<!-- Title Area -->
-		<li class="name"></li>
+		<li class="name"><h1><a href="/dashboard">Home</a></h1></li>
 		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
 	</ul>
 	<section class="top-bar-section">
 		<ul class="right">
 			<li class="divider hide-for-small"></li>
-			<li class=""><a href="/dashboard">Dashboard</a></li>
 			<li class=""><a href="#">Messages</a></li>
 			<li class=""><a href="#">Settings</a></li>
 			<li class="logged-in has-dropdown">

@@ -69,7 +69,7 @@ class Controller_Messages extends Controller_PingApp {
 		$person_contacts = $query->find_all();
 		
 		// Check if the fetched Person_Contact entries = provided recipients
-		$_diff = count($recipients) - $person_contacts->count();
+		$_diff = count($recipients) - $person_contacts->count_all();
 		if ( ! in_array(0, $recipients) AND $_diff > 0)
 		{
 			$this->_errors[] = __(":diff of your selected recipients could not be validated. Please try again",
