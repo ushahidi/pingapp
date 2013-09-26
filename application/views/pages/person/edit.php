@@ -5,7 +5,7 @@
 <?php if (isset($errors)): ?>
 <div data-alert class="alert-box alert">
 	<?php foreach ($errors as $error): ?>
-	&middot; <?php echo $error; ?><br />
+	<?php echo $error; ?><br />
 	<?php endforeach; ?>
 	<a href="#" class="close">&times;</a>
 </div>
@@ -56,7 +56,7 @@
 		unset($post['contact'][0]);
 		foreach ($post['contact'] as $key => $value):
 		?>
-		<div class="panel" id="contact[<?php echo $key; ?>]">
+		<div id="contact[<?php echo $key; ?>]">
 			<div class="contact-info-row">
 					<div class="contact-info-type">
 						<?php echo Form::select("contact[".$key."][type]", PingApp_Form::contact_types(), (isset($post['contact'][$key]['type'])) ? $post['contact'][$key]['type'] : '', array("id" => "contact[".$key."][type]", "minlength" => "3", "class" => "medium")); ?>
