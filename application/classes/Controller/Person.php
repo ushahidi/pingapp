@@ -90,7 +90,10 @@ class Controller_Person extends Controller_PingApp {
 						$contact->save();
 					}
 					
-					$person->add('contacts', $contact);
+					if( ! $person->has('contacts', $contact))
+					{
+						$person->add('contacts', $contact);
+					}
 				}
 
 				// Redirect to prevent repost
