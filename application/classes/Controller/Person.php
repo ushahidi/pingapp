@@ -139,6 +139,8 @@ class Controller_Person extends Controller_PingApp {
 	{
 		$this->template->content = View::factory('pages/person/view')
 			->bind('person', $person)
+			->bind('pings', $pings)
+			->bind('pongs', $pongs)
 			->bind('children', $children);
 
 		$person_id = $this->request->param('id', 0);
@@ -150,6 +152,15 @@ class Controller_Person extends Controller_PingApp {
 			HTTP::redirect('dashboard');
 		}
 
+		$pings = ORM::factory('Ping')
+			->select('person_contacts.contact')
+			->join('person_contacts', 'INNER')->on('person_contacts.id', '=', 'ping.person_contact_id')
+			->where('person_contacts.person_id', '=', $person->id)
+			->order_by('created', 'DESC')
+			->limit(10)
+			->find_all();
+
+		$pongs = $person->pongs->find_all();
 		$children = $person->children->find_all();
 	}
 
