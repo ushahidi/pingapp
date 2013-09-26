@@ -86,7 +86,7 @@ class Controller_Person extends Controller_PingApp {
 					if ( ! $contact->loaded() )
 					{
 						$contact->type = $_contact['type'];
-						$contact->contact = $_contact['contact'];
+						$contact->contact = strtolower($_contact['contact']);
 						$contact->save();
 					}
 					
