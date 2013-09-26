@@ -45,7 +45,7 @@
 					<div class="contact-info-account">
 						<?php echo Form::input("contact[0][contact]", (isset($post['contact'][0]['contact'])) ? $post['contact'][0]['contact'] : '', array("id" => "contact[0][contact]", "placeholder" => "Account", "minlength" => "3")); ?>
 					</div>
-					<div class="large-4 columns">
+					<div class="remove-contact">
 						<a class="small button secondary ping-del-contact">Remove</a>
 					</div>
 			</div>

@@ -18,22 +18,24 @@
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
 		<legend>New Message</legend>
-		<div class="row">
-			<div class="large-8 columns">
-				<label>To</label>
-				<?php echo Form::select("recipients[]", PingApp_Form::people($user), (isset($post['recipients'])) ? $post['recipients'] : '', array("id" => "recipients[]", "minlength" => "3", "class" => "medium", "multiple" => "multiple")); ?>
+		<div class="recipient-row">
+			<div class="recipients">
+				<label>To:</label>
+				<?php echo Form::select("recipients[]", PingApp_Form::people($user), (isset($post['recipients'])) ? $post['recipients'] : '', array("id" => "recipients[]", "minlength" => "3", "class" => "medium recipients-dropdown", "multiple" => "multiple")); ?>
 			</div>
 		</div>
-		<div class="row">
-			<div class="large-8 columns">
-				<label>Message</label>
+
+		<div class="message-row">
+			<div class="message">
+				<label>Message:</label>
 				<?php echo Form::textarea('message', $post['message']); ?>
 			</div>
 		</div>
+
 	</fieldset>
-	<div class="row">
-		<div class="large-12 columns">
-			<button class="button">SEND</button>
-		</div>
+
+	<div class="new-message-submit">
+		<button class="button expand">SEND</button>
 	</div>
+
 <?php echo Form::close(); ?>
