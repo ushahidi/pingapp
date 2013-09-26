@@ -59,6 +59,11 @@ class Controller_Messages extends Controller_PingApp {
 		
 		// Validate the recipients
 		$recipients = $this->request->post('recipients');
+		if ( ! is_array($recipients) )
+		{
+			$this->_errors[] = 'No recipients selected';
+			return FALSE;
+		}
 		
 		// If EVERYONE is selected, ignore the others
 		$operator = 'IN';
