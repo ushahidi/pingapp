@@ -16,6 +16,14 @@ To install the platform on your computer/server, the target system must meet the
     - nginx
 * Unicode support in the operating system
 
+### Downloading
+
+1. Open a terminal
+2. Clone the project ```git clone https://github.com/ushahidi/pingapp.git```
+3. Update the submodules ```git submodule update --init```
+4. Install the Twilio packages using [Composer](getcomposer.org) by running ```composer install```.
+
+
 ### Installing
 
 1. Create a database
