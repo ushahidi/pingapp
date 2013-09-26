@@ -1,4 +1,4 @@
-<?php if (isset($errors)): ?>
+<?php if ( ! empty($errors)): ?>
 <div data-alert class="alert-box alert">
 	<?php foreach ($errors as $error): ?>
 	&middot; <?php echo $error; ?><br />
