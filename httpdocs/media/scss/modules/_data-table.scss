@@ -1,0 +1,15 @@
+.showing-entries-row {
+	@include grid-row();
+}
+
+.showing-entries {
+	@include grid-column(6, $collapse: true)
+}
+
+#activity_info {
+	line-height: 1.5em;
+}
+
+.pagination-wrapper {
+	@include grid-column(6, $collapse: true)	
+}

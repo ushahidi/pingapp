@@ -3,7 +3,7 @@ $.extend( true, $.fn.dataTable.defaults, {
 	"sDom":
 		"<'table-filter-row'<'records-per-page-filter'l><'search-names-filter'f>r>"+
 		"t"+
-		"<'row'<'large-6 columns'i><'large-6 columns'p>>",
+		"<'showing-entries-row'<'showing-entries'i><'pagination-wrapper'p>>",
 	"sPaginationType": "bootstrap",
 	"oLanguage": {
 		"sLengthMenu": "_MENU_ per page"

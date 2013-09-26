@@ -35,6 +35,12 @@
 		}
 }
 
+.dataTables_processing {
+	text-align: left;
+	float: right;
+	margin: 10px 0 15px 0;	
+}
+
 input[type="text"].table-search {
 	margin-bottom: 0;
 }
