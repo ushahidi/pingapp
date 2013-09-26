@@ -89,6 +89,17 @@ class Migration_1_20130926120600 extends Minion_Migration_Base {
 			{
 				$person->add('contacts', $contact);
 			}
+
+			// Update Pings
+			$pings = ORM::factory('Ping')
+				->where('person_contact_id', '=', $_contact['id'])
+				->find_all();
+
+			foreach ($pings as $ping)
+			{
+				$ping->contact_id = $contact->id;
+				$ping->save();
+			}
 		}
 	}
 }
