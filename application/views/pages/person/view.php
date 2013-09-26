@@ -13,8 +13,8 @@ if ( $person->parent_id == 0 ): ?>
 <table class="display dataTable" id="activity">
 	<thead>
 		<tr>
-			<th>Date</th>
-			<th width="150">Type</th>
+			<th>&nbsp;</th>
+			<th width="200">Date</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -31,8 +31,8 @@ if ( $person->parent_id == 0 ): ?>
 <table class="display dataTable" id="activity">
 	<thead>
 		<tr>
-			<th>Date</th>
-			<th width="150">Type</th>
+			<th>&nbsp;</th>
+			<th width="200">Date</th>
 		</tr>
 	</thead>
 	<tbody>
