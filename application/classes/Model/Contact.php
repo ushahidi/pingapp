@@ -29,4 +29,25 @@ class Model_Contact extends ORM {
 			)
 		);
 	}
+
+	/**
+	 * Overload saving to perform additional functions
+	 */
+	public function save(Validation $validation = NULL)
+	{
+		// Clean up phone numbers
+		if ($this->type == 'phone')
+		{
+			$this->contact = preg_replace("/[^0-9,.]/", "", $this->contact);
+		}
+		// Use lower case for other contacts for consistency
+		else
+		{
+			$this->contact = strtolower($this->contact);
+		}
+
+		parent::save();
+
+		return $this;
+	}
 }
