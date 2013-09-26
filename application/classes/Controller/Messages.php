@@ -58,26 +58,24 @@ class Controller_Messages extends Controller_PingApp {
 		// Validate the recipients
 		$recipients = $this->request->post('recipients');
 		
-		$query = ORM::factory('Person_Contact')
-			->where('type', '=', 'phone');
-		
 		// If EVERYONE is selected, ignore the others
-		if ( ! in_array(0, $recipients))
+		$operator = 'IN';
+		if ( in_array(0, $recipients))
 		{
-			$query->where('id', 'IN', $recipients);
+			$operator = '>';
+			$recipients = 0;
 		}
-		$person_contacts = $query->find_all();
-		
-		// Check if the fetched Person_Contact entries = provided recipients
-		$_diff = count($recipients) - $person_contacts->count_all();
-		if ( ! in_array(0, $recipients) AND $_diff > 0)
-		{
-			$this->_errors[] = __(":diff of your selected recipients could not be validated. Please try again",
-			    array(":diff" => $_diff));
+		$person_contacts = ORM::factory('Person_Contact')
+			->where('type', '=', 'phone')
+			->where('person_id', $operator, $recipients)
+			->find_all();
 
+		if ( ! $person_contacts->count() )
+		{
+			$this->_errors[] = 'None of your recipients have phone numbers to send to';
 			return FALSE;
 		}
-		
+
 		// Create the message
 		$message = new Model_Message();
 		try
@@ -95,6 +93,7 @@ class Controller_Messages extends Controller_PingApp {
 	
 			$_columns = array('message_id', 'tracking_id', 'person_contact_id', 'provider', 'type', 'status', 'created');
 			$query = DB::insert('pings', $_columns);
+
 			
 			// Ping!
 			foreach ($person_contacts as $contact)
