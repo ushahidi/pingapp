@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Model for Person_Contacts
+ * Model for Contacts
  * 
  * @author     Ushahidi Team <team@ushahidi.com>
  * @package    Ushahidi\Application\Models
@@ -9,15 +9,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License Version 3 (GPLv3)
  */
 
-class Model_Person_Contact extends ORM {
+class Model_Contact extends ORM {
 	/**
-	 * A person_contact belongs to a person
+	 * A contact has and belongs to many pings
 	 */
-	protected $_belongs_to = array(
-		'person' => array(),
+	protected $_has_many = array(
+		'people' => array('through' => 'contacts_people'),
 		);
 
 	// Insert/Update Timestamps
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
-	protected $_updated_column = array('column' => 'updated', 'format' => 'Y-m-d H:i:s');
+	
+	public function rules()
+	{
+		return array(
+			'contact' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 2)),
+			)
+		);
+	}
 }

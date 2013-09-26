@@ -11,13 +11,11 @@
 
 class Model_Ping extends ORM {
 	/**
-	 * A ping belongs to a message, a person 
-	 * a person_contact and a provider
+	 * A ping belongs to a message, a contact and a provider
 	 */
 	protected $_belongs_to = array(
 		'message' => array(),
-		'person' => array(),
-			'person_contact' => array(),
+		'contact' => array(),
 		'provider' => array(),
 		);
 

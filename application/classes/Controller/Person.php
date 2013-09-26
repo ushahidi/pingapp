@@ -76,27 +76,21 @@ class Controller_Person extends Controller_PingApp {
 				$person->save();
 
 				// 2. Save Contact Info
-				// Empty Table First (To Handle Deletes)
-				$_contacts = ORM::factory('Person_Contact')
-					->where('person_id', '=', $person_id)
-					->find_all();
-
-				foreach ($_contacts as $_contact)
-				{
-					$_contact->delete();
-				}
-
 				foreach ($post['contact'] as $key => $_contact)
 				{
-					$contact = ORM::factory('Person_Contact')
-						->where('id', '=', $key)
-						->where('person_id', '=', $person_id)
+					$contact = ORM::factory('Contact')
+						->where('type', '=', $_contact['type'])
+						->where('contact', '=', $_contact['contact'])
 						->find();
 
-					$contact->type = $_contact['type'];
-					$contact->contact = $_contact['contact'];
-					$contact->person_id = $person->id;
-					$contact->save();
+					if ( ! $contact->loaded() )
+					{
+						$contact->type = $_contact['type'];
+						$contact->contact = $_contact['contact'];
+						$contact->save();
+					}
+					
+					$person->add('contacts', $contact);
 				}
 
 				// Redirect to prevent repost
@@ -117,7 +111,7 @@ class Controller_Person extends Controller_PingApp {
 					);
 
 				// Get Person Contacts
-				foreach ($person->person_contacts->find_all() as $contact)
+				foreach ($person->contacts->find_all() as $contact)
 				{
 					$post['contact'][] = array(
 						'type' => $contact->type,
@@ -153,9 +147,10 @@ class Controller_Person extends Controller_PingApp {
 		}
 
 		$pings = ORM::factory('Ping')
-			->select('person_contacts.contact')
-			->join('person_contacts', 'INNER')->on('person_contacts.id', '=', 'ping.person_contact_id')
-			->where('person_contacts.person_id', '=', $person->id)
+			->select('contacts.contact')
+			->join('contacts', 'INNER')->on('contacts.id', '=', 'ping.contact_id')
+			->join('contacts_people', 'INNER')->on('contacts.id', '=', 'contacts_people.contact_id')
+			->where('contacts_people.person_id', '=', $person->id)
 			->order_by('created', 'DESC')
 			->limit(10)
 			->find_all();
@@ -175,11 +170,13 @@ class Controller_Person extends Controller_PingApp {
 		// Data table columns
 		$columns = array('first_name', 'status', 'pings', 'last_name');
 
-		$pings = DB::select('pc.person_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
+		$pings = DB::select('cp.person_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
 		    ->from('pings')
-		    ->join(array('person_contacts', 'pc'), 'INNER')
-		    ->on('pings.person_contact_id', '=', 'pc.id')
-		    ->group_by('person_id');
+		    ->join(array('contacts', 'c'), 'INNER')
+		    	->on('pings.contact_id', '=', 'c.id')
+		    ->join(array('contacts_people', 'cp'), 'INNER')
+		    	->on('c.id', '=', 'cp.contact_id')
+		    ->group_by('cp.person_id');
 
 		$query = ORM::factory('Person')
 		    ->select(array(DB::expr('CONCAT(person.first_name, " ", person.last_name)'), 'name'))
