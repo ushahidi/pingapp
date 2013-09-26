@@ -18,48 +18,39 @@ class Controller_Sms_Twilio extends Controller {
 			
 			$message_text  = $this->request->post('Body');
 			
-			$person_contact = Model_Person::get_contact($from, 'phone');
-			if ( ! $person_contact)
+			$contact = Model_Contact::get_contact($from, 'phone');
+			if ( ! $contact)
 			{
 				// HALT
 				Kohana::$log->add(Log::ERROR, __("':from' is not registered as a contact", array(":from" => $from)));
 				return;
 			}
-			
-			// Get the last message that was sent to $from via Twilio
-			// and has a pending status
-			$pings = DB::select(array(DB::expr('MAX(id)'), 'ping_id'))
-			    ->from('pings')
-			    ->where('provider', '=', strtolower(PingApp::$sms_provider))
-			    ->where('type', '=', 'phone')
-			    ->where('person_contact_id', '=', $person_contact->id)
-			    ->where('status', '=', 'pending')
-			    ->execute()
-			    ->as_array();
-			
-			// Any result?
-			if ( ! count($pings))
+
+			// Lets find out if this was a response to a ping we
+			// sent before
+			$ping = ORM::factory('Ping')
+				->where('provider', '=', strtolower(PingApp::$sms_provider))
+				->where('type', '=', 'phone')
+				->where('contact_id', '=', $contact->id)
+				->find();
+
+			// Looks like we pinged this number
+			if ( $ping->loaded() )
 			{
-				Kohana::$log->add(Log::ERROR, __("No ping sent out to ':from'. Discarding message", array(":from" => $from)));
-			}
-			else
-			{
-				// Get the ping id
-				$ping_id = $pings[0]['ping_id'];
-				
-				// Mark the ping as having received a response
-				$ping = ORM::factory('Ping', $ping_id)
-				    ->set('status', 'replied')
-				    ->save();
-				
 				// Record the pong
 				$pong = new Model_Pong();
-				$pong->set('person_id', $person_contact->person->id)
-				    ->set('ping_id', $ping_id)
-				    ->set('content', $message_text)
-				    ->set('type', 'sms')
+				$pong->set('content', $message_text)
+				    ->set('contact_id', $contact->id)
+				    ->set('type', 'phone')
 				    ->save();
-				
+
+				// Lets parse the message for OK/NOT OKAY indicators
+				PingApp_Parse::status($contact, $pong, $message_text);
+			}
+			// Looks like this is SPAM
+			else
+			{
+				Kohana::$log->add(Log::ERROR, __("No ping sent out to ':from'. Discarding message", array(":from" => $from)));
 			}
 		}
 	}
