@@ -4,5 +4,6 @@ $(document).ready(function() {
 		"bProcessing": true,
 		"bServerSide": true,
 		"sAjaxSource": "/person/ajax_list",
+		"aaSorting": [[ 0, "asc" ]],
 	});
 });

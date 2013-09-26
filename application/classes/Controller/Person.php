@@ -175,7 +175,8 @@ class Controller_Person extends Controller_PingApp {
 		    ->select('pings.pings')
 		    ->join(array($pings, 'pings'), 'LEFT')
 		    ->on('person.id', '=', 'pings.person_id')
-		    ->where('user_id', '=', $this->user->id);
+		    ->where('user_id', '=', $this->user->id)
+		    ->where('parent_id', '=', 0);
 
 		$query2 = clone $query;
 
