@@ -18,9 +18,26 @@ if ( $person->parent_id == 0 ): ?>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($person->pings as $ping): ?>
-		<td><?php echo strtoupper($ping->type); ?></td>
-		<td><?php echo date('Y-m-d', strtotime($ping->created)); ?></td>
+		<?php foreach ($pings as $ping): ?>
+		<tr>
+			<td><?php echo strtoupper($ping->contact); ?></td>
+			<td><?php echo date('Y-m-d g:i a', strtotime($ping->created)); ?></td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+
+<h4>Pongs</h4>
+<table class="display dataTable" id="activity">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th width="150">Type</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($pongs as $pong): ?>
+		<tr></tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
