@@ -54,23 +54,4 @@ class Model_Person extends ORM {
 			),
 		);
 	}
-	
-	/**
-	 * Finds and returns the Person_Contact record associated with
-	 * the specified contact and contact type
-	 *
-	 * @param string  contact
-	 * @param stirng  contact_type
-	 *
-	 * @return Model_Person_Contact if found, FALSE otherwise
-	 */
-	public static function get_contact($contact, $contact_type)
-	{
-		$person_contact = ORM::factory('Person_Contact')
-		    ->where('contact', '=', $contact)
-		    ->where('type', '=', $contact_type)
-		    ->find();
-		
-		return $person_contact->loaded() ? $person_contact : FALSE;
-	}
 }

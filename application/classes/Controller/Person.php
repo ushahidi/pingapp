@@ -158,7 +158,15 @@ class Controller_Person extends Controller_PingApp {
 			->limit(10)
 			->find_all();
 
-		$pongs = $person->pongs->find_all();
+		$pongs = ORM::factory('Pong')
+			->select('contacts.contact')
+			->join('contacts', 'INNER')->on('contacts.id', '=', 'pong.contact_id')
+			->join('contacts_people', 'INNER')->on('contacts.id', '=', 'contacts_people.contact_id')
+			->where('contacts_people.person_id', '=', $person->id)
+			->order_by('created', 'DESC')
+			->limit(10)
+			->find_all();
+
 		$children = $person->children->find_all();
 	}
 
@@ -227,9 +235,23 @@ class Controller_Person extends Controller_PingApp {
 
 		foreach ($people as $person)
 		{
+			switch ($person->status) {
+				case 'notok':
+					$status_label = 'alert';
+					break;
+
+				case 'ok':
+					$status_label = 'success';
+					break;
+				
+				default:
+					$status_label = 'secondary';
+					break;
+			}
+
 			$row = array(
 				0 => '<a href="/person/view/'.$person->id.'"><strong>'.strtoupper($person->name).'</strong></a>',
-				1 => '<span class="radius secondary label">'.strtoupper($person->status).'</status>',
+				1 => '<span class="radius '.$status_label.' label">'.strtoupper($person->status).'</status>',
 				2 => '<span class="radius secondary label">'.(int) $person->pings.'</span>',
 				);
 

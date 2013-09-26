@@ -31,6 +31,25 @@ class Model_Contact extends ORM {
 	}
 
 	/**
+	 * Finds and returns the Contact record associated with
+	 * the specified contact and contact type
+	 *
+	 * @param string  contact
+	 * @param stirng  contact_type
+	 *
+	 * @return Model_Contact if found, FALSE otherwise
+	 */
+	public static function get_contact($contact, $contact_type)
+	{
+		$contact = ORM::factory('Contact')
+		    ->where('contact', '=', $contact)
+		    ->where('type', '=', $contact_type)
+		    ->find();
+		
+		return $contact->loaded() ? $contact : FALSE;
+	}
+
+	/**
 	 * Overload saving to perform additional functions
 	 */
 	public function save(Validation $validation = NULL)

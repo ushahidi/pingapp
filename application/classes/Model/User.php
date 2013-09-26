@@ -11,8 +11,7 @@
 
 class Model_User extends Model_Auth_User {
 	/**
-	 * A user has many tokens and roles
-	 * A user has many posts, post_comments, roles and sets 
+	 * A user has many roles, messages, people, groups and settings
 	 * 
 	 * @var array Relationships
 	 */
@@ -21,6 +20,7 @@ class Model_User extends Model_Auth_User {
 		'messages' => array(),
 		'people' => array(),
 		'groups' => array(),
+		'settings' => array(),
 	);
 
 	// Insert/Update Timestamps

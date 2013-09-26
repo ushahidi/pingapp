@@ -13,7 +13,8 @@ if ( $person->parent_id == 0 ): ?>
 <table class="display dataTable" id="activity">
 	<thead>
 		<tr>
-			<th>&nbsp;</th>
+			<th width="100">&nbsp;</th>
+			<th>Message</th>
 			<th width="200">Date</th>
 		</tr>
 	</thead>
@@ -21,6 +22,7 @@ if ( $person->parent_id == 0 ): ?>
 		<?php foreach ($pings as $ping): ?>
 		<tr>
 			<td><?php echo strtoupper($ping->contact); ?></td>
+			<td><?php echo $ping->message->message; ?></td>
 			<td><?php echo date('Y-m-d g:i a', strtotime($ping->created)); ?></td>
 		</tr>
 		<?php endforeach; ?>
@@ -31,13 +33,18 @@ if ( $person->parent_id == 0 ): ?>
 <table class="display dataTable" id="activity">
 	<thead>
 		<tr>
-			<th>&nbsp;</th>
+			<th width="100">&nbsp;</th>
+			<th>Message</th>
 			<th width="200">Date</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php foreach ($pongs as $pong): ?>
-		<tr></tr>
+		<tr>
+			<td><?php echo strtoupper($pong->contact); ?></td>
+			<td><?php echo $pong->content; ?></td>
+			<td><?php echo date('Y-m-d g:i a', strtotime($pong->created)); ?></td>
+		</tr>
 		<?php endforeach; ?>
 	</tbody>
 </table>
