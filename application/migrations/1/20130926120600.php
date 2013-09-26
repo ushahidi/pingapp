@@ -72,7 +72,7 @@ class Migration_1_20130926120600 extends Minion_Migration_Base {
 
 		foreach ($old_contacts as $_contact)
 		{
-			$person = ORM::factory('Person', $_contact['id']);
+			$person = ORM::factory('Person', $_contact['person_id']);
 			$contact = ORM::factory('Contact')
 				->where('type', '=', $_contact['type'])
 				->where('contact', '=', $_contact['contact'])
