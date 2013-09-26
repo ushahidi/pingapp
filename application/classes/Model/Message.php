@@ -25,7 +25,9 @@ class Model_Message extends ORM {
 	{
 		return array(
 			'message' => array(
-				array('not_empty')
+				array('not_empty'),
+				array('min_length', array(':value', 2)),
+				array('max_length', array(':value', 140)),
 			)
 		);
 	}
