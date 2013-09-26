@@ -1,7 +1,7 @@
 <?php if ( ! empty($errors)): ?>
 <div data-alert class="alert-box alert">
 	<?php foreach ($errors as $error): ?>
-	&middot; <?php echo $error; ?><br />
+	<?php echo $error; ?><br />
 	<?php endforeach; ?>
 	<a href="#" class="close">&times;</a>
 </div>
@@ -29,14 +29,14 @@
 			<div class="message">
 				<label>Message:</label>
 				<?php echo Form::textarea('message', $post['message'], array("id" => "message")); ?>
-				<div id="chars">140</div>
+				<div id="chars" class="chars">140</div>
 			</div>
 		</div>
 
 	</fieldset>
 
 	<div class="new-message-submit">
-		<button class="button expand">SEND</button>
+		<button class="success expand button">SEND</button>
 	</div>
 
 <?php echo Form::close(); ?>

@@ -4,9 +4,6 @@
 
 .recipients {
 	@include grid-column(12);
-	@media #{$small} {
-		@include grid-column(8);
-	}
 }
 
 .recipients-dropdown {
@@ -28,11 +25,12 @@
 
 .message {
 	@include grid-column(12);
-	@media #{$small} {
-		@include grid-column(8);
-	}
 }
 
+.chars {
+	color: $alert-color;
+	text-align: right;
+}
 
 .new-message-submit {
 	@include grid-column(12, $collapse: true);
