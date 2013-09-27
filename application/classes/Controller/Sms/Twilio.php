@@ -6,12 +6,19 @@ class Controller_Sms_Twilio extends Controller {
 	{
 		if ($this->request->method() == 'POST')
 		{
-			$to = preg_replace("/[^0-9,.]/", "", $this->request->post('To'));
+			$provider = PingApp_SMS_Provider::instance();
+			
+			// Authenticate the request
+			if ($this->request->post('AccountSid') !== $provider->options()['account_sid'])
+			{
+				// Could not authenticate the request?
+				throw new HTTP_Exception_403();
+			}
+			
+			$to = $this->request->post('To');
 			$from  = $this->request->post('From');
 
-			$sender = preg_replace("/[^0-9,.]/", "", PingApp::$sms_sender);
-
-			if ( ! $to OR strrpos($to, $sender) === FALSE )
+			if ( ! $to OR $to !== $sender)
 			{
 				Kohana::$log->add(Log::ERROR, __("':to' was not used to send a message to ':from'",
 				    array(':to' => $to, ':from' => $from)));
@@ -19,7 +26,8 @@ class Controller_Sms_Twilio extends Controller {
 			}
 			
 			$message_text  = $this->request->post('Body');
-			
+	
+			// Is the sender of the message a registered contact?
 			$contact = Model_Contact::get_contact($from, 'phone');
 			if ( ! $contact)
 			{
@@ -27,33 +35,43 @@ class Controller_Sms_Twilio extends Controller {
 				Kohana::$log->add(Log::ERROR, __("':from' is not registered as a contact", array(":from" => $from)));
 				return;
 			}
-
-			// Lets find out if this was a response to a ping we
-			// sent before
-			$ping = ORM::factory('Ping')
-				->where('provider', '=', strtolower(PingApp::$sms_provider))
-				->where('type', '=', 'phone')
+			
+			// Use the last id of the ping to tag the pong
+			// TODO: Review
+			$ping = DB::query(array(DB::expr('COUNT(id)'), 'ping_id'))
+				->from('pings')
 				->where('contact_id', '=', $contact->id)
-				->find();
-
-			// Looks like we pinged this number
-			if ( $ping->loaded() )
+				->where('type', '=', 'phone')
+				->where('status', 'pending')
+				->execute()
+				->as_array();
+			
+			// Record the pong
+			if ( ! count($ping))
 			{
-				// Record the pong
-				$pong = new Model_Pong();
-				$pong->set('content', $message_text)
-				    ->set('contact_id', $contact->id)
-				    ->set('type', 'phone')
-				    ->save();
-
+				// Load the pong
+				$ping = ORM::factory('Ping', $ping[0]['ping_id']);
+				
+				// Mark the ping as replied
+				$ping->set('status', 'replied')->save();
+				
+				$pong = ORM::factory('Pong')
+					->values(array(
+						'content' => $message_text,
+						'contact_id' => $contact->id,
+						'type' => 'phone',
+						'ping_id' => $ping->id
+					));
+					->save();
+				
 				// Lets parse the message for OK/NOT OKAY indicators
 				PingApp_Parse::status($contact, $pong, $message_text);
 			}
-			// Looks like this is SPAM
 			else
 			{
-				Kohana::$log->add(Log::ERROR, __("No ping sent out to ':from'. Discarding message", array(":from" => $from)));
+				Kohana::$log->add(Log::ERROR, __("There is no record of ':from' having been pinged",
+					array(":from" => $from)));
 			}
 		}
-	}
+,	}
 }

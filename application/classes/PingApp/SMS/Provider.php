@@ -51,7 +51,7 @@ abstract class PingApp_SMS_Provider {
 				array(":provider" => $class_name)));
 		}
 		
-		self::$_instance->set_options(PingApp::$sms_provider_options);
+		self::$_instance->options(PingApp::$sms_provider_options);
 		return self::$_instance;
 	}
 	
@@ -59,9 +59,15 @@ abstract class PingApp_SMS_Provider {
 	 * Sets the authentication parameters for the SMS provider
 	 *
 	 * @param  array auth_params
+	 * @return array If $options is specified, void otherwise
 	 */
-	public function set_options($options)
+	public function options($options = array())
 	{
+		if (empty($options))
+		{
+			return $this->_options;
+		}
+		
 		$this->_options = $options;
 	}
 	
