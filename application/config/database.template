@@ -16,9 +16,9 @@ return array
 		'type'       => 'MySQL',
 		'connection' => array(
 			'hostname'   => 'localhost',
-			'database'   => 'database',
-			'username'   => 'username',
-			'password'   => 'password',
+			'database'   => 'pingapp',
+			'username'   => 'pingapp',
+			'password'   => 'pingsecret',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',

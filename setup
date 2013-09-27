@@ -1,0 +1,87 @@
+#!/bin/bash
+set -e
+hostName=ping.example.com
+httpRoot=$(pwd)/httpdocs
+temp=$(pwd)/tmp
+
+function TODO {
+	log TODO $@
+}
+
+function log {
+	echo "# $@"
+}
+
+function mysql_create_db {
+	local db_name=$1
+	local db_username=$2
+	local db_password=$3
+	local root_username=root
+	log "Creating MySQL database: $db_name"
+	log "You may need to enter your mysql password for username: $root_username"
+	mysql -u${root_username} -p -e "DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name CHARACTER SET utf8; GRANT ALL PRIVILEGES ON $db_name.* TO $db_username@localhost IDENTIFIED BY '$db_password'"
+	log "Database created :-)"
+}
+
+function makedir {
+	local dirName=$@
+	if ! [[ -d "$dirName" ]]; then
+		mkdir -p $dirName
+	fi
+}
+
+log "Starting ping setup..."
+makedir $temp
+
+log "Updating submodules..."
+git submodule update --init
+
+log "Installing twilio packages..."
+composer install || (curl -sS https://getcomposer.org/installer | php; ./composer.phar install)
+
+log "Creating database..."
+mysql_create_db pingapp pingapp pingsecret
+cp application/config/database.template application/config/database.php
+log "Installing the database schema using migrations..."
+./minion --task=migrations:run --up
+
+log "Setting up application config..."
+cp application/config/init.template application/config/init.php
+cp application/config/auth.template application/config/auth.php
+cp application/config/modules.template application/config/modules.php
+cp httpdocs/template.htaccess httpdocs/.htaccess
+
+makedir application/cache
+makedir application/logs
+
+log "Setting up Apache site..."
+apacheRoot=/etc/apache2
+siteAvailable=$apacheRoot/sites-available/pingapp
+siteAvailableTmp=$temp/site-enabled
+cat > $siteAvailableTmp << EOF
+<VirtualHost *:80>
+	ServerAdmin ping-admin@example.com
+	DocumentRoot "$httpRoot"
+	ServerName $hostName
+	DirectoryIndex index.php
+	<Directory "$httpRoot">
+		Options Indexes FollowSymlinks
+		AllowOverride all
+	</Directory>
+</VirtualHost>
+EOF
+log "Configuring apache; you may need to enter your user password..."
+sudo mv $siteAvailableTmp $siteAvailable
+a2ensite pingapp
+
+log "Setting up host redirect to $hostName..."
+hostFile=/etc/hosts
+if ! grep -q $hostName $hostFile; then
+	echo "127.0.0.1 $hostName" | sudo tee -a $hostFile > /dev/null
+fi
+
+log "Restarting apache; this may require your user password..."
+sudo /etc/init.d/apache2 restart
+
+log "Ping setup complete."
+
