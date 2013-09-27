@@ -74,5 +74,5 @@ class Controller_Sms_Twilio extends Controller {
 					array(":from" => $from)));
 			}
 		}
-,	}
+	}
 }
