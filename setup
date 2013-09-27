@@ -1,8 +1,14 @@
 #!/bin/bash
 set -e
+
+
+# project vars
 hostName=ping.example.com
 httpRoot=$(pwd)/httpdocs
 temp=$(pwd)/tmp
+
+# platform vars
+platform=$(uname | tr [:upper:] [:lower:])
 
 function TODO {
 	log TODO $@
@@ -11,6 +17,15 @@ function TODO {
 function log {
 	echo "# $@"
 }
+
+if [[ "$platform" == "darwin" ]]; then
+	apacheRoot=/private/etc/apache2
+elif [[ "$platform" == "linux" ]]; then
+	apacheRoot=/etc/apache2
+else
+	log "Your platform ($platform) is not supported by this script.  Please follow the manual setup instructions in README.md"
+	exit 1
+fi
 
 function mysql_create_db {
 	local db_name=$1
@@ -31,23 +46,25 @@ function makedir {
 }
 
 function confirm {
+	if ! optional $@; then
+		log "Please follow the manual setup steps in the README file."
+		exit 1
+	fi
+}
+
+function optional {
 	local prompt=$@
-	local confirmed=false
-	while ! $confirmed; do
+	while true; do
 		read -p "# $prompt [Y/n] " r
 		if [[ $r == 'y' || $r == 'Y' || $r == '' ]]; then
-			confirmed=true
+			return 0
 		elif [[ $r == 'n' || $r == 'N' ]]; then
-			log "Please follow the manual setup steps in the README file."
-			exit 1
+			return 1
 		fi
 	done
 }
 
 log "Starting ping setup..."
-
-confirm This setup script is currently configured only for linux with apache2.  Does this match your system?
-
 makedir $temp
 
 log "Updating submodules..."
@@ -74,11 +91,11 @@ sudo chown www-data application/cache
 makedir application/logs
 sudo chown www-data application/logs
 
-log "Setting up Apache site..."
-apacheRoot=/etc/apache2
-siteAvailable=$apacheRoot/sites-available/pingapp
-siteAvailableTmp=$temp/site-enabled
-cat > $siteAvailableTmp << EOF
+if optional "Do you want to set up apache sites at $apacheRoot?"; then
+	log "Setting up Apache site..."
+	siteAvailable=$apacheRoot/sites-available/pingapp
+	siteAvailableTmp=$temp/site-enabled
+	cat > $siteAvailableTmp << EOF
 <VirtualHost *:80>
 	ServerAdmin ping-admin@example.com
 	DocumentRoot "$httpRoot"
@@ -90,9 +107,12 @@ cat > $siteAvailableTmp << EOF
 	</Directory>
 </VirtualHost>
 EOF
-log "Configuring apache; you may need to enter your user password..."
-sudo mv $siteAvailableTmp $siteAvailable
-a2ensite pingapp
+	log "Configuring apache; you may need to enter your user password..."
+	sudo mv $siteAvailableTmp $siteAvailable
+	a2ensite pingapp
+else
+	log "Please set up your apache site manually to point $hostName to $httpRoot."
+fi
 
 log "Setting up host redirect to $hostName..."
 hostFile=/etc/hosts
@@ -104,7 +124,11 @@ log "Enabling apache2 mod_rewrite..."
 sudo a2enmod rewrite
 
 log "Restarting apache; this may require your user password..."
-sudo service apache2 restart
+if [[ platform == "darwin" ]]; then
+	sudo apache2ctl -k restart
+else
+	sudo service apache2 restart
+fi
 
 log "Making your user directory executable to allow apache2 to serve files..."
 chmod 751 ~
