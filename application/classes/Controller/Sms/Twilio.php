@@ -9,7 +9,8 @@ class Controller_Sms_Twilio extends Controller {
 			$provider = PingApp_SMS_Provider::instance();
 			
 			// Authenticate the request
-			if ($this->request->post('AccountSid') !== $provider->options()['account_sid'])
+			$options =  $provider->options();
+			if ($this->request->post('AccountSid') !== $options['account_sid'])
 			{
 				// Could not authenticate the request?
 				throw new HTTP_Exception_403();
@@ -61,7 +62,7 @@ class Controller_Sms_Twilio extends Controller {
 						'contact_id' => $contact->id,
 						'type' => 'phone',
 						'ping_id' => $ping->id
-					));
+					))
 					->save();
 				
 				// Lets parse the message for OK/NOT OKAY indicators
