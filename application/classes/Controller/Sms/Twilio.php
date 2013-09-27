@@ -6,10 +6,12 @@ class Controller_Sms_Twilio extends Controller {
 	{
 		if ($this->request->method() == 'POST')
 		{
-			$to = $this->request->post('To');
+			$to = preg_replace("/[^0-9,.]/", "", $this->request->post('To'));
 			$from  = $this->request->post('From');
-			
-			if ($to !== PingApp::$sms_sender)
+
+			$sender = preg_replace("/[^0-9,.]/", "", PingApp::$sms_sender);
+
+			if ( ! $to OR strrpos($to, $sender) === FALSE )
 			{
 				Kohana::$log->add(Log::ERROR, __("':to' was not used to send a message to ':from'",
 				    array(':to' => $to, ':from' => $from)));
