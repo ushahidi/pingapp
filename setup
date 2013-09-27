@@ -51,8 +51,11 @@ cp application/config/auth.template application/config/auth.php
 cp application/config/modules.template application/config/modules.php
 cp httpdocs/template.htaccess httpdocs/.htaccess
 
+log "# Creating application working directories and assigning ownership to the web server; you may need to enter your password..."
 makedir application/cache
+sudo chown www-data application/cache
 makedir application/logs
+sudo chown www-data application/logs
 
 log "Setting up Apache site..."
 apacheRoot=/etc/apache2
@@ -80,8 +83,14 @@ if ! grep -q $hostName $hostFile; then
 	echo "127.0.0.1 $hostName" | sudo tee -a $hostFile > /dev/null
 fi
 
+log "Enabling apache2 mod_rewrite..."
+sudo a2enmod rewrite
+
 log "Restarting apache; this may require your user password..."
-sudo /etc/init.d/apache2 restart
+sudo service apache2 restart
+
+log "Making your user directory executable to allow apache2 to serve files..."
+chmod 751 ~
 
 log "Ping setup complete."
 
