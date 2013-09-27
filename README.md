@@ -23,7 +23,7 @@ To install the platform on your computer/server, the target system must meet the
 1. Open a terminal
 2. Clone the project ```git clone https://github.com/ushahidi/pingapp.git```
 3. Update the submodules ```git submodule update --init```
-4. Install the Twilio packages using [Composer](getcomposer.org) by running ```composer install```.
+4. Install the Twilio packages using [Composer](http://getcomposer.org) by running ```composer install```.
 
 
 ### Installing
