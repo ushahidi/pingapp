@@ -3,6 +3,8 @@ PingApp
 
 ### What is PingApp?
 
+A personal SMS check-in app - check if your friends respond.
+
 ### System Requirements
 
 To install the platform on your computer/server, the target system must meet the following requirements:
