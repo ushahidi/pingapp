@@ -7,7 +7,7 @@ class Controller_Sms_Twilio extends Controller {
 		if ($this->request->method() == 'POST')
 		{
 			$provider = PingApp_SMS_Provider::instance();
-			
+
 			// Authenticate the request
 			$options =  $provider->options();
 			if ($this->request->post('AccountSid') !== $options['account_sid'])
@@ -16,10 +16,12 @@ class Controller_Sms_Twilio extends Controller {
 				throw new HTTP_Exception_403();
 			}
 			
-			$to = $this->request->post('To');
-			$from  = $this->request->post('From');
+			// Remove Non-Numeric characters because that's what the DB has
+			$to = preg_replace("/[^0-9,.]/", "", $this->request->post('To'));
+			$from  = preg_replace("/[^0-9,.]/", "", $this->request->post('From'));
+			$sender = preg_replace("/[^0-9,.]/", "", PingApp::$sms_sender);
 
-			if ( ! $to OR $to !== $sender)
+			if ( ! $to OR strrpos($to, $sender) === FALSE )
 			{
 				Kohana::$log->add(Log::ERROR, __("':to' was not used to send a message to ':from'",
 				    array(':to' => $to, ':from' => $from)));
@@ -39,16 +41,16 @@ class Controller_Sms_Twilio extends Controller {
 			
 			// Use the last id of the ping to tag the pong
 			// TODO: Review
-			$ping = DB::query(array(DB::expr('COUNT(id)'), 'ping_id'))
+			$ping = DB::select(array(DB::expr('COUNT(id)'), 'ping_id'))
 				->from('pings')
 				->where('contact_id', '=', $contact->id)
 				->where('type', '=', 'phone')
-				->where('status', 'pending')
+				->where('status', '=', 'pending')
 				->execute()
 				->as_array();
 			
 			// Record the pong
-			if ( ! count($ping))
+			if ( count($ping) > 0 )
 			{
 				// Load the pong
 				$ping = ORM::factory('Ping', $ping[0]['ping_id']);

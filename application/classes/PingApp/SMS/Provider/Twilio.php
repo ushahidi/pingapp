@@ -27,7 +27,7 @@ class PingApp_SMS_Provider_Twilio extends Pingapp_SMS_Provider {
 		// Send!
 		try
 		{
-			$message = $this->_client->account->messages->sendMessage($from, $to, $message);
+			$message = $this->_client->account->messages->sendMessage($from, '+'.$to, $message);
 			return $message->sid;
 		}
 		catch (Services_Twilio_RestException $e)
