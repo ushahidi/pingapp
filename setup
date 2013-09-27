@@ -30,7 +30,24 @@ function makedir {
 	fi
 }
 
+function confirm {
+	local prompt=$@
+	local confirmed=false
+	while ! $confirmed; do
+		read -p "# $prompt [Y/n] " r
+		if [[ $r == 'y' || $r == 'Y' || $r == '' ]]; then
+			confirmed=true
+		elif [[ $r == 'n' || $r == 'N' ]]; then
+			log "Please follow the manual setup steps in the README file."
+			exit 1
+		fi
+	done
+}
+
 log "Starting ping setup..."
+
+confirm This setup script is currently configured only for linux with apache2.  Does this match your system?
+
 makedir $temp
 
 log "Updating submodules..."
