@@ -110,4 +110,5 @@ log "Making your user directory executable to allow apache2 to serve files..."
 chmod 751 ~
 
 log "Ping setup complete."
+log "App is now being served at http://$hostName"
 
