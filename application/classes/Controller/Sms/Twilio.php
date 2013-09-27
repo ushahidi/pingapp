@@ -41,7 +41,7 @@ class Controller_Sms_Twilio extends Controller {
 			
 			// Use the last id of the ping to tag the pong
 			// TODO: Review
-			$ping = DB::select(array(DB::expr('COUNT(id)'), 'ping_id'))
+			$ping = DB::select(array(DB::expr('MAX(id)'), 'ping_id'))
 				->from('pings')
 				->where('contact_id', '=', $contact->id)
 				->where('type', '=', 'phone')
@@ -50,7 +50,7 @@ class Controller_Sms_Twilio extends Controller {
 				->as_array();
 			
 			// Record the pong
-			if ( count($ping) > 0 )
+			if ( $ping[0]['ping_id'] )
 			{
 				// Load the pong
 				$ping = ORM::factory('Ping', $ping[0]['ping_id']);
