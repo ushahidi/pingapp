@@ -67,6 +67,11 @@ To install the platform on your computer/server, the target system must meet the
 10. Edit ```httpdocs/.htaccess``` and change the RewriteBase value to match your deployment url
 11. Create directories ```application/cache``` and ```application/logs``` and make them writable
 
+### Upgrading
+
+1. Perform a ```git pull https://github.com/ushahidi/pingapp.git```
+2. Run migrations ```./minion --task=migrations:run```
+
 ### Configuration
 
 Base config files are in ```application/config/```.
