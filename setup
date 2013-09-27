@@ -1,0 +1,138 @@
+#!/bin/bash
+set -e
+
+
+# project vars
+hostName=ping.example.com
+httpRoot=$(pwd)/httpdocs
+temp=$(pwd)/tmp
+
+# platform vars
+platform=$(uname | tr [:upper:] [:lower:])
+
+function TODO {
+	log TODO $@
+}
+
+function log {
+	echo "# $@"
+}
+
+if [[ "$platform" == "darwin" ]]; then
+	apacheRoot=/private/etc/apache2
+elif [[ "$platform" == "linux" ]]; then
+	apacheRoot=/etc/apache2
+else
+	log "Your platform ($platform) is not supported by this script.  Please follow the manual setup instructions in README.md"
+	exit 1
+fi
+
+function mysql_create_db {
+	local db_name=$1
+	local db_username=$2
+	local db_password=$3
+	local root_username=root
+	log "Creating MySQL database: $db_name"
+	log "You may need to enter your mysql password for username: $root_username"
+	mysql -u${root_username} -p -e "DROP DATABASE IF EXISTS $db_name; CREATE DATABASE $db_name CHARACTER SET utf8; GRANT ALL PRIVILEGES ON $db_name.* TO $db_username@localhost IDENTIFIED BY '$db_password'"
+	log "Database created :-)"
+}
+
+function makedir {
+	local dirName=$@
+	if ! [[ -d "$dirName" ]]; then
+		mkdir -p $dirName
+	fi
+}
+
+function confirm {
+	if ! optional $@; then
+		log "Please follow the manual setup steps in the README file."
+		exit 1
+	fi
+}
+
+function optional {
+	local prompt=$@
+	while true; do
+		read -p "# $prompt [Y/n] " r
+		if [[ $r == 'y' || $r == 'Y' || $r == '' ]]; then
+			return 0
+		elif [[ $r == 'n' || $r == 'N' ]]; then
+			return 1
+		fi
+	done
+}
+
+log "Starting ping setup..."
+makedir $temp
+
+log "Updating submodules..."
+git submodule update --init
+
+log "Installing twilio packages..."
+composer install || (curl -sS https://getcomposer.org/installer | php; ./composer.phar install)
+
+log "Creating database..."
+mysql_create_db pingapp pingapp pingsecret
+cp application/config/database.template application/config/database.php
+log "Installing the database schema using migrations..."
+./minion --task=migrations:run --up
+
+log "Setting up application config..."
+cp application/config/init.template application/config/init.php
+cp application/config/auth.template application/config/auth.php
+cp application/config/modules.template application/config/modules.php
+cp httpdocs/template.htaccess httpdocs/.htaccess
+
+log "# Creating application working directories and assigning ownership to the web server; you may need to enter your password..."
+makedir application/cache
+sudo chown www-data application/cache
+makedir application/logs
+sudo chown www-data application/logs
+
+if optional "Do you want to set up apache sites at $apacheRoot?"; then
+	log "Setting up Apache site..."
+	siteAvailable=$apacheRoot/sites-available/pingapp
+	siteAvailableTmp=$temp/site-enabled
+	cat > $siteAvailableTmp << EOF
+<VirtualHost *:80>
+	ServerAdmin ping-admin@example.com
+	DocumentRoot "$httpRoot"
+	ServerName $hostName
+	DirectoryIndex index.php
+	<Directory "$httpRoot">
+		Options Indexes FollowSymlinks
+		AllowOverride all
+	</Directory>
+</VirtualHost>
+EOF
+	log "Configuring apache; you may need to enter your user password..."
+	sudo mv $siteAvailableTmp $siteAvailable
+	a2ensite pingapp
+else
+	log "Please set up your apache site manually to point $hostName to $httpRoot."
+fi
+
+log "Setting up host redirect to $hostName..."
+hostFile=/etc/hosts
+if ! grep -q $hostName $hostFile; then
+	echo "127.0.0.1 $hostName" | sudo tee -a $hostFile > /dev/null
+fi
+
+log "Enabling apache2 mod_rewrite..."
+sudo a2enmod rewrite
+
+log "Restarting apache; this may require your user password..."
+if [[ platform == "darwin" ]]; then
+	sudo apache2ctl -k restart
+else
+	sudo service apache2 restart
+fi
+
+log "Making your user directory executable to allow apache2 to serve files..."
+chmod 751 ~
+
+log "Ping setup complete."
+log "App is now being served at http://$hostName"
+
