@@ -143,6 +143,9 @@ class Controller_Messages extends Controller_PingApp {
 			}
 			else
 			{
+				// An error ocurred while trying to send the messages
+				// Rollback the message
+				$message->delete();
 				Kohana::$log->add(Log::INFO, "No messages sent");
 			}
 			
