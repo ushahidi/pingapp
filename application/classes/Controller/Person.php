@@ -75,23 +75,45 @@ class Controller_Person extends Controller_PingApp {
 				$person->user_id = $this->user->id;
 				$person->save();
 
-				// 2. Save Contact Info
+				// 2. Delete A Contact
+				foreach ($post['delete'] as $delete_id)
+				{
+					
+					$contact = ORM::factory('Contact', (int) $delete_id);
+
+					if( $contact->loaded() AND $person->has('contacts', $contact))
+					{
+						echo 'Removing '.$contact->id.'<br />';
+						// Remove Relationship
+						$person->remove('contacts', $contact);
+					}
+				}
+
+				// 3. Save Contact Info
 				foreach ($post['contact'] as $key => $_contact)
 				{
+					// Clean Contact Before Comparing
+					// ++TODO Setup a Sitewide function to do this
+					$__contact = ($_contact['type'] == 'phone') ? 
+						preg_replace("/[^0-9,.]/", "", $_contact['contact']) : 
+						strtolower($_contact['contact']);
+
 					$contact = ORM::factory('Contact')
+						->where('id', '=', (isset($_contact['id'])) ? $_contact['id'] : 0)
 						->where('type', '=', $_contact['type'])
-						->where('contact', '=', $_contact['contact'])
+						->where('contact', '=', $__contact)
 						->find();
 
 					if ( ! $contact->loaded() )
 					{
 						$contact->type = $_contact['type'];
-						$contact->contact = strtolower($_contact['contact']);
+						$contact->contact = $__contact;
 						$contact->save();
 					}
 					
 					if( ! $person->has('contacts', $contact))
 					{
+						// Add Relationship
 						$person->add('contacts', $contact);
 					}
 				}
@@ -117,6 +139,7 @@ class Controller_Person extends Controller_PingApp {
 				foreach ($person->contacts->find_all() as $contact)
 				{
 					$post['contact'][] = array(
+						'id' => $contact->id,
 						'type' => $contact->type,
 						'contact' => $contact->contact
 						);
@@ -142,7 +165,10 @@ class Controller_Person extends Controller_PingApp {
 
 		$person_id = $this->request->param('id', 0);
 
-		$person = ORM::factory('Person', $person_id);
+		$person = ORM::factory('Person')
+			->where('id', '=', $person_id)
+			->where('user_id', '=', $this->user->id)
+			->find();
 
 		if ( ! $person->loaded() )
 		{
@@ -168,6 +194,31 @@ class Controller_Person extends Controller_PingApp {
 			->find_all();
 
 		$children = $person->children->find_all();
+	}
+
+	/**
+	 * Delete A Person
+	 * 
+	 * @return void
+	 */
+	public function action_delete()
+	{
+		$person_id = $this->request->param('id', 0);
+
+		$person = ORM::factory('Person')
+			->where('id', '=', $person_id)
+			->where('user_id', '=', $this->user->id)
+			->find();
+
+		if ( $person->loaded() )
+		{
+			$person->delete();
+			HTTP::redirect('dashboard');
+		}
+		else
+		{
+			HTTP::redirect('dashboard');
+		}
 	}
 
 	/**

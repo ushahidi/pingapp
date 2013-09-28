@@ -20,6 +20,7 @@
 	<script src="/media/js/foundation/foundation.topbar.js"></script>
 	<script src="/media/js/vendor/jquery.dataTables.min.js"></script>
 	<script src="/media/js/vendor/dataTables.foundation.js"></script>
+	<script src="/media/js/vendor/intlTelInput.min.js"></script>
 	<script>
 		$(document).foundation();
 		<?php echo $js; ?>
