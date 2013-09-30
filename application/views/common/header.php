@@ -8,6 +8,7 @@
   <title>Ping App</title>
   <link rel="stylesheet" href="/media/css/app.css">
   <link rel="stylesheet" href="/media/css/dataTables.foundation.css">
+  <link rel="stylesheet" href="/media/css/intlTelInput.css">
   <script src="/media/js/vendor/custom.modernizr.js"></script>
 </head>
 <body>

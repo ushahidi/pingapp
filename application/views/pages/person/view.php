@@ -5,6 +5,7 @@
 if ( $person->parent_id == 0 ): ?>
 <a href="/person/edit/?parent_id=<?php echo $person->id; ?>" class="small button" id="ping-add-contact">Add Secondary Contact</a>
 <?php endif;?>
+<a href="/person/delete/<?php echo $person->id; ?>" class="small button alert" id="ping-add-contact" onclick="return confirm('Delete This Person?');">Delete</a>
 <div class="panel">
 	Status: <strong><?php echo strtoupper($person->status); ?></strong> (<?php echo date('Y-m-d', strtotime($person->updated)); ?>)
 </div>
