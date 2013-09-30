@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Controller_IVR_Twilio extends Controller {
+class Controller_Ivr_Twilio extends Controller {
 
 	public function action_index()
 	{

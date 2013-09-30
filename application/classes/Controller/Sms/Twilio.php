@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Controller_SMS_Twilio extends Controller {
+class Controller_Sms_Twilio extends Controller {
 	
 	public function action_reply()
 	{
