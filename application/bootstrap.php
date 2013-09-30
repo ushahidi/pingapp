@@ -129,6 +129,7 @@ Route::set('logout', 'logout')
 	));
 
 Route::set('sms_callback_url', '<directory>(/<controller>(/<action>))', array('directory' => 'sms'));
+Route::set('ivr_callback_url', '<directory>(/<controller>(/<action>))', array('directory' => 'ivr'));
 
 /**
  * Default Route

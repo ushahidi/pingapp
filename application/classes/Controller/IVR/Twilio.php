@@ -1,8 +1,27 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
-class Controller_SMS_Twilio extends Controller {
-	
-	public function action_reply()
+class Controller_IVR_Twilio extends Controller {
+
+	public function action_index()
+	{
+		header('Content-type: text/xml');
+
+		echo '<?xml version="1.0" encoding="UTF-8"?>
+		<Response>
+			<Gather action="'.URL::base().'ivr/twilio/gather" method="POST" numDigits="1" timeout="15">
+				<Say voice="woman">Thank you for calling PingApp.com</Say>
+				<Pause length="1"/>
+				<Say voice="woman">If you are okay, please press 1 then press pound or hash</Say>
+				<Pause length="1"/>
+				<Say voice="woman">If you are not okay, please press 2 then press pound or hash</Say>
+			</Gather>
+			<Say voice="woman">We didn\'t receive any input. Goodbye!</Say>
+			<Hangup/>
+		</Response>
+		';		
+	}
+
+	public function action_gather()
 	{
 		if ($this->request->method() == 'POST')
 		{
@@ -28,7 +47,21 @@ class Controller_SMS_Twilio extends Controller {
 				return;
 			}
 			
-			$message_text  = $this->request->post('Body');
+			$digits  = $this->request->post('Digits');
+			if ($digits == 1)
+			{
+				$message_text = 'IVR: Okay';
+			}
+			else if ($digits == 2)
+			{
+				$message_text = 'IVR: Not Okay';
+			}
+			else
+			{
+				// HALT
+				Kohana::$log->add(Log::ERROR, __("':digits' is not a valid IVR response", array(":digits" => $digits)));
+				return;
+			}
 	
 			// Is the sender of the message a registered contact?
 			$contact = Model_Contact::get_contact($from, 'phone');
