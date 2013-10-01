@@ -63,7 +63,7 @@ class Controller_Person extends Controller_PingApp {
 			{
 				// 1. Save Names
 				$person->values($post, array(
-					'first_name', 'last_name',
+					'name',
 					));
 				$person->check($extra_validation);
 
@@ -131,8 +131,7 @@ class Controller_Person extends Controller_PingApp {
 			if ( $person->loaded() )
 			{
 				$post = array(
-					'first_name' => $person->first_name,
-					'last_name' => $person->last_name,
+					'name' => $person->name,
 					);
 
 				// Get Person Contacts
@@ -230,7 +229,7 @@ class Controller_Person extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('first_name', 'status', 'pings', 'last_name');
+		$columns = array('name', 'status', 'pings', 'last_name');
 
 		$pings = DB::select('cp.person_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
 		    ->from('pings')
@@ -241,7 +240,6 @@ class Controller_Person extends Controller_PingApp {
 		    ->group_by('cp.person_id');
 
 		$query = ORM::factory('Person')
-		    ->select(array(DB::expr('CONCAT(person.first_name, " ", person.last_name)'), 'name'))
 		    ->select('pings.pings')
 		    ->join(array($pings, 'pings'), 'LEFT')
 		    ->on('person.id', '=', 'pings.person_id')

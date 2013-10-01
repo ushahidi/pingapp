@@ -49,12 +49,12 @@ class PingApp_Form {
 		{
 			$people = $user->people
 				->where('parent_id', '=', 0)
-				->order_by('first_name', 'ASC')
+				->order_by('name', 'ASC')
 				->find_all();
 
 			foreach ($people as $person)
 			{
-				$array[$person->id] = $person->first_name.' '.$person->last_name;
+				$array[$person->id] = $person->name;
 			}
 		}
 

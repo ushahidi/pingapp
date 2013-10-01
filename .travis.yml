@@ -1,24 +1,19 @@
 language: php
-
 php:
   - 5.3
-
-before_install:
-  - "git submodule update --init --recursive"
-
+services:
+  - mysql
 before_script:
-  - "pear channel-discover pear.phing.info"
-  - "pear install phing/phing"
-  - "phpenv rehash"
-  - "composer install"
+  - composer install --no-interaction --prefer-source # Have to prefer source or hit github rate limit
+  - git submodule update --init --recursive
+  - mkdir application/cache application/logs
+  - chmod 777 application/cache application/logs
+  # db setup
+  - mysql -e 'create database pingapp_test;'
+  - ./minion --task=migrations:run --up
+  # webserver setup
+  - php -S localhost:8000 httpdocs/index.php &
+  - sleep 3
 
-script: "phing test"
-
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#kohana"
-    template:
-      - "%{repository}/%{branch} (%{commit}) - %{author}: %{message}"
-      - "Build details: %{build_url}"
-  email: false
+script:
+  - /vendor/bin/phpunit -c application/tests/phpunit.xml
