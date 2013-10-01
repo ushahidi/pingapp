@@ -1,7 +1,12 @@
 {
 	"require": {
-		"phpunit/phpunit": "3.7.24",
+		"phpunit/phpunit": "3.7.*",
+		"phpunit/dbunit": ">=1.2",
 		"phing/phing": "dev-master",
+		
 		"twilio/sdk": "dev-master"
-	}
+	},
+	"config": {
+		"bin-dir": "bin/"
+	}	
 }

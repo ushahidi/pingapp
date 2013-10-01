@@ -6,4 +6,5 @@ application/logs/*
 application/cache/*
 application/config/*.php
 httpdocs/media/.sass-cache/
+httpdocs/.htaccess
 /vendor

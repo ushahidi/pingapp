@@ -98,3 +98,7 @@ The default login credentials are admin / westgate
 ### Designers
 
 Please refer to PING's [Design Guide](https://github.com/ushahidi/pingapp/blob/master/README-DESIGN-GUIDE.md)
+
+### Tests
+
+Coming soon...

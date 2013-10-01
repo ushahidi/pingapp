@@ -1,5 +1,5 @@
 <?php if ( $parent AND $parent->loaded() ): ?>
-<h4>Secondary Contact For: <?php echo $parent->first_name.' '.$parent->last_name; ?></h4>
+<h4>Secondary Contact For: <?php echo $parent->name; ?></h4>
 <?php endif; ?>
 
 <?php if (isset($errors)): ?>
@@ -27,10 +27,7 @@
 		<legend>Name</legend>
 		<div class="new-name-row">
 			<div class="new-name-first">
-				<?php echo Form::input("first_name", $post['first_name'], array("id" =>"first_name", "placeholder" => "First Name", "required" => "required")); ?>
-			</div>
-			<div class="new-name-last">
-				<?php echo Form::input("last_name", $post['last_name'], array("id" =>"last_name", "placeholder" => "Last Name", "required" => "required")); ?>
+				<?php echo Form::input("name", $post['name'], array("id" =>"name", "placeholder" => "Full Name", "required" => "required")); ?>
 			</div>
 		</div>
 	</fieldset>

@@ -1,4 +1,4 @@
-<h3><?php echo $person->first_name.' '.$person->last_name; ?></h3>
+<h3><?php echo $person->name; ?></h3>
 <a href="/person/edit/<?php echo $person->id; ?>" class="small button" id="ping-add-contact">Edit</a>
 <?php
 // Make sure this isn't a secondary contact

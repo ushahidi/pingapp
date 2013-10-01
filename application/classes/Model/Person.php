@@ -42,15 +42,13 @@ class Model_Person extends ORM {
 	public function rules()
 	{
 		return array(
-			'first_name' => array(
+			'name' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 2)),
-				array('max_length', array(':value', 100)),
+				array('max_length', array(':value', 150)),
 			),
-			'last_name' => array(
-				array('not_empty'),
-				array('min_length', array(':value', 2)),
-				array('max_length', array(':value', 100)),
+			'status' => array(
+				array('in_array', array(':value', array('ok', 'notok', 'unknown')) ),
 			),
 		);
 	}
