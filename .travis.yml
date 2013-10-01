@@ -13,8 +13,8 @@ before_script:
   - cp application/config/modules.template application/config/modules.php
 
   # db setup
-  - mysql -e 'create database pingapp_test;'
-  - ./minion --task=migrations:run --up
+  #- mysql -e 'create database pingapp_test;'
+  #- ./minion --task=migrations:run --up
   # webserver setup
   - php -S localhost:8000 httpdocs/index.php &
   - sleep 3
