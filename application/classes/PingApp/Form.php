@@ -37,7 +37,7 @@ class PingApp_Form {
 	 * Get People for Send Form
 	 * 
 	 * @param int $user_id
-	 * @returnarray
+	 * @return array
 	 */
 	public static function people($user)
 	{

@@ -14,7 +14,7 @@ class Model_Group extends ORM {
 	 * A group has many people
 	 */
 	protected $_has_many = array(
-		'people' => array(),
+		'people' => array('through' => 'groups_people'),
 		);
 
 	/**
@@ -27,4 +27,15 @@ class Model_Group extends ORM {
 	// Insert/Update Timestamps
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
 	protected $_updated_column = array('column' => 'updated', 'format' => 'Y-m-d H:i:s');
+
+	public function rules()
+	{
+		return array(
+			'name' => array(
+				array('not_empty'),
+				array('min_length', array(':value', 3)),
+				array('max_length', array(':value', 150)),
+			)
+		);
+	}
 }
