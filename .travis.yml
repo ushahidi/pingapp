@@ -8,6 +8,10 @@ before_script:
   - git submodule update --init --recursive
   - mkdir application/cache application/logs
   - chmod 777 application/cache application/logs
+  - cp application/config/auth.template application/config/auth.php
+  - cp application/config/init.template application/config/init.php
+  - cp application/config/modules.template application/config/modules.php
+
   # db setup
   - mysql -e 'create database pingapp_test;'
   - ./minion --task=migrations:run --up
