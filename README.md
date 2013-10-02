@@ -101,4 +101,5 @@ Please refer to PING's [Design Guide](https://github.com/ushahidi/pingapp/blob/m
 
 ### Tests
 
-Coming soon...
+* To run unit tests locally run ```./vendor/bin/phpunit -c application/tests/phpunit.xml```
+* [View continuous integration build statuses on Travis](https://travis-ci.org/ushahidi/pingapp)
