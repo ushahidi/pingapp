@@ -60,20 +60,23 @@ class Controller_Person extends Controller_PingApp {
 		if ( ! empty($_POST) )
 		{
 			$post = $_POST;
-			print_r($post);
-			$extra_validation = Validation::factory($post)
-				->rule('contact', 'not_empty')
-				->rule('contact', 'is_array')
-				->rule('contact', array($this, 'valid_contact'), array(':value'));
-
+			
 			try
 			{
-				// 1. Save Names
-				$person->values($post, array(
-					'name',
-					));
-				$person->check($extra_validation);
+				// - Person Model Validation
+				$person->values($post, array('name'));
+				$person->check();
 
+				// - Contact Model Validation
+				foreach ($post['contact'] as $_contact)
+				{
+					$contact = ORM::factory('Contact')->values($_contact, array('type', 'contact'));
+					$contact->check();
+				}
+
+
+
+				// 1. Save Names
 				// Save parent_id only if this is the first time
 				if ( ! $person->loaded() )
 				{
