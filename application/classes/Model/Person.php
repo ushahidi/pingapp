@@ -18,6 +18,7 @@ class Model_Person extends ORM {
 		'pings' => array(),
 		'pongs' => array(),
 		'contacts' => array('through' => 'contacts_people'),
+		'groups' => array('through' => 'groups_people'),
 		'children' => array(
 			'model' => 'Person',
 			'foreign_key' => 'parent_id',
@@ -25,7 +26,7 @@ class Model_Person extends ORM {
 		);
 
 	/**
-	 * A person belongs to a parent, user
+	 * A person belongs to a parent, user and a group
 	 */
 	protected $_belongs_to = array(
 		'user' => array(),

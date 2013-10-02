@@ -18,11 +18,17 @@ class Controller_Person extends Controller_PingApp {
 	public function action_edit()
 	{
 		$this->template->content = View::factory('pages/person/edit')
+			->bind('user', $this->user)
+			->bind('groups', $groups)
 			->bind('person', $person)
 			->bind('parent', $parent)
 			->bind('post', $post)
 			->bind('errors', $errors)
 			->bind('done', $done);
+
+		$groups = $this->user->groups
+			->order_by('name', 'ASC')
+			->find_all();
 
 		$this->template->footer->js = View::factory('pages/person/js/edit');
 
@@ -54,6 +60,7 @@ class Controller_Person extends Controller_PingApp {
 		if ( ! empty($_POST) )
 		{
 			$post = $_POST;
+			print_r($post);
 			$extra_validation = Validation::factory($post)
 				->rule('contact', 'not_empty')
 				->rule('contact', 'is_array')
@@ -75,7 +82,28 @@ class Controller_Person extends Controller_PingApp {
 				$person->user_id = $this->user->id;
 				$person->save();
 
-				// 2. Delete A Contact
+				// 2. Save Group Info
+				// Drop relationships first
+				foreach ($person->groups->find_all() as $group)
+				{
+					$person->remove('groups', $group);
+				}
+				// Re-Attach Groups
+				foreach ($post['group'] as $key => $group_id)
+				{
+					$group = ORM::factory('Group')
+						->where('id', '=', (int) $group_id)
+						->where('user_id', '=', $this->user->id)
+						->find();
+
+					if( $group->loaded() AND ! $person->has('groups', $group))
+					{
+						// Add Relationship
+						$person->add('groups', $group);
+					}
+				}
+
+				// 3. Delete A Contact
 				foreach ($post['delete'] as $delete_id)
 				{
 					
@@ -87,9 +115,9 @@ class Controller_Person extends Controller_PingApp {
 						// Remove Relationship
 						$person->remove('contacts', $contact);
 					}
-				}
+				}				
 
-				// 3. Save Contact Info
+				// 4. Save Contact Info
 				foreach ($post['contact'] as $key => $_contact)
 				{
 					// Clean Contact Before Comparing
@@ -133,6 +161,12 @@ class Controller_Person extends Controller_PingApp {
 				$post = array(
 					'name' => $person->name,
 					);
+
+				// Get Person Groups
+				foreach ($person->groups->find_all() as $group)
+				{
+					$post['group'][] = $group->id;
+				}
 
 				// Get Person Contacts
 				foreach ($person->contacts->find_all() as $contact)

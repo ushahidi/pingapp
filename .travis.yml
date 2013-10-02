@@ -3,6 +3,8 @@ php:
   - 5.3
 services:
   - mysql
+env:
+  - KOHANA_ENV=testing
 before_script:
   - composer install --no-interaction --prefer-source # Have to prefer source or hit github rate limit
   - git submodule update --init --recursive

@@ -22,6 +22,7 @@
 
 <?php echo Form::open(NULL, array('class' => 'custom', 'id' => 'personForm')); ?>
 	<?php echo Form::hidden('token', Security::token()); ?>
+	<?php echo Form::hidden('group[]', ''); ?>
 	<?php echo Form::hidden('delete[]', ''); ?>
 	<fieldset>
 		<legend>Name</legend>
@@ -31,6 +32,20 @@
 			</div>
 		</div>
 	</fieldset>
+
+	<fieldset>
+		<legend>Groups</legend>
+		<?php $i = 0; foreach ($groups as $group): ?>
+		<?php if ($i == 0): ?><div class="row"><?php endif; ?>
+			<div class="large-3 columns">
+				<label for="group-<?php echo $group->id; ?>">
+				<?php echo Form::checkbox('group[]', $group->id,  ( isset($post['group']) AND in_array($group->id, $post['group'])) ? TRUE : FALSE, array("id" => "group-".$group->id, "style" => "display: none;")) ;?>
+				<span class="custom checkbox"></span> <?php echo $group->name; ?></label>
+			</div>
+		<?php $i++; if ($i == 4): ?></div><?php $i = 0; endif; ?>
+		<?php endforeach; ?>
+	</fieldset>
+
 
 	<fieldset>
 		<legend>Contact Information</legend>
