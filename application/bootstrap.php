@@ -79,19 +79,28 @@ if (isset($_SERVER['SERVER_PROTOCOL']))
 /**
  * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
  *
- * Note: If you supply an invalid environment name, a PHP warning will be thrown
- * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
+ * Note: If you supply an invalid environment name 'development' will be used instead
  */
-if (isset($_SERVER['KOHANA_ENV']))
+if (($env = getenv('KOHANA_ENV')) === FALSE OR defined('Kohana::'.strtoupper($env)) === FALSE)
 {
-	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
+	$env = 'development';
 }
+
+// Ignoring code standards error about constant case
+// @codingStandardsIgnoreStart
+Kohana::$environment = constant('Kohana::'.strtoupper($env));
+// @codingStandardsIgnoreEnd
 
 /**
  * Attach a file reader to config. Multiple readers are supported.
  */
 Kohana::$config = new Config;
 Kohana::$config->attach(new Config_File);
+
+/**
+ * Attach the environment specific configuration file reader to config
+ */
+Kohana::$config->attach(new Config_File('config/environments/'.$env));
 
 /**
  * Initialize Kohana, setting the default options.
