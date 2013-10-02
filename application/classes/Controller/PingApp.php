@@ -134,7 +134,17 @@ class Controller_PingApp extends Controller_Template {
 			$this->template->footer->js = '';
 
 			$nav = View::factory('common/nav')
-				->bind('user', $this->user);
+				->bind('user', $this->user)
+				->bind('role', $role);
+
+			if ($this->user->has('roles', ORM::factory('Role')->where('name', '=', 'admin')->find() ))
+			{
+				$role = 'admin';
+			}
+			else
+			{
+				$role = 'member';
+			}
 		}
 	}
 

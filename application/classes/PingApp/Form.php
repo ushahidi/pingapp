@@ -60,4 +60,18 @@ class PingApp_Form {
 
 		return $array;
 	}
+
+	/**
+	 * Get SMS Providers
+	 * 
+	 * @return array
+	 */
+	public static function sms_providers()
+	{
+		return array(
+			NULL => '-- SELECT ONE --',
+			'twilio' => 'Twilio',
+			'nexmo' => 'Nexmo'
+			);
+	}
 }
