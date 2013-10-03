@@ -1,23 +1,42 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
- * Person Controller
+ * People Controller
  * 
  * @author     Ushahidi Team <team@ushahidi.com>
  * @package    Ushahidi\Application\Controllers
  * @copyright  Ushahidi - http://www.ushahidi.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License Version 3 (GPLv3)
  */
-class Controller_Person extends Controller_PingApp {
+class Controller_People extends Controller_PingApp {
 	
 	/**
-	 * Add/Edit Person
+	 * List People
+	 * 
+	 * @return void
+	 */
+	public function action_index()
+	{
+		$this->template->content = View::factory('pages/people/index')
+			->bind('group', $group);
+		$this->template->footer->js = View::factory('pages/people/js/index')
+			->bind('group_id', $group_id);
+
+		$group_id = (int) $this->request->query('group_id');
+		if ($group_id)
+		{
+			$group = ORM::factory('Group', $group_id);
+		}
+	}
+
+	/**
+	 * Add/Edit A Person
 	 * 
 	 * @return void
 	 */
 	public function action_edit()
 	{
-		$this->template->content = View::factory('pages/person/edit')
+		$this->template->content = View::factory('pages/people/edit')
 			->bind('user', $this->user)
 			->bind('groups', $groups)
 			->bind('person', $person)
@@ -30,7 +49,7 @@ class Controller_Person extends Controller_PingApp {
 			->order_by('name', 'ASC')
 			->find_all();
 
-		$this->template->footer->js = View::factory('pages/person/js/edit');
+		$this->template->footer->js = View::factory('pages/people/js/edit');
 
 		$person_id = $this->request->param('id', 0);
 		$parent_id = (int) $this->request->query('parent_id');
@@ -150,7 +169,7 @@ class Controller_Person extends Controller_PingApp {
 				}
 
 				// Redirect to prevent repost
-				HTTP::redirect('person/edit/'.$person->id.'?done');
+				HTTP::redirect('people/edit/'.$person->id.'?done');
 			}
 			catch (ORM_Validation_Exception $e)
 			{
@@ -193,10 +212,11 @@ class Controller_Person extends Controller_PingApp {
 	 */
 	public function action_view()
 	{
-		$this->template->content = View::factory('pages/person/view')
+		$this->template->content = View::factory('pages/people/view')
 			->bind('person', $person)
 			->bind('pings', $pings)
 			->bind('pongs', $pongs)
+			->bind('groups', $groups)
 			->bind('children', $children);
 
 		$person_id = $this->request->param('id', 0);
@@ -229,6 +249,8 @@ class Controller_Person extends Controller_PingApp {
 			->limit(10)
 			->find_all();
 
+		$groups = $person->groups->find_all();
+
 		$children = $person->children->find_all();
 	}
 
@@ -258,7 +280,7 @@ class Controller_Person extends Controller_PingApp {
 	}
 
 	/**
-	 * Use datatables to generate dashboard list
+	 * Use datatables to generate people list
 	 */
 	public function action_ajax_list()
 	{
@@ -266,7 +288,7 @@ class Controller_Person extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('name', 'status', 'pings', 'last_name');
+		$columns = array('name', 'status', 'pings');
 
 		$pings = DB::select('cp.person_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
 		    ->from('pings')
@@ -279,11 +301,19 @@ class Controller_Person extends Controller_PingApp {
 		$query = ORM::factory('Person')
 		    ->select('pings.pings')
 		    ->join(array($pings, 'pings'), 'LEFT')
-		    ->on('person.id', '=', 'pings.person_id')
+		    	->on('person.id', '=', 'pings.person_id')
 		    ->where('user_id', '=', $this->user->id)
 		    ->where('parent_id', '=', 0);
 
 		$query2 = clone $query;
+
+		// Groups?
+		if ( isset( $_GET['group_id'] ) AND $_GET['group_id'] != 0 )
+		{
+			$query->join(array('groups_people', 'gp'), 'LEFT')
+				->on('gp.person_id', '=', 'person.id')
+			->where('gp.group_id', '=', (int) $_GET['group_id']);;
+		}
 
 		// Searching & Filtering
 		if (  isset( $_GET['sSearch'] ) AND $_GET['sSearch'] != "" )
@@ -336,7 +366,7 @@ class Controller_Person extends Controller_PingApp {
 			}
 
 			$row = array(
-				0 => '<a href="/person/view/'.$person->id.'"><strong>'.strtoupper($person->name).'</strong></a>',
+				0 => '<a href="/people/view/'.$person->id.'"><strong>'.strtoupper($person->name).'</strong></a>',
 				1 => '<span class="radius '.$status_label.' label">'.strtoupper($person->status).'</status>',
 				2 => '<span class="radius secondary label">'.(int) $person->pings.'</span>',
 				);

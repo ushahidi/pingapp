@@ -1,3 +1,15 @@
+<?php if ($group->loaded()):?>
+<h4>Edit: <?php echo $group->name; ?></h4>
+<?php else: ?>
+<h4>Add A Group</h4>
+<?php endif; ?>
+<ul class="breadcrumbs">
+	<li><a href="/">Home</a></li>
+	<li><a href="/groups">Groups</a></li>
+	<li class="current"><a href="#">Edit <?php echo $group->name; ?></a></li>
+</ul>
+
+
 <?php if (isset($errors)): ?>
 <div data-alert class="alert-box alert">
 	<?php foreach ($errors as $error): ?>
@@ -15,8 +27,7 @@
 <?php endif; ?>
 
 <?php if ($group->loaded()): ?>
-<a href="/groups" class="small button" id="ping-add-contact">&laquo; Back</a>
-<a href="/dashboard?group_id=<?php echo $group->id; ?>" class="small button" id="ping-add-contact">View Users</a>
+<a href="/people?group_id=<?php echo $group->id; ?>" class="small button" id="ping-add-contact">View Users</a>
 <a href="/groups/delete/<?php echo $group->id; ?>" class="small button alert" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
 <?php endif; ?>
 

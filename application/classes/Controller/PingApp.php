@@ -148,6 +148,14 @@ class Controller_PingApp extends Controller_Template {
 		}
 	}
 
+	public function after()
+	{
+		parent::after();
+		
+		// Uncomment to profile
+		//echo View::factory('profiler/stats');
+	}
+
 	/**
 	 * Called from before() when the user is not logged in but they should.
 	 *

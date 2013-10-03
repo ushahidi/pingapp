@@ -1,6 +1,13 @@
-<?php if ( $parent AND $parent->loaded() ): ?>
-<h4>Secondary Contact For: <?php echo $parent->name; ?></h4>
+<?php if ($person->loaded()):?>
+<h4>Edit: <?php echo $person->name; ?> <?php if ( $parent AND $parent->loaded() ): ?><small>Secondary Contact For <?php echo $parent->name; ?></small><?php endif; ?></h4>
+<?php else: ?>
+<h4>Add A Person</h4>
 <?php endif; ?>
+<ul class="breadcrumbs">
+	<li><a href="/">Home</a></li>
+	<li><a href="/people">People</a></li>
+	<li class="current"><a href="#">Edit <?php echo $person->name; ?></a></li>
+</ul>
 
 <?php if (isset($errors)): ?>
 <div data-alert class="alert-box alert">
@@ -16,8 +23,7 @@
 	<?php echo __('Saved Successfully'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
-<a href="/dashboard" class="small button" id="ping-add-contact">&laquo; Back</a>
-<a href="/person/edit" class="small button" id="ping-add-contact">New Person [+]</a>
+<a href="/people/edit" class="small button" id="ping-add-contact">New Person [+]</a>
 <?php endif; ?>
 
 <?php echo Form::open(NULL, array('class' => 'custom', 'id' => 'personForm')); ?>
