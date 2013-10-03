@@ -7,7 +7,7 @@
 	</div>
 </div>
 
-<h4>Activity Stream</h4>
+<h4>Activity</h4>
 <div class="dashboard-display-table-wrapper">
 	<div class="dashboard-display-table">
 		<table class="display dataTable" id="activity">
@@ -16,7 +16,7 @@
 					<th>Name</th>
 					<th width="100">Contact</th>
 					<th width="100">Type</th>
-					<th width="100">Stream</th>
+					<th width="100">Action</th>
 					<th width="100">Date</th>
 				</tr>
 			</thead>

@@ -32,7 +32,7 @@ class Controller_Dashboard extends Controller_PingApp {
 		// Data table columns
 		$columns = array('name');
 
-		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'stream'))
+		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'action'))
 			->from('pings')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('pings.contact_id', '=', 'c.id')
@@ -43,7 +43,15 @@ class Controller_Dashboard extends Controller_PingApp {
 			->where('p.user_id', '=', $this->user->id)
 			->order_by('created_on', 'DESC');
 
-		$query = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'stream'))
+		// Paging
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$pings->offset($_GET['iDisplayStart']);
+			$pings->limit($_GET['iDisplayLength']);
+		}
+
+		// Union
+		$query = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'))
 			->union($pings)
 			->from('pongs')
 			->join(array('contacts', 'c'), 'INNER')
@@ -54,24 +62,6 @@ class Controller_Dashboard extends Controller_PingApp {
 				->on('cp.person_id', '=', 'p.id');
 
 		$query2 = clone $query;
-
-		// Searching & Filtering
-		if (  isset( $_GET['sSearch'] ) AND $_GET['sSearch'] != "" )
-		{
-			$query->where_open();
-			for ( $i=0 ; $i < count($columns) ; $i++ )
-			{
-				$query->or_where($columns[$i], 'LIKE', '%'.$_GET['sSearch'].'%');
-			}
-			$query->where_close();
-		}
-
-		// Paging
-		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
-		{
-			$query->offset($_GET['iDisplayStart']);
-			$query->limit($_GET['iDisplayLength']);
-		}
 
 		$items = $query->execute();
 
@@ -85,12 +75,12 @@ class Controller_Dashboard extends Controller_PingApp {
 
 		foreach ($items as $item)
 		{
-			$pong_label = ($item['stream'] == 'pong') ? '' : 'secondary';
+			$pong_label = ($item['action'] == 'pong') ? '' : 'secondary';
 			$row = array(
 				0 => '<a href="/people/view/'.$item['person_id'].'"><strong>'.strtoupper($item['name']).'</strong></a>',
 				1 => strtoupper($item['contact']),
 				2 => '<span class="radius label secondary">'.strtoupper($item['type']).'</status>',
-				3 => '<span class="radius label '.$pong_label.'">'.strtoupper($item['stream']).'</status>',
+				3 => '<span class="radius label '.$pong_label.'">'.strtoupper($item['action']).'</status>',
 				4 => '<span class="radius secondary label">'.date('Y-m-d g:i a', strtotime($item['created_on'])).'</span>',
 				);
 
