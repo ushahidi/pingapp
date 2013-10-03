@@ -40,6 +40,7 @@ class Controller_Dashboard extends Controller_PingApp {
 				->on('c.id', '=', 'cp.contact_id')
 			->join(array('people', 'p'), 'INNER')
 				->on('cp.person_id', '=', 'p.id')
+			->where('p.user_id', '=', $this->user->id)
 			->order_by('created_on', 'DESC');
 
 		$query = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'stream'))
