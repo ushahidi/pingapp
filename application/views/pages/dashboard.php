@@ -3,18 +3,21 @@
 		<a href="/messages/new" class="button   expand  success">Send A Message</a>
 	</div>
 	<div class="new-person">
-		<a href="/person/edit" class="button  expand">New Person [+]</a>
+		<a href="/people/edit" class="button  expand">New Person [+]</a>
 	</div>
 </div>
 
+<h4>Activity Stream</h4>
 <div class="dashboard-display-table-wrapper">
 	<div class="dashboard-display-table">
 		<table class="display dataTable" id="activity">
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th width="150">Status</th>
-					<th width="20">Pings</th>
+					<th width="100">Contact</th>
+					<th width="100">Type</th>
+					<th width="100">Stream</th>
+					<th width="100">Date</th>
 				</tr>
 			</thead>
 			<tbody></tbody>

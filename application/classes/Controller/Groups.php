@@ -17,7 +17,7 @@ class Controller_Groups extends Controller_PingApp {
 	 */
 	public function action_index()
 	{
-		$this->template->content = View::factory('pages/groups/list')
+		$this->template->content = View::factory('pages/groups/index')
 			->bind('groups', $groups);
 
 		$groups = $this->user->groups

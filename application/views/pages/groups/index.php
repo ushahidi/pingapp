@@ -1,3 +1,9 @@
+<h4>Groups</h4>
+<ul class="breadcrumbs">
+	<li><a href="/">Home</a></li>
+	<li class="current"><a href="#">Groups</a></li>
+</ul>
+
 <div class="dashboard-actions-wrapper">
 	<div class="new-message">
 		<a href="/groups/edit" class="button  expand">New Group [+]</a>
