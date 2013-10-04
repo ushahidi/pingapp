@@ -3,10 +3,10 @@
 		"phpunit/phpunit": "3.7.*",
 		"phpunit/dbunit": ">=1.2",
 		"phing/phing": "dev-master",
-		
+		"predis/predis": ">=0.8",
 		"twilio/sdk": "dev-master"
 	},
 	"config": {
 		"bin-dir": "bin/"
-	}	
+	}
 }

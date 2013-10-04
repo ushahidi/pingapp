@@ -129,6 +129,15 @@ PingApp::init();
 Cookie::$salt = 'pingapp-insecure-please-change-me';
 
 /**
+ * Register Predis and Autoload
+ */
+if ($path = Kohana::find_file('../vendor', 'predis/predis/lib/Predis/Autoloader'))
+{
+	require_once $path;
+	Predis\Autoloader::register();
+}
+
+/**
  * Logout Route
  */	
 Route::set('logout', 'logout')
