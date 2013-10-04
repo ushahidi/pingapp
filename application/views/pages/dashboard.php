@@ -14,10 +14,10 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th width="100">Contact</th>
-					<th width="100">Type</th>
-					<th width="100">Action</th>
-					<th width="100">Date</th>
+					<th>Contact</th>
+					<th>Type</th>
+					<th>Action</th>
+					<th>Date</th>
 				</tr>
 			</thead>
 			<tbody></tbody>

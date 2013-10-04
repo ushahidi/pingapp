@@ -81,7 +81,7 @@ class Controller_Dashboard extends Controller_PingApp {
 				1 => strtoupper($item['contact']),
 				2 => '<span class="radius label secondary">'.strtoupper($item['type']).'</status>',
 				3 => '<span class="radius label '.$pong_label.'">'.strtoupper($item['action']).'</status>',
-				4 => '<span class="radius secondary label">'.date('Y-m-d g:i a', strtotime($item['created_on'])).'</span>',
+				4 => date('Y-m-d g:i a', strtotime($item['created_on'])),
 				);
 
 			$output['aaData'][] = $row;
