@@ -32,6 +32,7 @@ class Controller_Dashboard extends Controller_PingApp {
 		// Data table columns
 		$columns = array('name');
 
+		// Pings
 		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'action'))
 			->from('pings')
 			->join(array('contacts', 'c'), 'INNER')
@@ -40,36 +41,37 @@ class Controller_Dashboard extends Controller_PingApp {
 				->on('c.id', '=', 'cp.contact_id')
 			->join(array('people', 'p'), 'INNER')
 				->on('cp.person_id', '=', 'p.id')
-			->where('p.user_id', '=', $this->user->id)
-			->order_by('created_on', 'DESC');
+			->where('p.user_id', '=', $this->user->id);
 
-		// Paging
-		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
-		{
-			$pings->offset($_GET['iDisplayStart']);
-			$pings->limit($_GET['iDisplayLength']);
-		}
-
-		// Union
-		$query = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'))
-			->union($pings)
+		// Pongs
+		$pongs = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'))
 			->from('pongs')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('pongs.contact_id', '=', 'c.id')
 			->join(array('contacts_people', 'cp'), 'INNER')
 				->on('c.id', '=', 'cp.contact_id')
 			->join(array('people', 'p'), 'INNER')
-				->on('cp.person_id', '=', 'p.id');
+				->on('cp.person_id', '=', 'p.id')
+			->where('p.user_id', '=', $this->user->id);
 
-		$query2 = clone $query;
+		// Paging
+		$offset = $limit = '';
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$limit = ' LIMIT '.(int) $_GET['iDisplayLength'];
+			$offset = ' OFFSET '.(int) $_GET['iDisplayStart'];
+		}
 
-		$items = $query->execute();
+		$order = ' ORDER BY 6 DESC';
+
+		$items = DB::query(Database::SELECT, '('.$pings.') UNION ALL ('.$pongs.') '.$order.$limit.$offset)->execute();
+		$total = DB::query(Database::SELECT, '('.$pings.') UNION ALL ('.$pongs.') ')->execute();
 
 		//Output
 		$output = array(
 			"sEcho" => intval($_GET['sEcho']),
 			"iTotalRecords" => count($items),
-			"iTotalDisplayRecords" => count($query2->execute()),
+			"iTotalDisplayRecords" => count($total),
 			"aaData" => array()
 		);
 
