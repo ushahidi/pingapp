@@ -3,49 +3,54 @@
 final class PingApp {
 	
 	/**
+	 * SMS Service
+	 * @var string
+	 */
+	public static $sms = FALSE;
+
+	/**
 	 * Name of the SMS provider
 	 * @var string
 	 */
 	public static $sms_provider = NULL;
 	
 	/**
-	 * Phone number to use for outgoing messages
-	 * @var string
-	 */
-	public static $sms_sender = NULL;
-	
-	/**
-	 * Additional options for the SMS provider
-	 * @var array
-	 */
-	public static $sms_provider_options = array();
-	
-	/**
-	 * Initializes Pingapp, setting the default applications options
+	 * Initializes Pingapp and Plugins
 	 */
 	public static function init()
 	{
-		$sms_config = Kohana::$config->load('sms')->as_array();
-		
+		/**
+		 * Plugin Registration Listener
+		 * ++TODO's
+		 * 	  - Load Modules Here Instead of Boostrap
+		 * 	  - Add to a plugins table to set on/off
+		 * 	  - If off, unload from modules
+		 */
+		Event::instance()->listen(
+			'PingApp_Plugin',
+			function ($event, $params) {
+				self::register($params);
+			}
+		);
+
+		// SMS Settings
+		self::$sms = (PingApp_Settings::get('sms') == 'on') ? TRUE : FALSE;
+		self::$sms_provider = PingApp_Settings::get('sms_provider');
+	}
+
+	/**
+	 * Register A Plugin
+	 */
+	public static function register($params)
+	{
 		try
 		{
-			// SMS provider
-			self::$sms_provider = $sms_config['provider'];
-		
-			// Sender number
-			self::$sms_sender = $sms_config['sender_number'];
-		
-			// Additional 
-			self::$sms_provider_options = $sms_config['options'];
+			$config = Kohana::$config->load('_plugins');
+			$config->set(key($params), $params[key($params)]);	
 		}
-		catch (ErrorException $e)
+		catch (Exception $e)
 		{
-			// There is an error in the config
-			Kohana::$log->add(Log::ERROR,
-			    __("Error in the configuration of the SMS provider. :error", array(":errror" => $e->getMessage())));
-			
-			// Unset the SMS provider
-			self::$sms_provider = NULL;
+			// Problem Registering Config
 		}
 	}
 }

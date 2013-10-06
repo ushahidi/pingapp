@@ -12,6 +12,12 @@
 abstract class PingApp_SMS_Provider {
 	
 	/**
+	 * SMS [FROM] Number
+	 * @var array
+	 */
+	protected $_from = null;
+
+	/**
 	 * Authentication parameters for the default SMS provider
 	 * @var array
 	 */
@@ -26,7 +32,7 @@ abstract class PingApp_SMS_Provider {
 			return $_instance;
 		}
 		
-		if (empty(PingApp::$sms_provider))
+		if ( ! PingApp::$sms OR empty(PingApp::$sms_provider))
 		{
 			throw new PingApp_Exception("The SMS service is unavailable at this time. No SMS provider has been configured for use.");
 		}
@@ -50,31 +56,49 @@ abstract class PingApp_SMS_Provider {
 			throw new PingApp_Exception(__("':class' must extend the PingApp_SMS_Provider class",
 				array(":provider" => $class_name)));
 		}
-		
-		self::$_instance->options(PingApp::$sms_provider_options);
+
+		// Get From
+		self::$_instance->from(PingApp::$sms_provider);
+
+		// Get provider options
+		self::$_instance->options(PingApp::$sms_provider);
 		return self::$_instance;
+	}
+
+	/**
+	 * Sets the FROM parameter for the SMS provider
+	 *
+	 * @param  string sms provider
+	 * @return void
+	 */
+	public function from($sms_provider)
+	{
+		// Get provider phone (FROM)
+		// Replace non-numeric
+		$this->_from = preg_replace("/[^0-9,.]/", "", PingApp_Settings::get(PingApp::$sms_provider.'_phone'));
 	}
 	
 	/**
 	 * Sets the authentication parameters for the SMS provider
 	 *
-	 * @param  array auth_params
-	 * @return array If $options is specified, void otherwise
+	 * @param  string sms provider
+	 * @return void
 	 */
-	public function options($options = array())
+	public function options($sms_provider)
 	{
-		if (empty($options))
+		$options = Kohana::$config->load('_plugins.'.$sms_provider.'.options');
+		if (is_array($options))
 		{
-			return $this->_options;
+			foreach ($options as $key => $value)
+			{
+				$this->_options[$key] = PingApp_Settings::get($sms_provider.'_'.$key);
+			}
 		}
-		
-		$this->_options = $options;
 	}
 	
 	/**
-	 * @param  string  from  Phone number sending the message
-	 * @param  string  to    Phone number to receive the message
+	 * @param  string  to Phone number to receive the message
 	 * @param  string  message Message to be sent
 	 */
-	abstract public function send($from, $to, $message);
+	abstract public function send($to, $message);
 }

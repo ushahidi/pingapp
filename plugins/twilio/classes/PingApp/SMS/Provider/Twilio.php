@@ -15,9 +15,9 @@ class PingApp_SMS_Provider_Twilio extends Pingapp_SMS_Provider {
 	/**
 	 * @return mixed
 	 */
-	public function send($from, $to, $message)
+	public function send($to, $message)
 	{
-		include_once Kohana::find_file('../vendor', 'twilio/sdk/Services/Twilio');
+		include_once Kohana::find_file('vendor', 'twilio/Services/Twilio');
 		
 		if ( ! isset($this->_client))
 		{
@@ -27,7 +27,7 @@ class PingApp_SMS_Provider_Twilio extends Pingapp_SMS_Provider {
 		// Send!
 		try
 		{
-			$message = $this->_client->account->messages->sendMessage($from, '+'.$to, $message);
+			$message = $this->_client->account->messages->sendMessage($this->_from, '+'.$to, $message);
 			return $message->sid;
 		}
 		catch (Services_Twilio_RestException $e)

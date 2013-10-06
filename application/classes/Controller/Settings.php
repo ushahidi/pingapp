@@ -30,16 +30,6 @@ class Controller_Settings extends Controller_PingApp {
 	}
 
 	/**
-	 * Edit SMS Settings
-	 * 
-	 * @return void
-	 */
-	public function action_sms()
-	{
-		$this->_action('sms');
-	}
-
-	/**
 	 * Edit Email Settings
 	 * 
 	 * @return void
@@ -57,6 +47,34 @@ class Controller_Settings extends Controller_PingApp {
 	public function action_tos()
 	{
 		$this->_action('tos');
+	}
+
+	/**
+	 * Edit SMS Settings
+	 * 
+	 * @return void
+	 */
+	public function action_sms()
+	{
+		$this->template->content = View::factory('pages/settings/sms')
+			->bind('settings', $settings)
+			->bind('post', $this->_post)
+			->bind('errors', $this->_errors)
+			->bind('plugins', $plugins)
+			->bind('done', $this->_done);
+
+		$this->_save();
+
+		$config = Kohana::$config->load('_plugins');
+
+		$plugins = array();
+		foreach ($config as $key => $plugin)
+		{
+			if ( isset($plugin['services']['sms']) AND $plugin['services']['sms'] )
+			{
+				$plugins[$key] = $plugin;
+			}
+		}
 	}
 
 	/**

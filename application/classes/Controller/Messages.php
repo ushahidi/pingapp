@@ -107,7 +107,7 @@ class Controller_Messages extends Controller_PingApp {
 			// Ping!
 			foreach ($contacts as $contact)
 			{
-				if (($tracking_id = $this->_provider->send(PingApp::$sms_sender, $contact->contact, $message->message)) !== FALSE)
+				if (($tracking_id = $this->_provider->send($contact->contact, $message->message)) !== FALSE)
 				{
 					$query->values(array(
 					    'message_id' => $message->id,
