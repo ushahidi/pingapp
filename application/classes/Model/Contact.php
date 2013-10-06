@@ -11,10 +11,13 @@
 
 class Model_Contact extends ORM {
 	/**
-	 * A contact has and belongs to many pings
+	 * A contact has and belongs to many people
+	 * A contact has many pings and pongs
 	 */
 	protected $_has_many = array(
 		'people' => array('through' => 'contacts_people'),
+		'pings' => array(),
+		'pongs' => array(),
 		);
 
 	// Insert/Update Timestamps

@@ -11,12 +11,10 @@
 
 class Model_Person extends ORM {
 	/**
-	 * A person has many pings, children
-	 * A person has and belongs to many contacts
+	 * A person has and belongs to many contacts and groups
+	 * A person has many children
 	 */
 	protected $_has_many = array(
-		'pings' => array(),
-		'pongs' => array(),
 		'contacts' => array('through' => 'contacts_people'),
 		'groups' => array('through' => 'groups_people'),
 		'children' => array(

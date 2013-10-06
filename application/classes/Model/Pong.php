@@ -11,11 +11,11 @@
 
 class Model_Pong extends ORM {
 	/**
-	 * A pong belongs to a person and a person_contact
+	 * A pong belongs to a contact and a ping
 	 */
 	protected $_belongs_to = array(
-		'person' => array(),
-			'person_contact' => array(),
+		'contact' => array(),
+		'ping' => array(),
 		);
 
 	// Insert/Update Timestamps
