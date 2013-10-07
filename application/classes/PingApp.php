@@ -1,51 +1,108 @@
 <?php defined('SYSPATH') or die('No direct script access');
 
 final class PingApp {
-	
 	/**
-	 * Name of the SMS provider
-	 * @var string
-	 */
-	public static $sms_provider = NULL;
-	
-	/**
-	 * Phone number to use for outgoing messages
-	 * @var string
-	 */
-	public static $sms_sender = NULL;
-	
-	/**
-	 * Additional options for the SMS provider
-	 * @var array
-	 */
-	public static $sms_provider_options = array();
-	
-	/**
-	 * Initializes Pingapp, setting the default applications options
+	 * Initializes Pingapp and Plugins
 	 */
 	public static function init()
 	{
-		$sms_config = Kohana::$config->load('sms')->as_array();
-		
-		try
-		{
-			// SMS provider
-			self::$sms_provider = $sms_config['provider'];
-		
-			// Sender number
-			self::$sms_sender = $sms_config['sender_number'];
-		
-			// Additional 
-			self::$sms_provider_options = $sms_config['options'];
+		/**
+		 * 1. Plugin Registration Listener
+		 */
+		Event::instance()->listen(
+			'PingApp_Plugin',
+			function ($event, $params) {
+				self::register($params);
+			}
+		);
+
+		/**
+		 * 2. Load the plugins
+		 */
+		self::load();
+	}
+
+	/**
+	 * Load All Plugins Into System
+	 */
+	public static function load()
+	{
+		// Load Plugins
+		$results = scandir(PLUGINPATH);
+		foreach ($results as $result) {
+			if ($result === '.' or $result === '..') continue;
+
+			if (is_dir(PLUGINPATH.$result))
+			{
+				Kohana::modules( array($result => PLUGINPATH.$result) + Kohana::modules() );
+			}
 		}
-		catch (ErrorException $e)
+	}
+
+	/**
+	 * Register A Plugin
+	 *
+	 * @param array $params
+	 */
+	public static function register($params)
+	{
+		if (self::valid_plugin($params))
 		{
-			// There is an error in the config
-			Kohana::$log->add(Log::ERROR,
-			    __("Error in the configuration of the SMS provider. :error", array(":errror" => $e->getMessage())));
-			
-			// Unset the SMS provider
-			self::$sms_provider = NULL;
+			$config = Kohana::$config->load('_plugins');
+			$config->set(key($params), $params[key($params)]);
 		}
+	}
+
+	/**
+	 * Validate Plugin Parameters
+	 *
+	 * @param array $params
+	 * @return bool valid/invalid
+	 */
+	public static function valid_plugin($params)
+	{
+		$path = array_keys($params)[0];
+
+		if ( ! is_array($params) )
+		{
+			return FALSE;
+		}
+
+		// Validate Name
+		if ( ! isset($params[$path]['name']) )
+		{
+			Kohana::$log->add(Log::ERROR, __("':plugin' does not have 'name'", array(':plugin' => $path)));
+			return FALSE;
+		}
+
+		// Validate Version
+		if ( ! isset($params[$path]['version']) )
+		{
+			Kohana::$log->add(Log::ERROR, __("':plugin' does not have 'version'", array(':plugin' => $path)));
+			return FALSE;
+		}
+
+		// Validate Services
+		if ( ! isset($params[$path]['services']) OR ! is_array($params[$path]['services']) )
+		{
+			Kohana::$log->add(Log::ERROR, __("':plugin' does not have 'services' or 'services' is not an array", array(':plugin' => $path)));
+			return FALSE;
+		}
+
+		// Validate Options
+		if ( ! isset($params[$path]['options']) OR ! is_array($params[$path]['options']) )
+		{
+			Kohana::$log->add(Log::ERROR, __("':plugin' does not have 'options' or 'options' is not an array", array(':plugin' => $path)));
+			return FALSE;
+		}
+
+		// Validate Links
+		if ( ! isset($params[$path]['links']) OR ! is_array($params[$path]['links']) )
+		{
+			Kohana::$log->add(Log::ERROR, __("':plugin' does not have 'links' or 'links' is not an array", array(':plugin' => $path)));
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 }

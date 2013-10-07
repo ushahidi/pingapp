@@ -68,10 +68,19 @@ class PingApp_Form {
 	 */
 	public static function sms_providers()
 	{
-		return array(
-			NULL => '-- SELECT ONE --',
-			'twilio' => 'Twilio',
-			'nexmo' => 'Nexmo'
+		$providers = array(
+			NULL => '-- SELECT ONE --'
 			);
+
+		$config = Kohana::$config->load('_plugins');
+		foreach ($config as $key => $plugin)
+		{
+			if ( isset($plugin['services']['sms']) AND $plugin['services']['sms'] )
+			{
+				$providers[$key] = $plugin['name'];
+			}
+		}
+
+		return $providers;
 	}
 }
