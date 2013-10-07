@@ -41,41 +41,25 @@
 		</div>
 	</fieldset>
 
+	<?php foreach ($plugins as $key => $plugin): ?>
 	<fieldset>
-		<legend>Twilio</legend>
+		<legend>
+			<?php echo $plugin['name']; ?> 
+			<?php if(isset($plugin['links']['signup'])): ?>
+				&nbsp;&nbsp;<a href="<?php echo $plugin['links']['signup']; ?>" target="_blank" class="button tiny secondary">Sign Up</a>
+			<?php endif;?>
+		</legend>
+		
 		<div class="row">
+			<?php foreach ($plugin['options'] as $option => $label): ?>
 			<div class="large-4 columns">
-				<label>Phone Number</label>
-				<?php echo Form::input("settings[twilio_number]", (isset($post['settings']['twilio_number'])) ? $post['settings']['twilio_number'] : ''); ?>
+				<label><?php echo $label; ?></label>
+				<?php echo Form::input("settings[".$key."_".$option."]", (isset($post['settings'][$key."_".$option])) ? $post['settings'][$key."_".$option] : ''); ?>
 			</div>
-			<div class="large-4 columns">
-				<label>Account SID</label>
-				<?php echo Form::input("settings[twilio_account_sid]", (isset($post['settings']['twilio_account_sid'])) ? $post['settings']['twilio_account_sid'] : ''); ?>
-			</div>
-			<div class="large-4 columns">
-				<label>Auth Token</label>
-				<?php echo Form::input("settings[twilio_auth_token]", (isset($post['settings']['twilio_auth_token'])) ? $post['settings']['twilio_auth_token'] : ''); ?>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</fieldset>
-
-	<fieldset>
-		<legend>Nexmo</legend>
-		<div class="row">
-			<div class="large-4 columns">
-				<label>Phone Number</label>
-				<?php echo Form::input("settings[nexmo_number]", (isset($post['settings']['nexmo_number'])) ? $post['settings']['nexmo_number'] : ''); ?>
-			</div>
-			<div class="large-4 columns">
-				<label>API Key</label>
-				<?php echo Form::input("settings[nexmo_api_key]", (isset($post['settings']['nexmo_api_key'])) ? $post['settings']['nexmo_api_key'] : ''); ?>
-			</div>
-			<div class="large-4 columns">
-				<label>API Secret</label>
-				<?php echo Form::input("settings[nexmo_api_secret]", (isset($post['settings']['nexmo_api_secret'])) ? $post['settings']['nexmo_api_secret'] : ''); ?>
-			</div>
-		</div>
-	</fieldset>
+	<?php endforeach; ?>
 
 	<div class="add-new-person-submit">
 		<button class="button  expand">Submit</button>
