@@ -9,6 +9,8 @@ class Migration_1_20130923115621 extends Minion_Migration_Base {
 	 */
 	public function up(Kohana_Database $db)
 	{
+		$db->query(NULL, "SET FOREIGN_KEY_CHECKS=0;");
+
 		// Drop all Tables First
 		$db->query(NULL, "DROP TABLE IF EXISTS `groups`;");
 		$db->query(NULL, "DROP TABLE IF EXISTS `messages`;");
@@ -202,6 +204,8 @@ class Migration_1_20130923115621 extends Minion_Migration_Base {
 		  CONSTRAINT `fk_roles_users_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
 		  CONSTRAINT `fk_roles_users_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+		$db->query(NULL, "SET FOREIGN_KEY_CHECKS=1;");
 
 		/**
 		 * Create A Default Test User

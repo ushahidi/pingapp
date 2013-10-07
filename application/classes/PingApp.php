@@ -1,19 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access');
 
 final class PingApp {
-	
-	/**
-	 * SMS Service
-	 * @var string
-	 */
-	public static $sms = FALSE;
-
-	/**
-	 * Name of the SMS provider
-	 * @var string
-	 */
-	public static $sms_provider = NULL;
-	
 	/**
 	 * Initializes Pingapp and Plugins
 	 */
@@ -33,11 +20,6 @@ final class PingApp {
 		 * 2. Load the plugins
 		 */
 		self::load();
-
-
-		// SMS Settings
-		self::$sms = (PingApp_Settings::get('sms') == 'on') ? TRUE : FALSE;
-		self::$sms_provider = PingApp_Settings::get('sms_provider');
 	}
 
 	/**

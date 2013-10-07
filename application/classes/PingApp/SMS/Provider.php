@@ -10,6 +10,18 @@
  *
  */
 abstract class PingApp_SMS_Provider {
+
+	/**
+	 * SMS Service
+	 * @var string
+	 */
+	public static $sms = FALSE;
+
+	/**
+	 * Name of the SMS provider
+	 * @var string
+	 */
+	public static $sms_provider = NULL;
 	
 	/**
 	 * SMS [FROM] Number
@@ -27,6 +39,10 @@ abstract class PingApp_SMS_Provider {
 	
 	public static function instance()
 	{
+		// SMS Settings
+		self::$sms = (PingApp_Settings::get('sms') == 'on') ? TRUE : FALSE;
+		self::$sms_provider = PingApp_Settings::get('sms_provider');
+
 		if (isset(self::$_instance))
 		{
 			return $_instance;
