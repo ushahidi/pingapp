@@ -76,7 +76,14 @@ class PingApp_Ping {
 					// or just STOP!!! No More Messages!
 					else
 					{
-
+						// 1. Cancel All Pings to this Contact
+						foreach ($pings as $_ping)
+						{
+							$_ping->status = 'cancelled';
+							$_ping->save();
+						}
+						
+						// 2. Contact the Secondary
 					}
 				}
 			}

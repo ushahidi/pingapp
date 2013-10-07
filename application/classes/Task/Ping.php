@@ -25,6 +25,10 @@ class Task_Ping extends Minion_Task
 				$this->_queue();
 				break;
 
+			case 'requeue':
+				$this->_requeue();
+				break;
+
 			case 'process':
 				$this->_process();
 				break;
@@ -54,6 +58,62 @@ class Task_Ping extends Minion_Task
 		foreach ($pings as $ping)
 		{
 			$redis->rpush('pingapp_pings', $ping->id);
+		}
+	}
+
+	/**
+	 * Re-Queue Up Pings To Be Sent
+	 *
+	 * Look for all pings without a pong within a 10 minute timeframe
+	 * if exists, create a new ping for the queue
+	 *
+	 * @return null
+	 */
+	protected function _requeue()
+	{
+		// Get Pongs
+		$pongs = DB::select('cp.contact_id', array(DB::expr('COUNT(pongs.id)'), 'pongs'))
+		    ->from('pongs')
+		    ->join(array('contacts', 'c'), 'INNER')
+		    	->on('pongs.contact_id', '=', 'c.id')
+		    ->join(array('contacts_people', 'cp'), 'INNER')
+		    	->on('c.id', '=', 'cp.contact_id')
+		    ->group_by('cp.contact_id');
+
+		// Get Pings
+		$pings = ORM::factory('Ping')
+			->select('pongs.pongs')
+			->where('sent', '=', 1)
+			->where('parent_id', '=', 0)
+			->join(array($pongs, 'pongs'), 'LEFT')
+		    	->on('ping.contact_id', '=', 'pongs.contact_id')
+			->find_all();
+
+		foreach ($pings as $ping)
+		{
+			if ( (int) $ping->pongs == 0 AND ( time() - strtotime($ping->updated) ) > 600)
+			{
+				$newping = ORM::factory('Ping')
+					->where('parent_id', '=', $ping->id)
+					->where('status', '=', 'pending')
+					->where('sent', '!=', 1)
+					->find();
+
+				if ( ! $newping->loaded() )
+				{
+					$newping->values(array(
+							'parent_id' => $ping->id,
+							'message_id' => $ping->message_id,
+							'tracking_id' => '0',
+							'type' => $ping->type,
+							'contact_id' => $ping->contact_id,
+							'provider' => $ping->provider,
+							'status' => 'pending',
+							'sent' => 0
+						));
+					$newping->save();
+				}
+			}
 		}
 	}
 

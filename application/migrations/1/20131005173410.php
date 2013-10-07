@@ -14,9 +14,9 @@ class Migration_1_20131005173410 extends Minion_Migration_Base {
 		$db->query(NULL, "ALTER TABLE `pings` ADD `updated` DATETIME  NOT NULL  DEFAULT '1001-01-01 00:00:00'  AFTER `created`;");
 		$db->query(NULL, "ALTER TABLE `pings` ADD `parent_id` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  AFTER `id`;");
 		$db->query(NULL, "ALTER TABLE `pings` ADD INDEX `idx_parent_id` (`parent_id`);");
-		$db->query(NULL, "ALTER TABLE `pings` CHANGE `type` `type` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'phone'  COMMENT 'email, sms, twitter';");
-		$db->query(NULL, "ALTER TABLE `pongs` CHANGE `type` `type` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'phone'  COMMENT 'email, sms, voice, twitter';");
-		$db->query(NULL, "ALTER TABLE `messages` CHANGE `type` `type` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'phone'  COMMENT 'email, sms, twitter';");
+		$db->query(NULL, "ALTER TABLE `pings` CHANGE `type` `type` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'sms'  COMMENT 'email, sms, twitter';");
+		$db->query(NULL, "ALTER TABLE `pongs` CHANGE `type` `type` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'sms'  COMMENT 'email, sms, voice, twitter';");
+		$db->query(NULL, "ALTER TABLE `messages` CHANGE `type` `type` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'sms'  COMMENT 'email, sms, twitter';");
 		$db->query(NULL, "ALTER TABLE `pings` DROP INDEX `idx_provider_tracking_id`;");
 		$db->query(NULL, "ALTER TABLE `pings` ADD INDEX `idx_tracking_id` (`tracking_id`);");
 		$db->query(NULL, "ALTER TABLE `pings` ADD INDEX `idx_provider` (`provider`);");
