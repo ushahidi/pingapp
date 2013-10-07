@@ -9,7 +9,7 @@ A personal SMS check-in app - check if your friends respond.
 
 To install the platform on your computer/server, the target system must meet the following requirements:
 
-* PHP version 5.3.0 or greater
+* PHP version 5.4.0 or greater
 * Database Server
     - MySQL version 5.5 or greater
     - PostgreSQL support is coming

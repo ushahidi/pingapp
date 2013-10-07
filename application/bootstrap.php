@@ -125,7 +125,7 @@ PingApp::init();
 /**
  * Enable plugins. Plugins are referenced by a relative or absolute path.
  */
-Kohana::modules( array_merge(Kohana::$config->load('plugins')->as_array(), Kohana::modules()) );
+//Kohana::modules( array_merge(Kohana::$config->load('plugins')->as_array(), Kohana::modules()) );
 
 /**
  * Set cookie salt
