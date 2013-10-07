@@ -113,7 +113,7 @@ class Controller_Messages extends Controller_PingApp {
 					    'message_id' => $message->id,
 					    'tracking_id' => $tracking_id,
 					    'contact_id' => $contact->id,
-					    'provider' => strtolower(PingApp::$sms_provider),
+					    'provider' => strtolower(PingApp_SMS_Provider::$sms_provider),
 					    'type' => 'phone',
 					    'status' => 'pending',
 					    'created' => date('Y-m-d H:i:s')

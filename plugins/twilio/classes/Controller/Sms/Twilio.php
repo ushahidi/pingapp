@@ -19,7 +19,7 @@ class Controller_Sms_Twilio extends Controller {
 			// Remove Non-Numeric characters because that's what the DB has
 			$to = preg_replace("/[^0-9,.]/", "", $this->request->post('To'));
 			$from  = preg_replace("/[^0-9,.]/", "", $this->request->post('From'));
-			$sender = preg_replace("/[^0-9,.]/", "", PingApp::$sms_sender);
+			$sender = preg_replace("/[^0-9,.]/", "", PingApp_SMS_Provider::$sms_sender);
 
 			if ( ! $to OR strrpos($to, $sender) === FALSE )
 			{

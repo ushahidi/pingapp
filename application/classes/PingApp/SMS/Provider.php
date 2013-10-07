@@ -48,12 +48,12 @@ abstract class PingApp_SMS_Provider {
 			return $_instance;
 		}
 		
-		if ( ! PingApp::$sms OR empty(PingApp::$sms_provider))
+		if ( ! self::$sms OR empty(self::$sms_provider))
 		{
 			throw new PingApp_Exception("The SMS service is unavailable at this time. No SMS provider has been configured for use.");
 		}
 
-		$provider_name = ucfirst(strtolower(PingApp::$sms_provider));
+		$provider_name = ucfirst(strtolower(self::$sms_provider));
 		
 		$class_name = 'PingApp_SMS_Provider_'.$provider_name;
 		
@@ -74,10 +74,10 @@ abstract class PingApp_SMS_Provider {
 		}
 
 		// Get From
-		self::$_instance->from(PingApp::$sms_provider);
+		self::$_instance->from(self::$sms_provider);
 
 		// Get provider options
-		self::$_instance->options(PingApp::$sms_provider);
+		self::$_instance->options(self::$sms_provider);
 		return self::$_instance;
 	}
 
@@ -91,7 +91,7 @@ abstract class PingApp_SMS_Provider {
 	{
 		// Get provider phone (FROM)
 		// Replace non-numeric
-		$this->_from = preg_replace("/[^0-9,.]/", "", PingApp_Settings::get(PingApp::$sms_provider.'_phone'));
+		$this->_from = preg_replace("/[^0-9,.]/", "", PingApp_Settings::get(self::$sms_provider.'_phone'));
 	}
 	
 	/**
