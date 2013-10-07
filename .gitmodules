@@ -25,3 +25,6 @@
 [submodule "modules/unittest"]
 	path = modules/unittest
 	url = git://github.com/kohana/unittest.git
+[submodule "modules/KO3-Event"]
+	path = modules/KO3-Event
+	url = git://github.com/thinkclay/KO3-Event.git
