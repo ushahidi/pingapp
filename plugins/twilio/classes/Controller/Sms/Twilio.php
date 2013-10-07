@@ -62,7 +62,7 @@ class Controller_Sms_Twilio extends Controller {
 					->values(array(
 						'content' => $message_text,
 						'contact_id' => $contact->id,
-						'type' => 'phone',
+						'type' => 'sms',
 						'ping_id' => $ping->id
 					))
 					->save();

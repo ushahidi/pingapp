@@ -12,17 +12,26 @@
 class Model_Ping extends ORM {
 	/**
 	 * A ping belongs to a message, and a contact
+	 * A ping also belongs to a parent ping (retries)
 	 */
 	protected $_belongs_to = array(
 		'message' => array(),
 		'contact' => array(),
+		'parent' => array(
+			'model'  => 'Ping',
+			'foreign_key' => 'parent_id',
+			),
 		);
 
 	/**
-	 * A ping has many pongs
+	 * A ping has many pongs and children pings (retries)
 	 */
 	protected $_has_many = array(
 		'pongs' => array(),
+		'children' => array(
+			'model' => 'Ping',
+			'foreign_key' => 'parent_id',
+			),
 		);
 
 	// Insert/Update Timestamps
@@ -33,7 +42,7 @@ class Model_Ping extends ORM {
 	{
 		return array(
 			'status' => array(
-				array('in_array', array(':value', array('pending', 'sent', 'received', 'replied')) ),
+				array('in_array', array(':value', array('pending', 'received', 'expired', 'failed', 'cancelled')) ),
 			),
 		);
 	}

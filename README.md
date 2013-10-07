@@ -16,6 +16,8 @@ To install the platform on your computer/server, the target system must meet the
 * An HTTP Server. PingApp is known to work with the following web servers:
     - Apache 2.2+
     - nginx
+* Redis
+    - required for Message Queuing
 * Unicode support in the operating system
 
 ### Downloading
@@ -63,9 +65,10 @@ To install the platform on your computer/server, the target system must meet the
 6. Edit ```application/config/init.php``` and change base_url to point the the httpdocs directory in your deployment
 7. ```cp application/config/auth.template application/config/auth.php```
 8. ```cp application/config/modules.template application/config/modules.php```
-9. ```cp httpdocs/template.htaccess httpdocs/.htaccess```
-10. Edit ```httpdocs/.htaccess``` and change the RewriteBase value to match your deployment url
-11. Create directories ```application/cache``` and ```application/logs``` and make them writable
+9. ```cp application/config/redis.template application/config/redis.php```
+10. ```cp httpdocs/template.htaccess httpdocs/.htaccess```
+11. Edit ```httpdocs/.htaccess``` and change the RewriteBase value to match your deployment url
+12. Create directories ```application/cache``` and ```application/logs``` and make them writable
 
 ### Upgrading
 

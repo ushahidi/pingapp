@@ -29,7 +29,7 @@ class PingApp_Redis {
 		if ( ! PingApp_Redis::$redis)
 		{
 			// No config file found
-			if (!Kohana::$config->load('redis'))
+			if ( ! Kohana::$config->load('redis'))
 			{	
 				PingApp_Redis::$redis = new Predis\Client(array(
 						'scheme' => 'tcp',

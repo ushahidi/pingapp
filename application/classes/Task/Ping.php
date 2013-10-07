@@ -47,7 +47,8 @@ class Task_Ping extends Minion_Task
 
 		// Get All Unsent Pings
 		$pings = ORM::factory('Ping')
-			->where('pending', '=', 'pending')
+			->where('status', '=', 'pending')
+			->where('sent', '!=', 1)
 			->find_all();
 
 		foreach ($pings as $ping)
@@ -77,10 +78,7 @@ class Task_Ping extends Minion_Task
 
 				if ( isset($item[1]) )
 				{
-					// Remove remaining dupes
-					$redis->lRem('searches', $item[1], 0);
-
-					PingApp_Ping::run($item[1]);
+					PingApp_Ping::process((int) $item[1]);
 				}
 				else
 				{
@@ -92,11 +90,8 @@ class Task_Ping extends Minion_Task
 			}
 			catch (Exception $e)
 			{
-				//Log::instance()->add(Log::ERROR, 'SEARCHES TASK: '.Kohana_Exception::text($e));
 				break;
 			}
 		}
-
-		//echo View::factory('profiler/stats');
 	}
 }
