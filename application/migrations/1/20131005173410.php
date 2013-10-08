@@ -9,7 +9,7 @@ class Migration_1_20131005173410 extends Minion_Migration_Base {
 	 */
 	public function up(Kohana_Database $db)
 	{
-		$db->query(NULL, "ALTER TABLE `pings` CHANGE `status` `status` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'pending'  COMMENT 'pending, received, expired, cancelled, failed';");
+		$db->query(NULL, "ALTER TABLE `pings` CHANGE `status` `status` VARCHAR(20)  CHARACTER SET utf8  COLLATE utf8_general_ci  NOT NULL  DEFAULT 'pending'  COMMENT 'pending, received, replied, expired, cancelled, failed';");
 		$db->query(NULL, "ALTER TABLE `pings` ADD `sent` TINYINT(1)  NOT NULL  DEFAULT '0'  AFTER `status`;");
 		$db->query(NULL, "ALTER TABLE `pings` ADD `updated` DATETIME  NOT NULL  DEFAULT '1001-01-01 00:00:00'  AFTER `created`;");
 		$db->query(NULL, "ALTER TABLE `pings` ADD `parent_id` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'  AFTER `id`;");

@@ -42,7 +42,7 @@ class Model_Ping extends ORM {
 	{
 		return array(
 			'status' => array(
-				array('in_array', array(':value', array('pending', 'received', 'expired', 'failed', 'cancelled')) ),
+				array('in_array', array(':value', array('pending', 'received', 'replied', 'expired', 'failed', 'cancelled')) ),
 			),
 		);
 	}

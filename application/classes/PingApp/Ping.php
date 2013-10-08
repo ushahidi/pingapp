@@ -76,8 +76,13 @@ class PingApp_Ping {
 					// or just STOP!!! No More Messages!
 					else
 					{
-						// Cancel All Pings to this Contact
-						foreach ($pings as $_ping)
+						// Cancel All Pending Pings to this Contact
+						$pending_pings = $contact->pings
+							->where('status', '=', 'pending')
+							->where('sent', '!=', 1)
+							->find_all();
+
+						foreach ($pending_pings as $_ping)
 						{
 							$_ping->status = 'cancelled';
 							$_ping->save();
