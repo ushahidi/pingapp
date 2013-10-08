@@ -41,9 +41,41 @@ class Model_Ping extends ORM {
 	public function rules()
 	{
 		return array(
+			'message_id' => array(
+				array('not_empty'),
+				array('numeric'),
+				array(array($this, 'valid_id'), array(':validation', ':field')),
+			),
+			'contact_id' => array(
+				array('not_empty'),
+				array('numeric'),
+				array(array($this, 'valid_id'), array(':validation', ':field')),
+			),
+			'type' => array(
+				array('not_empty'),
+				array('in_array', array(':value', array('sms', 'email', 'twitter')) ),
+			),
 			'status' => array(
 				array('in_array', array(':value', array('pending', 'received', 'replied', 'expired', 'failed', 'cancelled')) ),
 			),
+			'sent' => array(
+				array('in_array', array(':value', array(0, 1)) ),
+			),
 		);
+	}
+
+	/**
+	 * Validate ID
+	 *
+	 * @param array $validation
+	 * @param string $field field name
+	 * @return void
+	 */
+	public function valid_id($validation, $field)
+	{
+		if ( ! (int) $validation[$field] > 0)
+		{
+			$validation->error($field, 'invalid_id');
+		}
 	}
 }

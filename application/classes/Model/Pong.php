@@ -20,4 +20,31 @@ class Model_Pong extends ORM {
 
 	// Insert/Update Timestamps
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
+
+	public function rules()
+	{
+		return array(
+			'content' => array(
+				array('not_empty'),
+			),
+			'type' => array(
+				array('not_empty'),
+				array('in_array', array(':value', array('sms', 'email', 'voice', 'twitter')) ),
+			),
+		);
+	}
+
+	/**
+	 * Filters
+	 *
+	 * @return array Rules
+	 */
+	public function filters()
+	{
+		return array(
+			'content' => array(
+				array('trim'),
+			),
+		);
+	}
 }

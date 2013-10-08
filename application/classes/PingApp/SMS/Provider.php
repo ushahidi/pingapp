@@ -139,6 +139,13 @@ abstract class PingApp_SMS_Provider {
 			Kohana::$log->add(Log::ERROR, __("':from' is not registered as a contact", array(":from" => $from)));
 			return;
 		}
+
+		if ( ! trim($message))
+		{
+			// HALT
+			Kohana::$log->add(Log::ERROR, __("blank message received"));
+			return;
+		}
 		
 		// Use the last id of the ping to tag the pong
 		// TODO: Review

@@ -31,4 +31,18 @@ class Model_Message extends ORM {
 			)
 		);
 	}
+
+	/**
+	 * Filters
+	 *
+	 * @return array Rules
+	 */
+	public function filters()
+	{
+		return array(
+			'message' => array(
+				array('trim'),
+			),
+		);
+	}
 }
