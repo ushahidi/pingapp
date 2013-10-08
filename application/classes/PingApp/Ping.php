@@ -127,7 +127,7 @@ class PingApp_Ping {
 		catch (PingApp_Exception $e)
 		{
 			// Failed
-			$ping->status = 'failed'
+			$ping->status = 'failed';
 			$ping->save();
 
 			Kohana::$log->add(Log::ERROR, $e->getMessage());
@@ -136,14 +136,14 @@ class PingApp_Ping {
 		if (($tracking_id = $provider->send($contact->contact, $ping->message->message)) !== FALSE)
 		{
 			$ping->tracking_id = $tracking_id;
-			$ping->provider = $provider // Update the provider in case its changed
+			$ping->provider = $provider::$sms_provider; // Update the provider in case its changed
 			$ping->sent = 1;
 			$ping->save();
 		}
 		else
 		{
 			// Failed
-			$ping->status = 'failed'
+			$ping->status = 'failed';
 			$ping->save();
 		}
 	}
