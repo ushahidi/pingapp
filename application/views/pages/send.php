@@ -9,7 +9,7 @@
 
 <?php if ($done): ?>
 <div data-alert class="alert-box success">
-	<?php echo __('Sent Successfully'); ?>
+	<?php echo __('Your message has been queued for sending'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
 <?php endif; ?>

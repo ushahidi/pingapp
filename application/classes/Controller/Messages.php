@@ -87,68 +87,32 @@ class Controller_Messages extends Controller_PingApp {
 		}
 
 		// Create the message
-		$message = new Model_Message();
+		$message = ORM::factory('Message');
 		try
 		{
 			// Set values and save
 			$message->values(array(
 					'message' => $this->request->post('message'),
 					'user_id' => $this->user->id,
-					'type' => 'phone'
-				))
-				->save();
-			
-			// Tracks the no. of pings sent out
-			$ping_count = 0;
-	
-			$_columns = array('message_id', 'tracking_id', 'contact_id', 'provider', 'type', 'status', 'created');
-			$query = DB::insert('pings', $_columns);
-			
-			// Ping!
+					'type' => 'sms'
+				));
+			$message->save();
+
+			// Save Ping
 			foreach ($contacts as $contact)
 			{
-				if (($tracking_id = $this->_provider->send($contact->contact, $message->message)) !== FALSE)
-				{
-					$query->values(array(
-					    'message_id' => $message->id,
-					    'tracking_id' => $tracking_id,
-					    'contact_id' => $contact->id,
-					    'provider' => strtolower(PingApp_SMS_Provider::$sms_provider),
-					    'type' => 'phone',
-					    'status' => 'pending',
-					    'created' => date('Y-m-d H:i:s')
+				$ping = ORM::factory('Ping');
+				$ping->values(array(
+						'message_id' => $message->id,
+						'tracking_id' => '0',
+						'type' => 'sms',
+						'contact_id' => $contact->id,
+						'provider' => strtolower(PingApp_SMS_Provider::$sms_provider),
+						'status' => 'pending',
+						'sent' => 0
 					));
-					$ping_count++;
-				}
-			}
-			
-			// Any pings go out?
-			if ($ping_count)
-			{
-				try
-				{
-					// Create the pings
-					$query->execute();
-					Kohana::$log->add(Log::INFO, __("Successfully dispatched :count pings", array(":count" => $ping_count)));
-				}
-				catch (Database_Exception $e)
-				{
-					// Rollback message creation
-					$messsage->delete();
-					
-					Kohana::$log->add(Log::ERROR, $e->getMessage());
-					
-					return FALSE;
-				}
-			}
-			else
-			{
-				// An error ocurred while trying to send the messages
-				// Rollback the message
-				$message->delete();
-				Kohana::$log->add(Log::INFO, "No messages sent");
-			}
-			
+				$ping->save();
+			}			
 		}
 		catch (ORM_Validation_Exception $e)
 		{

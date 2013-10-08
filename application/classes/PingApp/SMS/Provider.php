@@ -92,6 +92,8 @@ abstract class PingApp_SMS_Provider {
 		// Get provider phone (FROM)
 		// Replace non-numeric
 		$this->_from = preg_replace("/[^0-9,.]/", "", PingApp_Settings::get(self::$sms_provider.'_phone'));
+
+		return $this->_from;
 	}
 	
 	/**
@@ -110,6 +112,8 @@ abstract class PingApp_SMS_Provider {
 				$this->_options[$key] = PingApp_Settings::get($sms_provider.'_'.$key);
 			}
 		}
+
+		return $this->_options;
 	}
 	
 	/**
@@ -117,4 +121,68 @@ abstract class PingApp_SMS_Provider {
 	 * @param  string  message Message to be sent
 	 */
 	abstract public function send($to, $message);
+
+	/**
+	 * Receive Messages From SMS Provider
+	 *
+	 * @param  string from from Phone number
+	 * @param  string message Received Message
+	 * @return void
+	 */
+	public function receive($from = NULL, $message = NULL)
+	{
+		// Is the sender of the message a registered contact?
+		$contact = Model_Contact::get_contact($from, 'phone');
+		if ( ! $contact)
+		{
+			// HALT
+			Kohana::$log->add(Log::ERROR, __("':from' is not registered as a contact", array(":from" => $from)));
+			return;
+		}
+
+		if ( ! trim($message))
+		{
+			// HALT
+			Kohana::$log->add(Log::ERROR, __("blank message received"));
+			return;
+		}
+		
+		// Use the last id of the ping to tag the pong
+		// TODO: Review
+		$ping = DB::select(array(DB::expr('MAX(id)'), 'ping_id'))
+			->from('pings')
+			->where('contact_id', '=', $contact->id)
+			->where('type', '=', 'sms')
+			->where('status', '=', 'pending')
+			->where('sent', '=', 1)
+			->execute()
+			->as_array();
+		
+		// Record the pong
+		if ( $ping[0]['ping_id'] )
+		{
+			// Load the pong
+			$ping = ORM::factory('Ping', $ping[0]['ping_id']);
+			
+			// Mark the ping as replied
+			$ping->set('status', 'replied')->save();
+			
+			$pong = ORM::factory('Pong')
+				->values(array(
+					'content' => $message,
+					'contact_id' => $contact->id,
+					'type' => 'sms',
+					'ping_id' => $ping->id
+				))
+				->save();
+			
+			// Lets parse the message for OK/NOT OKAY indicators
+			PingApp_Parse::status($contact, $pong, $message);
+		}
+		else
+		{
+			Kohana::$log->add(Log::ERROR, __("There is no record of ':from' having been pinged",
+				array(":from" => $from)));
+		}
+	}
 }

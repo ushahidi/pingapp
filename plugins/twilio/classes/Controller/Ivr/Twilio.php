@@ -95,7 +95,7 @@ class Controller_Ivr_Twilio extends Controller {
 					->values(array(
 						'content' => $message_text,
 						'contact_id' => $contact->id,
-						'type' => 'phone',
+						'type' => 'voice',
 						'ping_id' => $ping->id
 					))
 					->save();
