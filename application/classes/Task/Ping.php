@@ -87,15 +87,15 @@ class Task_Ping extends Minion_Task
 			->where('parent_id', '=', 0)
 			->join(array($pongs, 'pongs'), 'LEFT')
 		    	->on('ping.contact_id', '=', 'pongs.contact_id')
+		    ->where('ping.updated', '<=', DB::expr('DATE_SUB(NOW(), INTERVAL 10 MINUTE)'))
+		    ->where('ping.updated', '>=', DB::expr('DATE_SUB(NOW(), INTERVAL 1 DAY)'))
 			->find_all();
 
 		foreach ($pings as $ping)
 		{
 			// Requeue only if 10 mins have passed
 			// Requeue only if the original is less than 24 hours old
-			if ( (int) $ping->pongs == 0 
-			 AND ( time() - strtotime($ping->updated) ) > 600 
-			 AND ( time() - strtotime($ping->updated) ) < 86400)
+			if ( (int) $ping->pongs == 0 )
 			{
 				$new_ping = ORM::factory('Ping')
 					->where('parent_id', '=', $ping->id)
