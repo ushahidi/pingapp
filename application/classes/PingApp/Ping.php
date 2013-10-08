@@ -86,6 +86,21 @@ class PingApp_Ping {
 						{
 							$_ping->status = 'cancelled';
 							$_ping->save();
+
+							// Cancel the Parent Too
+							$parent = $_ping->parent;
+							if ( $parent->loaded() )
+							{
+								$parent->status = 'cancelled';
+								$parent->save();
+
+								// If there are any other children out there
+								foreach ($parent->children->find_all() as $child)
+								{
+									$child->status = 'cancelled';
+									$child->save();
+								}
+							}
 						}
 						
 						// Ping the Secondaries

@@ -84,6 +84,7 @@ class Task_Ping extends Minion_Task
 		$pings = ORM::factory('Ping')
 			->select('pongs.pongs')
 			->where('sent', '=', 1)
+			->where('status', '=', 'pending')
 			->where('parent_id', '=', 0)
 			->join(array($pongs, 'pongs'), 'LEFT')
 		    	->on('ping.contact_id', '=', 'pongs.contact_id')
@@ -137,12 +138,12 @@ class Task_Ping extends Minion_Task
 		{
 			try
 			{
-				// Pop An Element from the Queue (Block for 3 seconds)
-				$item = $redis->blPop('pingapp_pings', 3);
+				// Pop An Element from the Queue
+				$item = $redis->lPop('pingapp_pings');
 
-				if ( isset($item[1]) )
+				if ( (int) $item )
 				{
-					PingApp_Ping::process((int) $item[1]);
+					PingApp_Ping::process((int) $item);
 				}
 				else
 				{
