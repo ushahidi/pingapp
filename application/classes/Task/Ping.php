@@ -93,15 +93,15 @@ class Task_Ping extends Minion_Task
 		{
 			if ( (int) $ping->pongs == 0 AND ( time() - strtotime($ping->updated) ) > 600)
 			{
-				$newping = ORM::factory('Ping')
+				$new_ping = ORM::factory('Ping')
 					->where('parent_id', '=', $ping->id)
 					->where('status', '=', 'pending')
 					->where('sent', '!=', 1)
 					->find();
 
-				if ( ! $newping->loaded() )
+				if ( ! $new_ping->loaded() )
 				{
-					$newping->values(array(
+					$new_ping->values(array(
 							'parent_id' => $ping->id,
 							'message_id' => $ping->message_id,
 							'tracking_id' => '0',
@@ -111,7 +111,7 @@ class Task_Ping extends Minion_Task
 							'status' => 'pending',
 							'sent' => 0
 						));
-					$newping->save();
+					$new_ping->save();
 				}
 			}
 		}
