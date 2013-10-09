@@ -153,7 +153,7 @@ abstract class PingApp_SMS_Provider {
 			->from('pings')
 			->where('contact_id', '=', $contact->id)
 			->where('type', '=', 'sms')
-			->where('status', '=', 'pending')
+			->where('parent_id', '=', 0)
 			->where('sent', '=', 1)
 			->execute()
 			->as_array();
