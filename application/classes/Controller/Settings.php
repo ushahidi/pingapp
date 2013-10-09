@@ -40,6 +40,16 @@ class Controller_Settings extends Controller_PingApp {
 	}
 
 	/**
+	 * Customize Messages
+	 * 
+	 * @return void
+	 */
+	public function action_customize()
+	{
+		$this->_action('customize');
+	}
+
+	/**
 	 * Edit TOS Settings
 	 * 
 	 * @return void

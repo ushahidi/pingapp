@@ -28,3 +28,6 @@
 [submodule "KO3-Event"]
 	path = modules/KO3-Event
 	url = git://github.com/thinkclay/KO3-Event.git
+[submodule "modules/email"]
+	path = modules/email
+	url = git://github.com/shadowhand/email.git
