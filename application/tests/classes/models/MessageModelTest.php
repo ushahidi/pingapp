@@ -22,21 +22,23 @@ class MessageModelTest extends Unittest_TestCase {
 			array(
 				// Valid message data
 				array(
-					'content' => 'I am okay',
-					'type' => 'sms',
-				)
-			),
-			array(
-				// Valid message data
-				array(
-					'content' => '  <strong>I am not okay</strong>',
+					'title' => 'Are you okay?',
+					'message' => 'this is a test message',
 					'type' => 'email',
 				)
 			),
 			array(
 				// Valid message data
 				array(
-					'content' => 'okay',
+					'message' => 'Are you okay?',
+					'type' => 'sms',
+				)
+			),
+			array(
+				// Valid message data
+				array(
+					'title' => 'Title not needed',
+					'message' => 'this is an sms message',
 					'type' => 'sms',
 				)
 			)
@@ -59,21 +61,23 @@ class MessageModelTest extends Unittest_TestCase {
 			array(
 				// Invalid message data set 2 - Invalid Type
 				array(
-					'content' => 'I am okay',
+					'title' => 'Title not needed',
+					'message' => 'this is an sms message',
 					'type' => 'facebook',
 				)
 			),
 			array(
-				// Invalid message data set 2 - Missing Content
+				// Invalid message data set 2 - Missing Title in Email
 				array(
-					'content' => ' ',
+					'message' => 'this is an email message',
 					'type' => 'email',
 				)
 			),
 			array(
 				// Invalid message data set 4 - Missing Type
 				array(
-					'content' => 'I am okay',
+					'title' => 'Are you okay?',
+					'message' => 'this is a test message',
 				)
 			)
 		);
