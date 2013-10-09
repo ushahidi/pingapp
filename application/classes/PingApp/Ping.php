@@ -153,7 +153,9 @@ class PingApp_Ping {
 			Kohana::$log->add(Log::ERROR, $e->getMessage());
 		}
 
-		if (($tracking_id = $provider->send($contact->contact, $ping->message->message)) !== FALSE)
+		$tagline = PingApp_Settings::get('message_sms');
+
+		if (($tracking_id = $provider->send($contact->contact, $ping->message->message.' '.$tagline)) !== FALSE)
 		{
 			$ping->tracking_id = $tracking_id;
 			$ping->provider = $provider::$sms_provider; // Update the provider in case its changed
@@ -170,6 +172,80 @@ class PingApp_Ping {
 
 	private static function _email($ping, $contact)
 	{
-		
+		$driver = PingApp_Settings::get('email_outgoing_type');
+		$options = array(
+			'hostname' => PingApp_Settings::get('email_outgoing_host'),
+			'port' => PingApp_Settings::get('email_outgoing_port'),
+			'encryption' => (PingApp_Settings::get('email_outgoing_security') != 'none') 
+				? PingApp_Settings::get('email_outgoing_security') : '',
+			'username' => PingApp_Settings::get('email_outgoing_username'),
+			'password' => PingApp_Settings::get('email_outgoing_password')
+			);
+
+		$tracking_id = self::_tracking_id();
+
+		$config = Kohana::$config->load('email');
+		$config->set('driver', $driver);
+		$config->set('options', $options);
+
+		$title = $ping->message->title;
+
+		$person = $contact->people->order_by('created', 'ASC')->find();
+
+		$sender_name = $ping->message->user->first_name.' '.$ping->message->user->last_name;
+		$sender_email = $ping->message->user->email;
+		$sender = ($sender_name) ? $sender_name : $sender_email;
+
+		$prepend = 'Ping requested by: '.$sender."\n\n";
+
+		$body = PingApp_Settings::get('message_email');
+		$body = str_replace('{{name}}', $person->name, $body);
+		$body = str_replace('{{message}}', $ping->message->message, $body);
+		$body = $prepend.$body."\n\n\n".' [{'.$tracking_id.'}]';$body."\n\n\n".' [{'.$tracking_id.'}]';
+
+		$from = PingApp_Settings::get('email_from');
+		$from_name = PingApp_Settings::get('email_from_name');
+
+		try
+		{
+			$result = Email::factory($title, $body)
+				->to($contact->contact)
+				->from($from, $sender)
+				->send();
+
+			$ping->provider = (PingApp_Settings::get('email_outgoing_host')) ? PingApp_Settings::get('email_outgoing_host') : 'email';
+			$ping->tracking_id = $tracking_id;
+			$ping->sent = 1;
+			$ping->save();
+		}
+		catch (Exception $e)
+		{
+			// Failed
+			$ping->status = 'failed';
+			$ping->save();
+
+			Kohana::$log->add(Log::ERROR, $e->getMessage());
+		}
+	}
+
+	private static function _tracking_id()
+	{
+		$unique = FALSE;
+		$code = NULL;
+		while ( ! $unique)
+		{
+			$code = Text::random('alnum', 32);
+			$ping = ORM::factory('Ping')
+				->where('type', '=', 'email')
+				->where('tracking_id', '=', $code)
+				->find();
+
+			if ( ! $ping->loaded() )
+			{
+				$unique = TRUE;
+			}
+		}
+
+		return $code;
 	}
 }

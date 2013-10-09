@@ -19,5 +19,5 @@
 
 $(document).ready(function() {
 	var elem = $("#chars");
-	$("#message").limiter(140, elem);
+	$("#message").limiter(120, elem);
 });

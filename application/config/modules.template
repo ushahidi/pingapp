@@ -11,5 +11,6 @@ return array(
 	'minion'     => MODPATH.'minion',     // CLI Tasks
 	'migrations' => MODPATH.'migrations', // Minion Migrations
 	'KO3-Event'  => MODPATH.'KO3-Event',  // Event Module
+	'email'      => MODPATH.'email',      // Email Module
 	'crowdmapid' => MODPATH.'crowdmapid', // CrowdmapID Authentication
 );

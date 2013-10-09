@@ -9,6 +9,8 @@ class Controller_Messages extends Controller_PingApp {
 	 * @var array
 	 */
 	private $_errors = array();
+
+	private $_post = NULL;
 	
 	/**
 	 * Creates a new message
@@ -16,13 +18,13 @@ class Controller_Messages extends Controller_PingApp {
 	 */
 	public function action_new()
 	{
-		$this->template->content = View::factory('pages/send')
+		$this->template->content = View::factory('pages/messages/new')
 			->bind('user', $this->user)
-			->bind('post', $post)
+			->bind('post', $this->_post)
 			->bind('errors', $this->_errors)
 			->bind('done', $done);
 
-		$this->template->footer->js = View::factory('pages/js/send');
+		$this->template->footer->js = View::factory('pages/messages/js/new');
 
 		if ($this->request->method() === 'POST')
 		{
@@ -45,6 +47,8 @@ class Controller_Messages extends Controller_PingApp {
 	 */
 	private function _broadcast_message()
 	{
+		$this->_post = $this->request->post();
+
 		// Get the SMS provider to use
 		try
 		{
@@ -64,6 +68,20 @@ class Controller_Messages extends Controller_PingApp {
 			$this->_errors[] = 'No recipients selected';
 			return FALSE;
 		}
+
+		// Send Type Included?
+		if ( ! $this->request->post('type') OR ! is_array($this->request->post('type')) )
+		{
+			$this->_errors[] = 'No message type selected';
+			return FALSE;
+		}
+
+		// Type is Email or SMS?
+		if ( ! in_array('email', $this->request->post('type')) AND ! in_array('sms', $this->request->post('type')))
+		{
+			$this->_errors[] = 'Message type must be SMS or Email';
+			return FALSE;
+		}
 		
 		// If EVERYONE is selected, ignore the others
 		$operator = 'IN';
@@ -73,7 +91,6 @@ class Controller_Messages extends Controller_PingApp {
 			$recipients = 0;
 		}
 		$contacts = ORM::factory('Contact')
-			->where('type', '=', 'phone')
 			->join('contacts_people')->on('contact.id', '=', 'contacts_people.contact_id')
 			->join('people')->on('people.id', '=', 'contacts_people.person_id')
 			->where('people.user_id', '=', $this->user->id)
@@ -82,37 +99,57 @@ class Controller_Messages extends Controller_PingApp {
 
 		if ( ! $contacts->count() )
 		{
-			$this->_errors[] = 'None of your recipients have phone numbers to send to';
+			$this->_errors[] = 'No recipients to send to';
 			return FALSE;
 		}
 
-		// Create the message
-		$message = ORM::factory('Message');
 		try
 		{
-			// Set values and save
-			$message->values(array(
-					'message' => $this->request->post('message'),
-					'user_id' => $this->user->id,
-					'type' => 'sms'
-				));
-			$message->save();
-
-			// Save Ping
-			foreach ($contacts as $contact)
+			foreach ($this->request->post('type') as $type)
 			{
-				$ping = ORM::factory('Ping');
-				$ping->values(array(
-						'message_id' => $message->id,
-						'tracking_id' => '0',
-						'type' => 'sms',
-						'contact_id' => $contact->id,
-						'provider' => strtolower(PingApp_SMS_Provider::$sms_provider),
-						'status' => 'pending',
-						'sent' => 0
+				// Create the message
+				$$type = ORM::factory('Message');
+
+				// Set values and save
+				${$type}->values(array(
+						'type' => $type,
+						'message' => $this->request->post('message'),
+						'title' => $this->request->post('title'),
+						'user_id' => $this->user->id
 					));
-				$ping->save();
-			}			
+				${$type}->check();
+			}
+
+			foreach ($this->request->post('type') as $type)
+			{
+				${$type}->save();
+
+				// Save Ping
+				foreach ($contacts as $contact)
+				{
+					$ping = ORM::factory('Ping');
+					$ping->values(array(
+							'message_id' => ${$type}->id,
+							'tracking_id' => '0',
+							'contact_id' => $contact->id,
+							'provider' => 0,
+							'status' => 'pending',
+							'sent' => 0
+						));
+
+					if ($type == 'sms' AND $contact->type == 'phone')
+					{
+						$ping->type = $type;
+						$ping->save();
+					}
+
+					if ($type == 'email' AND $contact->type == 'email')
+					{
+						$ping->type = $type;
+						$ping->save();
+					}
+				}
+			}
 		}
 		catch (ORM_Validation_Exception $e)
 		{

@@ -20,16 +20,36 @@
 		<legend>New Message</legend>
 		<div class="recipient-row">
 			<div class="recipients">
-				<label>To:</label>
+				<label><strong>To:</strong></label>
 				<?php echo Form::select("recipients[]", PingApp_Form::people($user), (isset($post['recipients'])) ? $post['recipients'] : '', array("id" => "recipients[]", "minlength" => "3", "class" => "medium recipients-dropdown", "multiple" => "multiple")); ?>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="large-6 columns">
+				<h4><label for="type[sms]">
+				<?php echo Form::checkbox('type[]', 'sms',  ( ! isset($post['type']) OR (isset($post['type']) AND in_array('sms', $post['type'])) ) ? TRUE : FALSE, array("id" => "type[sms]", "style" => "display: none;")) ;?>
+				<span class="custom checkbox"></span> Send SMS</label></h4>
+			</div>
+			<div class="large-6 columns">
+				<h4><label for="type[email]">
+				<?php echo Form::checkbox('type[]', 'email',  ( isset($post['type']) AND in_array('email', $post['type'])) ? TRUE : FALSE, array("id" => "type[email]", "style" => "display: none;")) ;?>
+				<span class="custom checkbox"></span> Send Email</label></h4>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="large-12 columns">
+				<label>Title: <small>* required for email pings</small></label>
+				<?php echo Form::input('title', $post['title'], array("maxlength" => "120")); ?>
 			</div>
 		</div>
 
 		<div class="message-row">
 			<div class="message">
-				<label>Message:</label>
+				<label><strong>Message:</strong></label>
 				<?php echo Form::textarea('message', $post['message'], array("id" => "message")); ?>
-				<div id="chars" class="chars">140</div>
+				<div id="chars" class="chars">120</div>
 			</div>
 		</div>
 
