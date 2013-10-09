@@ -117,14 +117,7 @@ class Controller_Settings extends Controller_PingApp {
 			// - Settings Model Validation
 			foreach ($this->_post['settings'] as $key => $value)
 			{
-				$setting = ORM::factory('Setting')
-					->where('key', '=', $key)
-					->where('user_id', '=', 0)
-					->find();
-
-				$setting->key = $key;
-				$setting->value = $value;
-				$setting->save();
+				PingApp_Settings::set($key, $value);
 			}
 
 			// Redirect to prevent repost
