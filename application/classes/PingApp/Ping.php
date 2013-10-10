@@ -65,7 +65,7 @@ class PingApp_Ping {
 									$pings_repings_delay = 5;
 								}
 								echo $pings_repings_delay."\n";
-								if ( ( time() - strtotime($_ping->updated) ) < $pings_repings_delay)
+								if ( ( time() - strtotime($_ping->updated) ) < ($pings_repings_delay * 60) )
 								{
 									return;
 								}
