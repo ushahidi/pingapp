@@ -37,11 +37,11 @@ abstract class PingApp_SMS_Provider {
 	
 	protected static $_instance = NULL;
 	
-	public static function instance()
+	public static function instance($provider = NULL)
 	{
 		// SMS Settings
 		self::$sms = (PingApp_Settings::get('sms') == 'on') ? TRUE : FALSE;
-		self::$sms_provider = PingApp_Settings::get('sms_provider');
+		self::$sms_provider = ($provider) ? $provider : PingApp_Settings::get('sms_provider');
 
 		if (isset(self::$_instance))
 		{
@@ -83,11 +83,10 @@ abstract class PingApp_SMS_Provider {
 
 	/**
 	 * Sets the FROM parameter for the SMS provider
-	 *
-	 * @param  string sms provider
-	 * @return void
+	 * 
+	 * @return int
 	 */
-	public function from($sms_provider)
+	public function from()
 	{
 		// Get provider phone (FROM)
 		// Replace non-numeric
@@ -98,18 +97,17 @@ abstract class PingApp_SMS_Provider {
 	
 	/**
 	 * Sets the authentication parameters for the SMS provider
-	 *
-	 * @param  string sms provider
-	 * @return void
+	 * 
+	 * @return array
 	 */
-	public function options($sms_provider)
+	public function options()
 	{
-		$options = Kohana::$config->load('_plugins.'.$sms_provider.'.options');
+		$options = Kohana::$config->load('_plugins.'.self::$sms_provider.'.options');
 		if (is_array($options))
 		{
 			foreach ($options as $key => $value)
 			{
-				$this->_options[$key] = PingApp_Settings::get($sms_provider.'_'.$key);
+				$this->_options[$key] = PingApp_Settings::get(self::$sms_provider.'_'.$key);
 			}
 		}
 

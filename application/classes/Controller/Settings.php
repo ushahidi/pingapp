@@ -40,6 +40,16 @@ class Controller_Settings extends Controller_PingApp {
 	}
 
 	/**
+	 * Pings
+	 * 
+	 * @return void
+	 */
+	public function action_pings()
+	{
+		$this->_action('pings');
+	}
+
+	/**
 	 * Customize Messages
 	 * 
 	 * @return void

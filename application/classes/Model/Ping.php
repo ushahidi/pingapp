@@ -56,7 +56,7 @@ class Model_Ping extends ORM {
 				array('in_array', array(':value', array('sms', 'email', 'twitter')) ),
 			),
 			'status' => array(
-				array('in_array', array(':value', array('pending', 'received', 'replied', 'expired', 'failed', 'cancelled')) ),
+				array('in_array', array(':value', array('pending', 'received', 'replied', 'expired', 'failed', 'cancelled', 'unknown')) ),
 			),
 			'sent' => array(
 				array('in_array', array(':value', array(0, 1)) ),

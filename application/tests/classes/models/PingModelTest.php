@@ -26,6 +26,7 @@ class PingModelTest extends Unittest_TestCase {
 					'message_id' => 1,
 					'provider' => 'twilio',
 					'type' => 'sms',
+					'status' => 'pending',
 				)
 			),
 			array(
@@ -35,6 +36,7 @@ class PingModelTest extends Unittest_TestCase {
 					'message_id' => 1,
 					'provider' => 'smssync',
 					'type' => 'sms',
+					'status' => 'unknown',
 				)
 			),
 			array(
@@ -84,6 +86,15 @@ class PingModelTest extends Unittest_TestCase {
 					'contact_id' => 1,
 					'provider' => 'twilio',
 					'type' => 'sms',
+				)
+			),
+			array(
+				// Invalid ping data set 5 - Invalid status
+				array(
+					'contact_id' => 1,
+					'provider' => 'smssync',
+					'type' => 'sms',
+					'status' => 'sent',
 				)
 			)
 		);
