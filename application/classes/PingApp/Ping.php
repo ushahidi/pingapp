@@ -43,8 +43,14 @@ class PingApp_Ping {
 						->order_by('created', 'DESC')
 						->find_all();
 
-					// If less than 3, we can safely proceed
-					if ($pings->count() < 3)
+					// Get the pings per 24 hours setting
+					$pings_per_24 = (int) PingApp_Settings::get('pings_per_24');
+					// Prevent Abuse - Use 10 Max
+					if ( ! $pings_per_24 OR $pings_per_24 > 10)
+					{
+						$pings_per_24 = 3;
+					}
+					if ($pings->count() < $pings_per_24)
 					{
 						// But we need to space the pings out
 						if ($pings->count() > 0)
@@ -52,8 +58,14 @@ class PingApp_Ping {
 							// Get the last ping to this contact
 							foreach ($pings as $_ping)
 							{
-								// 10 minute spacer
-								if ( ( time() - strtotime($_ping->updated) ) < 600)
+								// Get the Reping Delay
+								$pings_repings_delay = (int) PingApp_Settings::get('pings_repings_delay');
+								if ( ! $pings_repings_delay OR $pings_repings_delay < 5)
+								{
+									$pings_repings_delay = 5;
+								}
+								echo $pings_repings_delay."\n";
+								if ( ( time() - strtotime($_ping->updated) ) < $pings_repings_delay)
 								{
 									return;
 								}

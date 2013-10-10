@@ -6,6 +6,7 @@
 <fieldset>
 	<h5><a href="/settings/sms">SMS</a></h5>
 	<h5><a href="/settings/email">Email</a></h5>
+	<h5><a href="/settings/pings">Pings</a></h5>
 	<h5><a href="/settings/customize">Customize Messages</a></h5>
 	<h5><a href="/settings/tos">Terms of Service</a></h5>
 </fieldset>
