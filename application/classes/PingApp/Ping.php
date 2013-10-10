@@ -206,7 +206,7 @@ class PingApp_Ping {
 
 		$sender_name = $ping->message->user->first_name.' '.$ping->message->user->last_name;
 		$sender_email = $ping->message->user->email;
-		$sender = ($sender_name) ? $sender_name : $sender_email;
+		$sender = ($sender_name != ' ') ? $sender_name : $sender_email;
 
 		$prepend = 'Ping requested by: '.$sender."\n\n";
 
