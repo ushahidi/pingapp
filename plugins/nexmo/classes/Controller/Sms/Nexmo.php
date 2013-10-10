@@ -28,8 +28,8 @@ class Controller_Sms_Nexmo extends Controller {
 			throw new HTTP_Exception_403();
 		}
 
-		$provider = PingApp_SMS_Provider::instance();
-		$options = $provider->options($provider::$sms_provider);
+		$provider = PingApp_SMS_Provider::instance('nexmo');
+		$options = $provider->options();
 
 		// Authenticate the request
 		$sms = new NexmoMessage($options['api_key'], $options['api_secret']);
@@ -43,7 +43,7 @@ class Controller_Sms_Nexmo extends Controller {
 		// Remove Non-Numeric characters because that's what the DB has
 		$to = preg_replace("/[^0-9,.]/", "", $sms->to);
 		$from  = preg_replace("/[^0-9,.]/", "", $sms->from);
-		$sender = $provider->from($provider::$sms_provider);
+		$sender = $provider->from();
 
 		if ( ! $to OR strrpos($to, $sender) === FALSE )
 		{

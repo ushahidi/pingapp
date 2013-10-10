@@ -182,7 +182,7 @@ class PingApp_Ping {
 			'password' => PingApp_Settings::get('email_outgoing_password')
 			);
 
-		$tracking_id = self::_tracking_id();
+		$tracking_id = self::tracking_id('email');
 
 		$config = Kohana::$config->load('email');
 		$config->set('driver', $driver);
@@ -228,7 +228,13 @@ class PingApp_Ping {
 		}
 	}
 
-	private static function _tracking_id()
+	/**
+	 * Generate A Tracking ID for email, smssync, etc
+	 *
+	 * @param string $type - type of tracking_id
+	 * @return string tracking id
+	 */
+	public static function tracking_id($type = 'email')
 	{
 		$unique = FALSE;
 		$code = NULL;
@@ -236,7 +242,7 @@ class PingApp_Ping {
 		{
 			$code = Text::random('alnum', 32);
 			$ping = ORM::factory('Ping')
-				->where('type', '=', 'email')
+				->where('type', '=', $type)
 				->where('tracking_id', '=', $code)
 				->find();
 

@@ -6,10 +6,10 @@ class Controller_Sms_Twilio extends Controller {
 	{
 		if ($this->request->method() == 'POST')
 		{
-			$provider = PingApp_SMS_Provider::instance();
+			$provider = PingApp_SMS_Provider::instance('twilio');
 
 			// Authenticate the request
-			$options = $provider->options($provider::$sms_provider);
+			$options = $provider->options();
 			if ($this->request->post('AccountSid') !== $options['account_sid'])
 			{
 				// Could not authenticate the request?
@@ -19,7 +19,7 @@ class Controller_Sms_Twilio extends Controller {
 			// Remove Non-Numeric characters because that's what the DB has
 			$to = preg_replace("/[^0-9,.]/", "", $this->request->post('To'));
 			$from  = preg_replace("/[^0-9,.]/", "", $this->request->post('From'));
-			$sender = $provider->from($provider::$sms_provider);
+			$sender = $provider->from();
 
 			if ( ! $to OR strrpos($to, $sender) === FALSE )
 			{
