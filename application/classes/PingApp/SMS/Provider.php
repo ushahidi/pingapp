@@ -147,23 +147,20 @@ abstract class PingApp_SMS_Provider {
 		
 		// Use the last id of the ping to tag the pong
 		// TODO: Review
-		$ping = DB::select(array(DB::expr('MAX(id)'), 'ping_id'))
-			->from('pings')
+		$ping = ORM::factory('Ping')
 			->where('contact_id', '=', $contact->id)
 			->where('type', '=', 'sms')
 			->where('parent_id', '=', 0)
 			->where('sent', '=', 1)
-			->execute()
-			->as_array();
+			->order_by('id', 'DESC')
+			->find();
 		
 		// Record the pong
-		if ( $ping[0]['ping_id'] )
+		if ( $ping->loaded() )
 		{
-			// Load the pong
-			$ping = ORM::factory('Ping', $ping[0]['ping_id']);
-			
 			// Mark the ping as replied
-			$ping->set('status', 'replied')->save();
+			$ping->status = 'replied';
+			$ping->save();
 			
 			$pong = ORM::factory('Pong')
 				->values(array(
