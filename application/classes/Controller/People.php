@@ -149,7 +149,6 @@ class Controller_People extends Controller_PingApp {
 						strtolower($_contact['contact']);
 
 					$contact = ORM::factory('Contact')
-						->where('id', '=', (isset($_contact['id'])) ? $_contact['id'] : 0)
 						->where('type', '=', $_contact['type'])
 						->where('contact', '=', $__contact)
 						->find();

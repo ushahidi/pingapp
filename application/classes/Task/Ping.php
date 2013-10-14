@@ -71,14 +71,11 @@ class Task_Ping extends Minion_Task
 	 */
 	protected function _requeue()
 	{
-		// Get Pongs
-		$pongs = DB::select('cp.contact_id', array(DB::expr('COUNT(pongs.id)'), 'pongs'))
+		// Get Pongs from the last 2 days
+		$pongs = DB::select('contact_id', array(DB::expr('COUNT(pongs.id)'), 'pongs'))
 		    ->from('pongs')
-		    ->join(array('contacts', 'c'), 'INNER')
-		    	->on('pongs.contact_id', '=', 'c.id')
-		    ->join(array('contacts_people', 'cp'), 'INNER')
-		    	->on('c.id', '=', 'cp.contact_id')
-		    ->group_by('cp.contact_id');
+		    ->where('pongs.created', '>=', DB::expr('DATE_SUB(NOW(), INTERVAL 2 DAY)'))
+		    ->group_by('contact_id');
 
 		// Get Pings
 		$pings = ORM::factory('Ping')
@@ -94,8 +91,7 @@ class Task_Ping extends Minion_Task
 
 		foreach ($pings as $ping)
 		{
-			// Requeue only if 10 mins have passed
-			// Requeue only if the original is less than 24 hours old
+			// Requeue only if there are no pongs back
 			if ( (int) $ping->pongs == 0 )
 			{
 				$new_ping = ORM::factory('Ping')
