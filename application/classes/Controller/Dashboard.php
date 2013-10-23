@@ -64,6 +64,12 @@ class Controller_Dashboard extends Controller_PingApp {
 
 		$order = ' ORDER BY 6 DESC';
 
+		// Message ID?
+		if ( isset( $_GET['message_id'] ) )
+		{
+			$pings->where('message_id', '=', (int) $_GET['message_id']);
+		}
+
 		$items = DB::query(Database::SELECT, '('.$pings.') UNION ALL ('.$pongs.') '.$order.$limit.$offset)->execute();
 		$total = DB::query(Database::SELECT, '('.$pings.') UNION ALL ('.$pongs.') ')->execute();
 

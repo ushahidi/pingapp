@@ -9,7 +9,7 @@
 			<li class="divider hide-for-small"></li>
 			<li class=""><a href="/people">People</a></li>
 			<li class=""><a href="/groups">Groups</a></li>
-			<li class=""><a href="#">Messages</a></li>
+			<li class=""><a href="/messages">Messages</a></li>
 			<li class="logged-in has-dropdown">
 				<a href="#">
 					<div class="avatar">
