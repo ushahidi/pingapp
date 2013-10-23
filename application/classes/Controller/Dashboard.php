@@ -33,7 +33,7 @@ class Controller_Dashboard extends Controller_PingApp {
 		$columns = array('name');
 
 		// Pings
-		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'action'))
+		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'action'), array(DB::expr('pings.message_id'), 'message_id'))
 			->from('pings')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('pings.contact_id', '=', 'c.id')
@@ -44,7 +44,7 @@ class Controller_Dashboard extends Controller_PingApp {
 			->where('p.user_id', '=', $this->user->id);
 
 		// Pongs
-		$pongs = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'))
+		$pongs = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'), array(DB::expr('0'), 'message_id'))
 			->from('pongs')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('pongs.contact_id', '=', 'c.id')
@@ -67,7 +67,8 @@ class Controller_Dashboard extends Controller_PingApp {
 		// Message ID?
 		if ( isset( $_GET['message_id'] ) )
 		{
-			$pings->where('message_id', '=', (int) $_GET['message_id']);
+			$pings->having('message_id', '=', (int) $_GET['message_id']);
+			$pongs->having('message_id', '=', (int) $_GET['message_id']);
 		}
 
 		$items = DB::query(Database::SELECT, '('.$pings.') UNION ALL ('.$pongs.') '.$order.$limit.$offset)->execute();
