@@ -166,7 +166,6 @@ class Controller_Messages extends Controller_PingApp {
 		$recipients = $this->request->post('recipients');
 		if (is_array($recipients) )
 		{
-			print_r($recipients);
 			foreach ($types as $type)
 			{
 				// If EVERYONE is selected, ignore the others
