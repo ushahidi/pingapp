@@ -40,19 +40,24 @@ $(document).ready(function() {
 	// Next Button
 	$('#btnNext').click(function() {
 		$("a[href='#panel2']").click();
-		
-		$.post("<?php echo URL::site().'messages/ajax_calculate'; ?>",
-			$("form").serialize(),
-			function(data) {
-				$('#rowCalculating').hide();
-				$('#rowConfirm').show();
-				$('#txtMessage').html($('form #message').val());
-				$('#txtSMS').html(data.sms);
-				$('#txtEmail').html(data.email);
-				$('#txtCost').html(data.cost);
-			}, "json"
-		);
-
+		calculate();
 		return false;
 	});
+	$("a[href='#panel2']").click(function() {
+		calculate();
+	});
 });
+
+function calculate(){
+	$.post("<?php echo URL::site().'messages/ajax_calculate'; ?>",
+		$("form").serialize(),
+		function(data) {
+			$('#rowCalculating').hide();
+			$('#rowConfirm').show();
+			$('#txtMessage').html($('form #message').val());
+			$('#txtSMS').html(data.sms);
+			$('#txtEmail').html(data.email);
+			$('#txtCost').html(data.cost);
+		}, "json"
+	);
+}
