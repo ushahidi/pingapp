@@ -40,6 +40,49 @@ class Controller_Messages extends Controller_PingApp {
 	}
 
 	/**
+	 * Calculate Send Expense
+	 */
+	public function action_ajax_calculate()
+	{
+		$this->template = '';
+		$this->auto_render = FALSE;
+
+		$calculate = array(
+			'sms' => 0,
+			'email' => 0,
+			'cost' => 0
+			);
+
+		$types = $this->request->post('type');
+		$recipients = $this->request->post('recipients');
+		if (is_array($recipients) )
+		{
+			foreach ($types as $type)
+			{
+				// If EVERYONE is selected, ignore the others
+				$operator = 'IN';
+				if ( in_array(0, $recipients))
+				{
+					$operator = '>';
+					$recipients = 0;
+				}
+
+				$count = ORM::factory('Contact')
+					->join('contacts_people')->on('contact.id', '=', 'contacts_people.contact_id')
+					->join('people')->on('people.id', '=', 'contacts_people.person_id')
+					->where('people.user_id', '=', $this->user->id)
+					->where('contact.type', '=', ($type == 'sms') ? 'phone' : $type)
+					->where('people.id', $operator, $recipients)
+					->count_all();
+
+				$calculate[$type] = $count;
+			}
+		}
+
+		echo json_encode($calculate);
+	}
+
+	/**
 	 * Validates the input data and broadcasts the message
 	 * via the configured SMS provider
 	 *

@@ -18,6 +18,41 @@
 })(jQuery);
 
 $(document).ready(function() {
+	// Prevent Form Enter Submit
+	$('input,select').keypress(function(event) { return event.keyCode != 13; });
+
+	// Limit Message
 	var elem = $("#chars");
 	$("#message").limiter(120, elem);
+
+	// Email + Title
+	$('#type\\[email\\]').change(function() {
+		if($(this).is(":checked")) {
+			$('#rowTitle').show();
+		} else {
+			$('#rowTitle').hide();
+		}
+	});
+	if($('#type\\[email\\]').is(":checked")) {
+		$('#rowTitle').show();
+	}
+
+	// Next Button
+	$('#btnNext').click(function() {
+		$("a[href='#panel2']").click();
+		
+		$.post("<?php echo URL::site().'messages/ajax_calculate'; ?>",
+			$("form").serialize(),
+			function(data) {
+				$('#rowCalculating').hide();
+				$('#rowConfirm').show();
+				$('#txtMessage').html($('form #message').val());
+				$('#txtSMS').html(data.sms);
+				$('#txtEmail').html(data.email);
+				$('#txtCost').html(data.cost);
+			}, "json"
+		);
+
+		return false;
+	});
 });
