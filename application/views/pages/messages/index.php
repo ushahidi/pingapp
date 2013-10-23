@@ -1,12 +1,12 @@
-<h4>People <?php if ( $group AND $group->loaded() ): ?><small><?php echo $group->name; ?></small><?php endif; ?></h4>
+<h4>Messages</h4>
 <ul class="breadcrumbs">
 	<li><a href="/">Home</a></li>
-	<li class="current"><a href="#">People</a></li>
+	<li class="current"><a href="#">Messages</a></li>
 </ul>
 
 <div class="dashboard-actions-wrapper">
 	<div class="new-message">
-		<a href="/people/edit" class="button  expand">New Person [+]</a>
+		<a href="/messages/new" class="button   expand  success">Send A Message</a>
 	</div>
 </div>
 
@@ -15,9 +15,10 @@
 		<table class="display dataTable" id="activity">
 			<thead>
 				<tr>
-					<th>Name</th>
-					<th width="150">Status</th>
-					<th width="50">Pings</th>
+					<th>Message</th>
+					<th>Type</th>
+					<th width="50">Recipients</th>
+					<th>Created</th>
 				</tr>
 			</thead>
 			<tbody></tbody>

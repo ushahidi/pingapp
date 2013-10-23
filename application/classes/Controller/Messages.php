@@ -40,6 +40,115 @@ class Controller_Messages extends Controller_PingApp {
 	}
 
 	/**
+	 * List Messages
+	 * 
+	 * @return void
+	 */
+	public function action_index()
+	{
+		$this->template->content = View::factory('pages/messages/index');
+		$this->template->footer->js = View::factory('pages/messages/js/index');
+	}
+
+	/**
+	 * View Message
+	 * 
+	 * @return void
+	 */
+	public function action_view()
+	{
+		$this->template->content = View::factory('pages/messages/view')
+			->bind('message', $message);
+
+		$this->template->footer->js = View::factory('pages/messages/js/view')
+			->bind('message', $message);
+
+		$message_id = $this->request->param('id', 0);
+
+		$message = ORM::factory('Message')
+			->where('id', '=', $message_id)
+			->where('user_id', '=', $this->user->id)
+			->find();
+
+		if ( ! $message->loaded() )
+		{
+			HTTP::redirect('dashboard');
+		}
+	}
+
+	/**
+	 * Use datatables to generate messages list
+	 */
+	public function action_ajax_list()
+	{
+		$this->template = '';
+		$this->auto_render = FALSE;
+
+		// Data table columns
+		$columns = array('message', 'title', 'type', 'pings', 'message.created');
+
+		$pings = DB::select('message_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
+			->from('pings')
+			->group_by('message_id');
+
+		$query = ORM::factory('Message')
+		    ->select('pings.pings')
+		    ->join(array($pings, 'pings'), 'LEFT')
+		    	->on('message.id', '=', 'pings.message_id')
+		    ->where('user_id', '=', $this->user->id);
+
+		$query2 = clone $query;
+
+		// Searching & Filtering
+		if (  isset( $_GET['sSearch'] ) AND $_GET['sSearch'] != "" )
+		{
+			$query->where_open();
+			for ( $i=0 ; $i < count($columns) ; $i++ )
+			{
+				$query->or_where($columns[$i], 'LIKE', '%'.$_GET['sSearch'].'%');
+			}
+			$query->where_close();
+		}
+
+		// Paging
+		if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
+		{
+			$query->offset($_GET['iDisplayStart']);
+			$query->limit($_GET['iDisplayLength']);
+		}
+
+		// Ordering
+		if ( isset( $_GET['iSortCol_0'] ) AND $_GET['iSortCol_0'] != 0 )
+		{
+			$query->order_by($columns[$_GET['iSortCol_0']], $_GET['sSortDir_0']);
+		}
+
+		$messages = $query->find_all()->as_array();
+
+		//Output
+		$output = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => count($messages),
+			"iTotalDisplayRecords" => $query2->count_all(),
+			"aaData" => array()
+		);
+
+		foreach ($messages as $message)
+		{
+			$row = array(
+				0 => '<a href="/messages/view/'.$message->id.'">'.$message->message.'</a>',
+				1 => '<span class="radius secondary label">'.strtoupper($message->type).'</span>',
+				2 => '<span class="radius secondary label">'.(int) $message->pings.'</span>',
+				3 => date('Y-m-d g:i a', strtotime($message->created)),
+				);
+
+			$output['aaData'][] = $row;
+		}
+
+		echo json_encode($output);
+	}
+
+	/**
 	 * Calculate Send Expense
 	 */
 	public function action_ajax_calculate()
@@ -57,6 +166,7 @@ class Controller_Messages extends Controller_PingApp {
 		$recipients = $this->request->post('recipients');
 		if (is_array($recipients) )
 		{
+			print_r($recipients);
 			foreach ($types as $type)
 			{
 				// If EVERYONE is selected, ignore the others
