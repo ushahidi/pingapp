@@ -87,6 +87,7 @@ class Controller_Pongs extends Controller_PingApp {
 			$row = array(
 				0 => '<strong>'.strtoupper($pong->contact).'</strong>',
 				1 => $pong->content,
+				1 => '<a href="#" data-reveal-id="pong-'.$pong->id.'">'.Text::limit_chars($pong->content, 30, '...').'</a><div id="pong-'.$pong->id.'" class="reveal-modal">'.$pong->content.'</div>',
 				2 => date('Y-m-d g:i a', strtotime($pong->created)),
 				);
 

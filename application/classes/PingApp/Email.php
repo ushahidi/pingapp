@@ -43,10 +43,16 @@ class PingApp_Email {
 		{
 			// Mark the ping as replied
 			$ping->set('status', 'replied')->save();
+
+			// strip all html
+			$content = trim(strip_tags($message, ""));
+
+			// convert all HTML entities to their applicable characters
+			$content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
 			
 			$pong = ORM::factory('Pong')
 				->values(array(
-					'content' => $message,
+					'content' => $content,
 					'contact_id' => $contact->id,
 					'type' => 'email',
 					'ping_id' => $ping->id
