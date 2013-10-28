@@ -218,6 +218,9 @@ class Controller_People extends Controller_PingApp {
 			->bind('groups', $groups)
 			->bind('children', $children);
 
+		$this->template->footer->js = View::factory('pages/people/js/view')
+			->bind('person', $person);
+
 		$person_id = $this->request->param('id', 0);
 
 		$person = ORM::factory('Person')
@@ -301,10 +304,17 @@ class Controller_People extends Controller_PingApp {
 		    ->select('pings.pings')
 		    ->join(array($pings, 'pings'), 'LEFT')
 		    	->on('person.id', '=', 'pings.person_id')
-		    ->where('user_id', '=', $this->user->id)
-		    ->where('parent_id', '=', 0);
+		    ->where('user_id', '=', $this->user->id);
 
-		$query2 = clone $query;
+		// Parent?
+		if ( isset( $_GET['person_id'] ) AND $_GET['person_id'] != 0 )
+		{
+			$query->where('parent_id', '=', (int) $_GET['person_id']);
+		}
+		else
+		{
+			$query->where('parent_id', '=', 0);
+		}
 
 		// Groups?
 		if ( isset( $_GET['group_id'] ) AND $_GET['group_id'] != 0 )
@@ -313,6 +323,8 @@ class Controller_People extends Controller_PingApp {
 				->on('gp.person_id', '=', 'person.id')
 			->where('gp.group_id', '=', (int) $_GET['group_id']);;
 		}
+
+		$query2 = clone $query;
 
 		// Searching & Filtering
 		if (  isset( $_GET['sSearch'] ) AND $_GET['sSearch'] != "" )
