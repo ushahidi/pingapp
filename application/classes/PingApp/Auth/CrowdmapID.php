@@ -139,55 +139,51 @@ class PingApp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 	/**
 	 * Registers a user account.
 	 *
-	 * @param   string   email
-	 * @param   string   password
-	 * @param   string   username
-	 * @param   string   first_name
-	 * @param   string   last_name
+	 * @param array $post post fields
 	 * @return  boolean
 	 */
-	public function register($email, $password, $username, $first_name = '', $last_name = '')
+	public function register($post)
 	{
 		$crowdmapid_api = CrowdmapID_API::instance();
 		$session = NULL;
 
 		// Check if the email address is already registered.
 		$collision = ORM::factory('User')
-		    ->where('email', '=', $email)
+		    ->where('email', '=', $post['email'])
 		    ->find();
 
 		if ($collision->loaded()) {
-			if ( ! $this->_login($email, $password, FALSE))
+			if ( ! $this->_login($post['email'], $post['password'], FALSE))
 			{
-				define('REGISTER_ERROR', 'EMAIL_COLLISION');
+				throw new Kohana_Exception('email address is already registered');
 				return FALSE;
 			}
 		}
 
 		// Check if the username is already in use.
 		$collision = ORM::factory('User')
-		    ->where('username', '=', $username)
+		    ->where('username', '=', $post['username'])
 		    ->find();
 
 		if ($collision->loaded())
 		{
-			define('REGISTER_ERROR', 'USERNAME_COLLISION');
+			throw new Kohana_Exception('username is already registered');
 			return FALSE;
 		}
 
 		// Fallback to local auth if user is in the exemption list
-		if (in_array($email, Kohana::$config->load('crowdmapid.auth_exempt')))
-			return parent::_login($email, $password, $remember);
+		if (in_array($post['email'], Kohana::$config->load('crowdmapid.auth_exempt')))
+			return parent::_login($post['email'], $post['password']);
 
 		// Check if the email is registered on CrowdmapID
-		if ($crowdmapid_api->is_registered($email))
+		if ($crowdmapid_api->is_registered($post['email']))
 		{
 			// It is. Confirm their supplied password.
-			$session = $crowdmapid_api->login($email, $password);
+			$session = $crowdmapid_api->login($post['email'], $post['password']);
 
 			if ( ! $session OR ! $session->success) {
 				// Password provided does not match the one attached to the existing CrowdmapID
-				define('REGISTER_ERROR', 'PASSWORD_COLLISION');
+				throw new Kohana_Exception('invalid username or password');
 				return FALSE;
 			}
 
@@ -195,18 +191,18 @@ class PingApp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 		else
 		{
 			// It isn't. Attempt to register it.
-			$session = $crowdmapid_api->register($email, $password);
+			$session = $crowdmapid_api->register($post['email'], $post['password']);
 
 			if ( ! $session OR ! $session->success)
 			{
 				// There was a problem registering the account with CMID.
 				if (isset($session->error))
 				{
-					define('REGISTER_ERROR', $session->error);
+					throw new Kohana_Exception($session->error);
 				}
 				else
 				{
-					define('REGISTER_ERROR', 'GENERIC_ERROR');
+					throw new Kohana_Exception('unknown error');
 				}
 				return FALSE;
 			}
@@ -216,34 +212,31 @@ class PingApp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 		// Do we have a session, one way or another?
 		if ($session AND isset($session->user_id) AND isset($session->session_id))
 		{
-			// Yup. Create the local account.
-			$user = ORM::factory('User');
-			$user->values(array(
-				'username'         => $username,
-				'password'         => $password,
-				'password_confirm' => $password,
-				'email'            => $email,
-				'first_name'       => $first_name,
-				'last_name'        => $last_name
-			));
+			$user = ORM::factory('user');			
 
 			try
 			{
-				$user->save();
+				$user->create_user($post, array(
+					'username',
+					'password',
+					'email',
+					'first_name'
+					'last_name',
+				));
+
 				$user->add('roles', ORM::factory('Role', array('name' => 'login')));
 				$user->add('roles', ORM::factory('Role', array('name' => 'member')));
 
 				// Finish the login
 				$this->complete_login($user);
-
-				return TRUE;
 			}
 			catch (ORM_Validation_Exception $e)
 			{
-				$errors = $e->errors('users');
+				throw $e;
+				return FALSE;
 			}
 		}
-		return FALSE;
+		return TRUE;
 	}
 
 }

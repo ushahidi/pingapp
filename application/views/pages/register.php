@@ -30,23 +30,23 @@
 					<legend>Register an account</legend>
 
 						<div class="register-first-name">
-							<input type="text" name="first_name" value="<?php echo (isset($first_name)) ? $first_name : ''; ?>" id="first_name" placeholder="First Name">
+							<?php echo Form::input("first_name", $post['first_name'], array("id" =>"first_name", "placeholder" => "First Name")); ?>
 						</div>
 
 						<div class="register-last-name">
-							<input type="text" name="last_name" value="<?php echo (isset($last_name)) ? $last_name : ''; ?>" id="last_name" placeholder="Last Name">
+							<?php echo Form::input("last_name", $post['last_name'], array("id" =>"last_name", "placeholder" => "Last Name")); ?>
 						</div>
 					
 						<div class="register-username">
-							<input type="text" name="username" value="<?php echo (isset($username)) ? $username : ''; ?>" id="username" placeholder="Username">
+							<?php echo Form::input("username", $post['username'], array("id" =>"username", "placeholder" => "Username")); ?>
 						</div>
 					
 						<div class="register-email">
-							<input type="text" name="email" value="<?php echo (isset($email)) ? $email : ''; ?>" id="email" placeholder="Email">
+							<?php echo Form::input("email", $post['email'], array("id" =>"email", "placeholder" => "Email")); ?>
 						</div>
 					
 						<div class="register-password">
-							<input type="password" name="password" id="password" placeholder="Password">
+							<?php echo Form::password("password", $post['password'], array("id" =>"password", "placeholder" => "Password")); ?>
 						</div>
 
 				</fieldset>
