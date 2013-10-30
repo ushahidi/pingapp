@@ -41,7 +41,10 @@ class Controller_Dashboard extends Controller_PingApp {
 				->on('c.id', '=', 'cp.contact_id')
 			->join(array('people', 'p'), 'INNER')
 				->on('cp.person_id', '=', 'p.id')
-			->where('p.user_id', '=', $this->user->id);
+			->join(array('messages', 'm'), 'INNER')
+				->on('pings.message_id', '=', 'm.id')
+			->where('p.user_id', '=', $this->user->id)
+			->where('m.user_id', '=', $this->user->id); // Ensure one can only view pings they sent
 
 		// Pongs
 		$pongs = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'), array(DB::expr('0'), 'message_id'))
@@ -52,7 +55,12 @@ class Controller_Dashboard extends Controller_PingApp {
 				->on('c.id', '=', 'cp.contact_id')
 			->join(array('people', 'p'), 'INNER')
 				->on('cp.person_id', '=', 'p.id')
-			->where('p.user_id', '=', $this->user->id);
+			->join(array('pings', 'pi'), 'INNER')
+				->on('pongs.ping_id', '=', 'pi.id')
+			->join(array('messages', 'm'), 'INNER')
+				->on('pi.message_id', '=', 'm.id')
+			->where('p.user_id', '=', $this->user->id)
+			->where('m.user_id', '=', $this->user->id); // Ensure one can only view pongs received by their contacts
 
 		// Paging
 		$offset = $limit = '';

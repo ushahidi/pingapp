@@ -60,7 +60,7 @@ class PingApp_Email {
 				->save();
 			
 			// Lets parse the message for OK/NOT OKAY indicators
-			PingApp_Parse::status($contact, $pong, $message);
+			PingApp_Status::parse($contact, $pong, $message);
 
 			return TRUE;
 		}

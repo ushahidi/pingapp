@@ -42,7 +42,8 @@ class Controller_Pings extends Controller_PingApp {
 				->on('cp.person_id', '=', 'p.id')
 			->join(array('messages', 'm'), 'INNER')
 				->on('ping.message_id', '=', 'm.id')
-			->where('p.user_id', '=', $this->user->id);
+			->where('p.user_id', '=', $this->user->id)
+			->where('m.user_id', '=', $this->user->id); // Ensure I can only view pings I sent
 
 		if ( isset( $_GET['person_id'] ) AND $_GET['person_id'] != 0 )
 		{

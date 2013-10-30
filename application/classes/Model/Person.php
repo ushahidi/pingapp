@@ -21,6 +21,7 @@ class Model_Person extends ORM {
 			'model' => 'Person',
 			'foreign_key' => 'parent_id',
 			),
+		'person_statuses' => array(),
 		);
 
 	/**
@@ -38,6 +39,11 @@ class Model_Person extends ORM {
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
 	protected $_updated_column = array('column' => 'updated', 'format' => 'Y-m-d H:i:s');
 
+	/**
+	 * Rules
+	 *
+	 * @return array Rules
+	 */
 	public function rules()
 	{
 		return array(
@@ -48,6 +54,23 @@ class Model_Person extends ORM {
 			),
 			'status' => array(
 				array('in_array', array(':value', array('ok', 'notok', 'unknown')) ),
+			),
+		);
+	}
+
+	/**
+	 * Filters
+	 *
+	 * @return array Filters
+	 */
+	public function filters()
+	{
+		return array(
+			'name' => array(
+				array('trim'),
+			),
+			'status' => array(
+				array('trim'),
 			),
 		);
 	}

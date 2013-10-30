@@ -101,7 +101,7 @@ class Controller_Ivr_Twilio extends Controller {
 					->save();
 				
 				// Lets parse the message for OK/NOT OKAY indicators
-				PingApp_Parse::status($contact, $pong, $message_text);
+				PingApp_Status::parse($contact, $pong, $message_text);
 			}
 			else
 			{

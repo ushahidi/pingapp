@@ -172,7 +172,7 @@ abstract class PingApp_SMS_Provider {
 				->save();
 			
 			// Lets parse the message for OK/NOT OKAY indicators
-			PingApp_Parse::status($contact, $pong, $message);
+			PingApp_Status::parse($contact, $pong, $message);
 		}
 		else
 		{
