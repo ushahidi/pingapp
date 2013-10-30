@@ -31,48 +31,28 @@ class Controller_Register extends Controller_Template {
 	 */
 	public function action_index()
 	{
+		$this->template->bind('post', $post);
+
 		// check, has the form been submitted, if so, setup validation
 		if ($_POST AND
 	 		isset($_POST['username'], $_POST['password'], $_POST['email'], $_POST['first_name'], $_POST['last_name']))
 		{
-			// Get errors for display in view
-			$validation = Validation::factory($_POST)
-				->rule('username', 'not_empty')
-				->rule('password', 'not_empty')
-				->rule('email', 'not_empty')
-				->rule('first_name', 'not_empty')
-				->rule('last_name', 'not_empty')
-				->rule('token', 'not_empty')
-				->rule('token', 'Security::check');
+			$post = $_POST;
 
-			// Check Auth if the post data validates using the rules setup in the user model
-			if ( $validation->check() AND Auth::instance()->register(
-					trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)),
-					trim(filter_var($_POST['password'], FILTER_SANITIZE_EMAIL)),
-					trim(filter_var($_POST['username'], FILTER_SANITIZE_EMAIL)),
-					trim(filter_var($_POST['first_name'], FILTER_SANITIZE_EMAIL)),
-					trim(filter_var($_POST['last_name'], FILTER_SANITIZE_EMAIL))))
+			try
 			{
+				$post['password_confirm'] = $post['password'];
+				Auth::instance()->register($post);
+
 				HTTP::redirect('dashboard');
 			}
-			else
+			catch (ORM_Validation_Exception $e)
 			{
-				$this->template->set('username', $_POST['username']);
-				$this->template->set('email', $_POST['email']);
-				$this->template->set('first_name', $_POST['first_name']);
-				$this->template->set('last_name', $_POST['last_name']);
-
-				if(defined('REGISTER_ERROR')) {
-					//$validation->error('crowdmapid', strtolower(REGISTER_ERROR));
-					//$this->template->set('errors', $validation->errors('register')); // TODO Having issues getting message lookups to work.
-
-					$this->template->set('errors', array(REGISTER_ERROR));
-				} else {
-					if ($validation->check()) {
-						$validation->error('password', 'invalid');
-					}
-					$this->template->set('errors', $validation->errors('login'));
-				}
+				$this->template->set( 'errors', Arr::flatten($e->errors('register')) );
+			}
+			catch (Kohana_Exception $e)
+			{
+				$this->template->set( 'errors', array($e->getMessage()) );
 			}
 		}
 	}
