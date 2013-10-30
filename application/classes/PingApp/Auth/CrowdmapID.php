@@ -220,7 +220,7 @@ class PingApp_Auth_CrowdmapID extends Kohana_Auth_ORM {
 					'username',
 					'password',
 					'email',
-					'first_name'
+					'first_name',
 					'last_name',
 				));
 

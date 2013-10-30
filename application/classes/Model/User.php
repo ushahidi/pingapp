@@ -44,13 +44,11 @@ class Model_User extends Model_Auth_User {
 			
 			//First name of user
 			'first_name' => array(
-				array('not_empty'),
 				array('max_length', array(':value', 150)),
 			),
 			
 			//Last name of user
 			'last_name' => array(
-				array('not_empty'),
 				array('max_length', array(':value', 150)),
 			),
 			
