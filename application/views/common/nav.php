@@ -10,6 +10,7 @@
 			<li class=""><a href="/people">People</a></li>
 			<li class=""><a href="/groups">Groups</a></li>
 			<li class=""><a href="/messages">Messages</a></li>
+			<?php if ($feedback_email):?><li class=""><a href="/feedback" id="help">Help</a></li><?php endif; ?>
 			<li class="logged-in has-dropdown">
 				<a href="#">
 					<div class="avatar">
