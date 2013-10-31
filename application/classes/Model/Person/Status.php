@@ -15,9 +15,50 @@ class Model_Person_Status extends ORM {
 	 */
 	protected $_belongs_to = array(
 		'person' => array(),
+		'pong' => array(),
+		'user' => array()
 		);
 
 	// Insert/Update Timestamps
 	protected $_created_column = array('column' => 'created', 'format' => 'Y-m-d H:i:s');
 	protected $_updated_column = array('column' => 'updated', 'format' => 'Y-m-d H:i:s');
+
+	/**
+	 * Rules
+	 *
+	 * @return array Rules
+	 */
+	public function rules()
+	{
+		return array(
+			'person_id' => array(
+				array('not_empty'),
+				array('numeric'),
+			),
+			'note' => array(
+				array('max_length', array(':value', 255)),
+			),
+			'status' => array(
+				array('not_empty'),
+				array('in_array', array(':value', array('ok', 'notok', 'unknown')) ),
+			),
+		);
+	}
+
+	/**
+	 * Filters
+	 *
+	 * @return array Filters
+	 */
+	public function filters()
+	{
+		return array(
+			'note' => array(
+				array('trim'),
+			),
+			'status' => array(
+				array('trim'),
+			),
+		);
+	}
 }

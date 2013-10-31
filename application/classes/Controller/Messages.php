@@ -164,7 +164,7 @@ class Controller_Messages extends Controller_PingApp {
 
 		$types = $this->request->post('type');
 		$recipients = $this->request->post('recipients');
-		if (is_array($recipients) )
+		if ( is_array($recipients) )
 		{
 			foreach ($types as $type)
 			{

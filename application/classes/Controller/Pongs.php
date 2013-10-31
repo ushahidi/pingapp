@@ -39,7 +39,12 @@ class Controller_Pongs extends Controller_PingApp {
 				->on('c.id', '=', 'cp.contact_id')
 			->join(array('people', 'p'), 'INNER')
 				->on('cp.person_id', '=', 'p.id')
-			->where('p.user_id', '=', $this->user->id);
+			->join(array('pings', 'pi'), 'INNER')
+				->on('pong.ping_id', '=', 'pi.id')
+			->join(array('messages', 'm'), 'INNER')
+				->on('pi.message_id', '=', 'm.id')
+			->where('p.user_id', '=', $this->user->id)
+			->where('m.user_id', '=', $this->user->id); // Ensure one can only view pongs received by their contacts
 
 		if ( isset( $_GET['person_id'] ) AND $_GET['person_id'] != 0 )
 		{

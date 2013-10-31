@@ -16,6 +16,7 @@ class Model_Pong extends ORM {
 	protected $_belongs_to = array(
 		'contact' => array(),
 		'ping' => array(),
+		'person_statuses' => array(),
 		);
 
 	// Insert/Update Timestamps

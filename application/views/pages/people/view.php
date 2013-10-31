@@ -17,7 +17,20 @@ if ( $person->parent_id == 0 ): ?>
 
 <?php if ( $person->parent_id == 0 ): ?>
 <div class="panel">
-	Status: <strong><?php echo strtoupper($person->status); ?></strong> (<?php echo date('Y-m-d', strtotime($person->updated)); ?>)
+	Status: <a href="/people/status/<?php echo $person->id; ?>"><strong><?php echo strtoupper($person->status); ?></strong></a> <small><?php echo date('Y-m-d g:i a', strtotime($person->updated)); ?> [<a href="/people/status/<?php echo $person->id; ?>">change</a>]</small>
+	<?php if ($status->loaded() AND ! $my_status): ?>
+	<br /><br />
+		<?php if ($status->user_id):?>
+		<div data-alert class="alert-box alert radius">
+			* status of this person was updated by another user
+		</div>
+		User <a href="#">#<?php echo $status->user_id; ?></a> added a note: <strong><?php echo $status->note; ?></strong>
+		<?php else: ?>
+		<div data-alert class="alert-box success radius">
+			* status was updated when this person responded to another user
+		</div>
+		<?php endif; ?>
+	<?php endif; ?>
 </div>
 
 <div class="panel">

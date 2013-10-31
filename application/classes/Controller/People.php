@@ -216,7 +216,9 @@ class Controller_People extends Controller_PingApp {
 			->bind('pings', $pings)
 			->bind('pongs', $pongs)
 			->bind('groups', $groups)
-			->bind('children', $children);
+			->bind('children', $children)
+			->bind('status', $status)
+			->bind('my_status', $my_status);
 
 		$this->template->footer->js = View::factory('pages/people/js/view')
 			->bind('person', $person);
@@ -233,27 +235,90 @@ class Controller_People extends Controller_PingApp {
 			HTTP::redirect('dashboard');
 		}
 
-		$pings = ORM::factory('Ping')
-			->select('contacts.contact')
-			->join('contacts', 'INNER')->on('contacts.id', '=', 'ping.contact_id')
-			->join('contacts_people', 'INNER')->on('contacts.id', '=', 'contacts_people.contact_id')
-			->where('contacts_people.person_id', '=', $person->id)
-			->order_by('created', 'DESC')
-			->limit(10)
-			->find_all();
-
-		$pongs = ORM::factory('Pong')
-			->select('contacts.contact')
-			->join('contacts', 'INNER')->on('contacts.id', '=', 'pong.contact_id')
-			->join('contacts_people', 'INNER')->on('contacts.id', '=', 'contacts_people.contact_id')
-			->where('contacts_people.person_id', '=', $person->id)
-			->order_by('created', 'DESC')
-			->limit(10)
-			->find_all();
-
 		$groups = $person->groups->find_all();
 
-		$children = $person->children->find_all();
+		// Is the status update by me?
+		$status = $person->person_statuses
+			->order_by('created', 'DESC')
+			->find();
+		$my_status = FALSE;
+
+		//++TODO: Simpler Joins?
+		// First lets find out if the status was updated by a 'pong'
+		// back to one of my people
+		if (ORM::factory('Pong')
+			->join(array('pings', 'pi'), 'INNER')
+				->on('pong.ping_id', '=', 'pi.id')
+			->join(array('messages', 'm'), 'INNER')
+				->on('pi.message_id', '=', 'm.id')
+			->where('m.user_id', '=', $this->user->id)
+			->where('pong.id', '=', $status->pong_id)
+			->find()
+			->loaded())
+		{
+			$my_status = TRUE;
+		}
+		else
+		{
+			// Well lets find out if it was me that manually updated
+			// this users status
+			if ($status->user_id == $this->user->id)
+			{
+				$my_status = TRUE;
+			}
+		}
+	}
+
+	/**
+	 * View Person Status
+	 * 
+	 * @return void
+	 */
+	public function action_status()
+	{
+		$this->template->content = View::factory('pages/people/status')
+			->bind('person', $person)
+			->bind('post', $post)
+			->bind('errors', $errors)
+			->bind('done', $done);
+
+		$person_id = $this->request->param('id', 0);
+
+		$person = ORM::factory('Person')
+			->where('id', '=', $person_id)
+			->where('parent_id', '=', 0)
+			->where('user_id', '=', $this->user->id)
+			->find();
+
+		if ( ! $person->loaded() )
+		{
+			HTTP::redirect('dashboard');
+		}
+
+		if ( ! empty($_POST) )
+		{
+			$post = $_POST;
+			$status = ORM::factory('Person_Status');
+
+			try
+			{
+				PingApp_Status::update($this->user, $person, $post['status'], $post['note']);
+
+				// Redirect to prevent repost
+				HTTP::redirect('people/view/'.$person->id);
+			}
+			catch (ORM_Validation_Exception $e)
+			{
+				$errors = Arr::flatten($e->errors('models'));
+			}
+		}
+		else
+		{
+			$post = array(
+				'status' => $person->status,
+				'note' => ''
+				);
+		}		
 	}
 
 	/**

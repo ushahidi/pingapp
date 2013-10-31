@@ -51,7 +51,7 @@ class Model_Message extends ORM {
 	/**
 	 * Filters
 	 *
-	 * @return array Rules
+	 * @return array Filters
 	 */
 	public function filters()
 	{
