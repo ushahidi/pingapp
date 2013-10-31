@@ -128,7 +128,7 @@ class Task_Ping extends Minion_Task
 		// Initialize Redis
 		$redis = PingApp_Redis::factory();
 
-		$max_items = 20; // Max items to process per run
+		$max_items = 50; // Max items to process per run
 
 		for ($i=0; $i < $max_items; $i++)
 		{
