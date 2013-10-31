@@ -70,6 +70,16 @@ class Controller_Settings extends Controller_PingApp {
 	}
 
 	/**
+	 * Edit Extra Settings
+	 * 
+	 * @return void
+	 */
+	public function action_extras()
+	{
+		$this->_action('extras');
+	}
+
+	/**
 	 * Edit SMS Settings
 	 * 
 	 * @return void
