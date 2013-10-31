@@ -132,10 +132,12 @@ class Controller_PingApp extends Controller_Template {
 			$this->template->content = '';
 			$this->template->footer = View::factory('common/footer');
 			$this->template->footer->js = '';
+			$this->template->footer->google_analytics = PingApp_Settings::get('google_analytics');
 
 			$nav = View::factory('common/nav')
 				->bind('user', $this->user)
 				->bind('role', $role);
+			$nav->feedback_email = PingApp_Settings::get('feedback_email');
 
 			if ($this->user->has('roles', ORM::factory('Role')->where('name', '=', 'admin')->find() ))
 			{
