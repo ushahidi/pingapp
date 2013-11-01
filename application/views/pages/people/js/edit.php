@@ -1,30 +1,26 @@
 $(document).ready(function() {
-	var c = 0;
-	// Clone the Contact DIV
-	$('#ping-add-contact').click(function() {
-		var clone = $('#contact\\[0\\]').clone(true);
-		var newID = ++c;
-		
-		clone.attr('id', clone.attr('id').replace(/\d+/, newID) );
+	$('.add-contact').click(function() {
+		var clone = $('.contact-info-row:last').clone(true);
 		clone.find(':input').each(function(){
 			if ($(this).attr('type') == 'hidden') {
 				$(this).remove();
 				return true;
 			};
-			$(this).attr('id', $(this).attr('id').replace(/\d+/, newID) );
-			$(this).attr('name', $(this).attr('name').replace(/\d+/, newID) );
+
+			var id = parseInt($(this).attr('name').replace(/\D/g, ''));
+			$(this).attr('name', $(this).attr('name').replace(/\d+/, id + 1) );
 			$(this).val('');
 		});
-
-		clone.insertBefore($('#ping-add-contact'));
+		clone.insertBefore($('.add-contact'));
+		clone.find('.contact-type').trigger('change', true);
+		
+		restoreInput(clone.find('.contact-account'), clone);
 	});
 
 	// Delete a Contact
 	$('.ping-del-contact').click(function(){
-		var parent = $(this).parent().parent().parent();
-		if (parent.attr('id') != 'contact[0]') {
-			parent.remove();
-		};
+		var parent = $(this).parent().parent();
+		parent.remove();
 
 		var hidden = parent.find('input[type="hidden"]').val().replace(/\D/g,'');
 		if (hidden) {
@@ -36,19 +32,17 @@ $(document).ready(function() {
 		};
 	});
 
-	var i = 0;
 	// Initialize International Numbers OnLoad
-	$('.contact-info-row').find(':input').each(function(){
-		if ($(this).hasClass('contact-type') && $(this).val() == 'phone') {
-			intTel($('#contact\\['+i+'\\]\\[contact\\]'));
-			i++;
-		};
+	$('.contact-info-row').each(function(){
+		if ($(this).find('.contact-type').val() == 'phone'){
+			intTel($(this).find('.contact-account'));
+		}
 	});
 
 	// Update input on dropdown change
 	$('.contact-type').change(function(){
 		var parent = $(this).parent().parent();
-		var field = parent.find('input')[0];
+		var field = parent.find('.contact-account');
 		if ($(this).val() == 'phone') {
 			intTel(field);
 		} else {
@@ -74,5 +68,14 @@ function intTel(field){
 
 // Restore Original Input
 function restoreInput(field, parent){
-	parent.children().eq(1).html(field);
+	if ($(field).val().charAt(0) == '+') {
+		$(field).val($(field).val().substring(1, $(field).val().length));
+	}
+	parent.find('.contact-info-account').remove();
+
+	var newDiv = $('<div>').attr({
+		class: 'contact-info-account',
+	});
+	field.appendTo(newDiv);
+	newDiv.insertBefore(parent.find('.remove-contact'));
 }

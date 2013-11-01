@@ -55,19 +55,17 @@
 
 	<fieldset>
 		<legend>Contact Information</legend>
-		<div id="contact[0]">
+		<div id="contact[0]" class="contact-info-row">
 			<?php echo Form::hidden('contact[0][id]', (isset($post['contact'][0]['id'])) ? $post['contact'][0]['id'] : '0'); ?>
-			<div class="contact-info-row">
-				<div class="contact-info-type">
-					<?php echo Form::select("contact[0][type]", PingApp_Form::contact_types(), (isset($post['contact'][0]['type'])) ? $post['contact'][0]['type'] : '', array("id" => "contact[0][type]", "minlength" => "3", "class" => "medium contact-type" )); ?>
-				</div>
+			<div class="contact-info-type">
+				<?php echo Form::select("contact[0][type]", PingApp_Form::contact_types(), (isset($post['contact'][0]['type'])) ? $post['contact'][0]['type'] : '', array("id" => "contact[0][type]", "minlength" => "3", "class" => "medium contact-type" )); ?>
+			</div>
 
-				<div class="contact-info-account">
-					<?php echo Form::input("contact[0][contact]", (isset($post['contact'][0]['contact'])) ? $post['contact'][0]['contact'] : '', array("id" => "contact[0][contact]", "placeholder" => "Account", "minlength" => "3", "class" => "contact-account" )); ?>
-				</div>
-				<div class="remove-contact">
-					<a class="small button secondary ping-del-contact">Remove</a>
-				</div>
+			<div class="contact-info-account">
+				<?php echo Form::input("contact[0][contact]", (isset($post['contact'][0]['contact'])) ? $post['contact'][0]['contact'] : '', array("id" => "contact[0][contact]", "placeholder" => "Account", "minlength" => "3", "class" => "contact-account" )); ?>
+			</div>
+			<div class="remove-contact">
+				<a class="small button secondary ping-del-contact">Remove</a>
 			</div>
 		</div>
 
@@ -76,25 +74,23 @@
 		unset($post['contact'][0]);
 		foreach ($post['contact'] as $key => $value):
 		?>
-		<div id="contact[<?php echo $key; ?>]">
+		<div id="contact[<?php echo $key; ?>]" class="contact-info-row">
 			<?php echo Form::hidden('contact['.$key.'][id]', (isset($post['contact'][$key]['id'])) ? $post['contact'][$key]['id'] : '0'); ?>
-			<div class="contact-info-row">
-				<div class="contact-info-type">
-					<?php echo Form::select("contact[".$key."][type]", PingApp_Form::contact_types(), (isset($post['contact'][$key]['type'])) ? $post['contact'][$key]['type'] : '', array("id" => "contact[".$key."][type]", "minlength" => "3", "class" => "medium contact-type")); ?>
-				</div>
-				<div class="contact-info-account">
-					<?php echo Form::input("contact[".$key."][contact]", (isset($post['contact'][$key]['contact'])) ? $post['contact'][$key]['contact'] : '', array("id" => "contact[".$key."][contact]", "placeholder" => "Account", "minlength" => "3", "class" => "contact-account" )); ?>			
-				</div>
-				<div class="remove-contact">
-					<a class="small button secondary ping-del-contact">Remove</a>
-				</div>
+			<div class="contact-info-type">
+				<?php echo Form::select("contact[".$key."][type]", PingApp_Form::contact_types(), (isset($post['contact'][$key]['type'])) ? $post['contact'][$key]['type'] : '', array("id" => "contact[".$key."][type]", "minlength" => "3", "class" => "medium contact-type")); ?>
+			</div>
+			<div class="contact-info-account">
+				<?php echo Form::input("contact[".$key."][contact]", (isset($post['contact'][$key]['contact'])) ? $post['contact'][$key]['contact'] : '', array("id" => "contact[".$key."][contact]", "placeholder" => "Account", "minlength" => "3", "class" => "contact-account" )); ?>			
+			</div>
+			<div class="remove-contact">
+				<a class="small button secondary ping-del-contact">Remove</a>
 			</div>
 		</div>
 		<?php 
 		endforeach;
 		endif;
 		?>
-		<a class="add-contact small button secondary" id="ping-add-contact">Add Another Contact [+]</a>
+		<a class="add-contact small button secondary">Add Another Contact [+]</a>
 	</fieldset>
 
 	<div class="add-new-person-submit">
