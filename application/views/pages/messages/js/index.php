@@ -3,7 +3,7 @@ $(document).ready(function() {
 		"bJQueryUI": true,
 		"bProcessing": true,
 		"bServerSide": true,
-		"aaSorting": [[ 4, "desc" ]],
+		"aaSorting": [[ 2, "desc" ]],
 		"sAjaxSource": "/messages/ajax_list?type=sms",
 	});
 
@@ -11,7 +11,7 @@ $(document).ready(function() {
 		"bJQueryUI": true,
 		"bProcessing": true,
 		"bServerSide": true,
-		"aaSorting": [[ 4, "desc" ]],
+		"aaSorting": [[ 2, "desc" ]],
 		"sAjaxSource": "/messages/ajax_list?type=email",
 	});
 });
