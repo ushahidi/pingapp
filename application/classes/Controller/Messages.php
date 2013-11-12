@@ -89,7 +89,7 @@ class Controller_Messages extends Controller_PingApp {
 
 		$pings = DB::select('message_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
 			->from('pings')
-			->where('pings.parent_id', '!=', 0)
+			->where('pings.parent_id', '=', 0)
 			->group_by('message_id');
 
 		$query = ORM::factory('Message')
