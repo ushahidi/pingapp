@@ -50,6 +50,7 @@ if ( $person->parent_id == 0 ): ?>
 					<tr>
 						<th>Contact</th>
 						<th>Message</th>
+						<th>Re-Pings</th>
 						<th>Date</th>
 					</tr>
 				</thead>

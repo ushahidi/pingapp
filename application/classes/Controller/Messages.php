@@ -85,7 +85,7 @@ class Controller_Messages extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('message', 'title', 'type', 'pings', 'message.created');
+		$columns = array('message', 'title', 'pings', 'message.created');
 
 		$pings = DB::select('message_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
 			->from('pings')
@@ -94,8 +94,26 @@ class Controller_Messages extends Controller_PingApp {
 		$query = ORM::factory('Message')
 		    ->select('pings.pings')
 		    ->join(array($pings, 'pings'), 'LEFT')
-		    	->on('message.id', '=', 'pings.message_id')
-		    ->where('user_id', '=', $this->user->id);
+		    	->on('message.id', '=', 'pings.message_id');
+
+		if (  isset( $_GET['type'] ) AND $_GET['type'] != "" )
+		{
+			$query->where('message.type', '=', $_GET['type']);
+		}
+
+		// Pull Messages for a Specific User? If So, Make sure we're an admin
+		$admin = FALSE;
+		if (  isset( $_GET['user_id'] ) AND (int) $_GET['user_id'] 
+			AND $this->user->has('roles', ORM::factory('Role')->where('name', '=', 'admin')->find() )
+			)
+		{
+			$admin = TRUE;
+			$query->where('user_id', '=', (int) $_GET['user_id']);
+		}
+		else
+		{
+			$query->where('user_id', '=', $this->user->id);
+		}
 
 		$query2 = clone $query;
 
@@ -136,11 +154,15 @@ class Controller_Messages extends Controller_PingApp {
 		foreach ($messages as $message)
 		{
 			$row = array(
-				0 => '<a href="/messages/view/'.$message->id.'">'.$message->message.'</a>',
-				1 => '<span class="radius secondary label">'.strtoupper($message->type).'</span>',
-				2 => '<span class="radius secondary label">'.(int) $message->pings.'</span>',
-				3 => date('Y-m-d g:i a', strtotime($message->created)),
+				0 => '<a href="/messages/view/'.$message->id.'">'.Text::limit_chars($message->message, 30, '...').'</a>',
+				1 => '<span class="radius secondary label">'.(int) $message->pings.'</span>',
+				2 => date('Y-m-d g:i a', strtotime($message->created)),
 				);
+
+			if ($admin)
+			{
+				$row[0] = Text::limit_chars($message->message, 30, '...');
+			}
 
 			$output['aaData'][] = $row;
 		}

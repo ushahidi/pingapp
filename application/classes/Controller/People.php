@@ -410,7 +410,7 @@ class Controller_People extends Controller_PingApp {
 		}
 
 		// Ordering
-		if ( isset( $_GET['iSortCol_0'] ) AND $_GET['iSortCol_0'] != 0 )
+		if ( isset( $_GET['iSortCol_0'] ) )
 		{
 			$query->order_by($columns[$_GET['iSortCol_0']], $_GET['sSortDir_0']);
 		}
