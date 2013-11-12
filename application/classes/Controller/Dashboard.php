@@ -33,7 +33,7 @@ class Controller_Dashboard extends Controller_PingApp {
 		$columns = array('name');
 
 		// Pings
-		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'action'), array(DB::expr('pings.message_id'), 'message_id'))
+		$pings = DB::select('cp.person_id', 'p.name', 'p.status', 'pings.type', 'c.contact', array('pings.created', 'created_on'), array(DB::expr('"ping"'), 'action'), array(DB::expr('pings.message_id'), 'message_id'), array(DB::expr('pings.parent_id'), 'parent_id'))
 			->from('pings')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('pings.contact_id', '=', 'c.id')
@@ -47,7 +47,7 @@ class Controller_Dashboard extends Controller_PingApp {
 			->where('m.user_id', '=', $this->user->id); // Ensure one can only view pings they sent
 
 		// Pongs
-		$pongs = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'), array(DB::expr('0'), 'message_id'))
+		$pongs = DB::select('cp.person_id', 'p.name', 'p.status', 'pongs.type', 'c.contact', array('pongs.created', 'created_on'), array(DB::expr('"pong"'), 'action'), array(DB::expr('0'), 'message_id'), array(DB::expr('0'), 'parent_id'))
 			->from('pongs')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('pongs.contact_id', '=', 'c.id')
@@ -93,11 +93,12 @@ class Controller_Dashboard extends Controller_PingApp {
 		foreach ($items as $item)
 		{
 			$pong_label = ($item['action'] == 'pong') ? '' : 'secondary';
+			$action = ($item['parent_id']) ? 'RE-PING' : $item['action'];
 			$row = array(
 				0 => '<a href="/people/view/'.$item['person_id'].'"><strong>'.strtoupper($item['name']).'</strong></a>',
 				1 => Text::limit_chars(strtoupper($item['contact']), '8', '...'),
 				2 => '<span class="radius label secondary">'.strtoupper($item['type']).'</status>',
-				3 => '<span class="radius label '.$pong_label.'">'.strtoupper($item['action']).'</status>',
+				3 => '<span class="radius label '.$pong_label.'">'.strtoupper($action).'</status>',
 				4 => date('Y-m-d g:i a', strtotime($item['created_on'])),
 				);
 
