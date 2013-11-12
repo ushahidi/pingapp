@@ -14,7 +14,9 @@
 <body>
 	<div class="main-content-row">
 		<div class="main-content">
-		<div class="logo-image">
-			<h2>Ping App</h2>
-		</div>
+		<a href="/">
+			<div class="logo-image">
+				<h2>Ping App</h2>
+			</div>
+		</a>
 			<?php echo $nav; ?>
