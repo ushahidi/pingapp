@@ -4,7 +4,7 @@ $(document).ready(function() {
 		"bProcessing": true,
 		"bServerSide": true,
 		"aaSorting": [[ 4, "desc" ]],
-		"sAjaxSource": "/messages/ajax_list?type=sms",
+		"sAjaxSource": "/messages/ajax_list?type=sms&user_id=<?php echo $user->id; ?>",
 	});
 
 	$('#email').dataTable( {
@@ -12,6 +12,6 @@ $(document).ready(function() {
 		"bProcessing": true,
 		"bServerSide": true,
 		"aaSorting": [[ 4, "desc" ]],
-		"sAjaxSource": "/messages/ajax_list?type=email",
+		"sAjaxSource": "/messages/ajax_list?type=email&user_id=<?php echo $user->id; ?>",
 	});
 });

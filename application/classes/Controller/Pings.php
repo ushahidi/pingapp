@@ -29,11 +29,17 @@ class Controller_Pings extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('contact', 'message', 'ping.created');
+		$columns = array('contact', 'message', 'repings', 'ping.created');
+
+		$repings = DB::select('parent_id', array(DB::expr('COUNT(pings.id)'), 'repings'))
+			->from('pings')
+			->where('pings.parent_id', '!=', 0)
+			->group_by('parent_id');
 
 		$query = ORM::factory('Ping')
 			->select('c.contact')
 			->select('m.message')
+			->select('repings.repings')
 			->join(array('contacts', 'c'), 'INNER')
 				->on('ping.contact_id', '=', 'c.id')
 			->join(array('contacts_people', 'cp'), 'INNER')
@@ -42,6 +48,9 @@ class Controller_Pings extends Controller_PingApp {
 				->on('cp.person_id', '=', 'p.id')
 			->join(array('messages', 'm'), 'INNER')
 				->on('ping.message_id', '=', 'm.id')
+			->join(array($repings, 'repings'), 'LEFT')
+		    	->on('ping.id', '=', 'repings.parent_id')
+			->where('ping.parent_id', '=', 0)
 			->where('p.user_id', '=', $this->user->id)
 			->where('m.user_id', '=', $this->user->id); // Ensure I can only view pings I sent
 
@@ -91,7 +100,8 @@ class Controller_Pings extends Controller_PingApp {
 			$row = array(
 				0 => '<strong>'.strtoupper($ping->contact).'</strong>',
 				1 => '<a href="#" data-reveal-id="ping-'.$ping->id.'">'.Text::limit_chars($ping->message, 30, '...').'</a><div id="ping-'.$ping->id.'" class="reveal-modal">'.$ping->message.'</div>',
-				2 => date('Y-m-d g:i a', strtotime($ping->created)),
+				2 => (int) $ping->repings,
+				3 => date('Y-m-d g:i a', strtotime($ping->created)),
 				);
 
 			$output['aaData'][] = $row;

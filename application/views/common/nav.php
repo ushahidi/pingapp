@@ -24,7 +24,8 @@
 				<ul class="dropdown">
 					<li><a href="#">My Profile</a></li>
 					<?php if ($role == 'admin'):?>
-					<li><a href="/settings">Admin Settings</a></li>
+					<li><a href="/users">Manage Users</a></li>
+					<li><a href="/settings">Manage Settings</a></li>
 					<?php endif; ?>
 					<li class="signout"><a href="/logout">Sign Out</a></li>
 				</ul>
