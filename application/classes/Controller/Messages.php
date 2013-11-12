@@ -85,10 +85,11 @@ class Controller_Messages extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('message', 'title', 'pings', 'message.created');
+		$columns = array('message', 'pings', 'message.created', 'title');
 
 		$pings = DB::select('message_id', array(DB::expr('COUNT(pings.id)'), 'pings'))
 			->from('pings')
+			->where('pings.parent_id', '!=', 0)
 			->group_by('message_id');
 
 		$query = ORM::factory('Message')

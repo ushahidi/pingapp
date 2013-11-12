@@ -56,7 +56,7 @@ class Controller_Users extends Controller_PingApp {
 		$this->auto_render = FALSE;
 
 		// Data table columns
-		$columns = array('first_name', 'last_name', 'email', 'username', 'messages', 'user.created');
+		$columns = array(DB::expr('CONCAT(user.first_name, " ", user.last_name)'), 'email', 'username', 'messages', 'user.created');
 
 		$messages = DB::select('user_id', array(DB::expr('COUNT(id)'), 'messages'))
 			->from('messages')
@@ -106,8 +106,9 @@ class Controller_Users extends Controller_PingApp {
 
 		foreach ($users as $user)
 		{
+			$name = (trim($user->name)) ? $user->name : '**no name**';
 			$row = array(
-				0 => '<a href="/users/view/'.$user->id.'"><strong>'.$user->name.'</strong></a>',
+				0 => '<a href="/users/view/'.$user->id.'"><strong>'.$name.'</strong></a>',
 				1 => $user->email,
 				2 => $user->username,
 				3 => '<span class="radius secondary label">'.(int) $user->messages.'</span>',
