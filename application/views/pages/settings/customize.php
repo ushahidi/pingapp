@@ -34,9 +34,9 @@
 	<fieldset>
 		<legend>Email Template</legend>
 		<div class="row">
-			<div class="large-12 columns">
-				<small><strong>{{name}}</strong> - Recipient Name</small><br />
-				<small><strong>{{message}}</strong> - Message Content</small><br /><br />
+			<div class="large-12 columns highlight">	
+				<small><strong>{{name}}</strong> = <span>Recipient Name</span></small><br />
+				<small><strong>{{message}}</strong> = <span>Message Content</span></small>
 			</div>
 		</div>
 		<div class="row">

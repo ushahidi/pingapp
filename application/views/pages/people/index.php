@@ -1,7 +1,8 @@
-<h4>People <?php if ( $group AND $group->loaded() ): ?><small><?php echo $group->name; ?></small><?php endif; ?></h4>
+<h4>People <?php if ( $group AND $group->loaded() ): ?>- <?php echo $group->name; ?><?php endif; ?></h4>
 <ul class="breadcrumbs">
 	<li><a href="/">Home</a></li>
-	<li class="current"><a href="#">People</a></li>
+	<li><a href="/people">People</a></li>
+	<?php if ( $group AND $group->loaded() ): ?><li class="current"><a href="#"><?php echo $group->name; ?></a></li><?php endif; ?>
 </ul>
 
 <div class="dashboard-actions-wrapper">

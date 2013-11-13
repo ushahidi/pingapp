@@ -57,10 +57,14 @@
 
 /*Custom Ping Styles*/
 @import "base/overrides";
+@import "base/helpers";
 
 @import "modules/login";
 @import "modules/register";
+
 @import "modules/header";
+@import "modules/top-bar";
+
 @import "modules/dashboard";
 @import "modules/new-person";
 @import "modules/new-message";
