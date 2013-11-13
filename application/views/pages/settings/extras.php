@@ -23,6 +23,14 @@
 <?php echo Form::open(NULL, array('class' => 'custom')); ?>
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
+		<legend>Site URL</legend>
+		<div class="row">
+			<div class="large-12 columns">
+				<?php echo Form::input('settings[site_url]', (isset($post['settings']['site_url'])) ? $post['settings']['site_url'] : '', array('placeholder' => 'http://www.example.com')); ?>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
 		<legend>Feedback Email Address</legend>
 		<div class="row">
 			<div class="large-12 columns">

@@ -64,7 +64,7 @@ class PingApp_Ping {
 								{
 									$pings_repings_delay = 5;
 								}
-								echo $pings_repings_delay."\n";
+								
 								if ( ( time() - strtotime($_ping->updated) ) < ($pings_repings_delay * 60) )
 								{
 									return;
@@ -208,19 +208,21 @@ class PingApp_Ping {
 		$sender_email = $ping->message->user->email;
 		$sender = ($sender_name != ' ') ? $sender_name : $sender_email;
 
-		$prepend = 'Ping requested by: '.$sender."\n\n";
 
-		$body = PingApp_Settings::get('message_email');
-		$body = str_replace('{{name}}', $person->name, $body);
-		$body = str_replace('{{message}}', $ping->message->message, $body);
-		$body = $prepend.$body."\n\n\n".' [{'.$tracking_id.'}]';$body."\n\n\n".' [{'.$tracking_id.'}]';
+		$body = View::factory('email/layout');
+		$body->name = $person->name;
+		$body->message = $ping->message->message;
+		$body->sender = $ping->message->user;
+		$body->tracking_id = $tracking_id;
+		$body->site_url = PingApp_Settings::get('site_url');
+
 
 		$from = PingApp_Settings::get('email_from');
 		$from_name = PingApp_Settings::get('email_from_name');
 
 		try
 		{
-			$result = Email::factory($title, $body)
+			$result = Email::factory($title, $body->render(), 'text/html')
 				->to($contact->contact)
 				->from($from, $sender)
 				->send();
@@ -252,7 +254,7 @@ class PingApp_Ping {
 		$code = NULL;
 		while ( ! $unique)
 		{
-			$code = Text::random('alnum', 32);
+			$code = Text::random('alnum', 16);
 			$ping = ORM::factory('Ping')
 				->where('type', '=', $type)
 				->where('tracking_id', '=', $code)

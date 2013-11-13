@@ -83,14 +83,14 @@ class Controller_PingApp extends Controller_Template {
 		// Check user auth and role
 		$action_name = Request::current()->action();
 
-		// Okay User is Logged In -- On to ACL
-		if (Auth::instance()->logged_in())
+		// Is Access Restricted?
+		if ($this->auth_required !== FALSE)
 		{
-			$this->user = Auth::instance()->get_user();
-
-			// Is Access Restricted?
-			if ($this->auth_required !== FALSE)
+			// Okay User is Logged In -- On to ACL
+			if (Auth::instance()->logged_in())
 			{
+				$this->user = Auth::instance()->get_user();
+				
 				$access = FALSE;
 				// Verify That User Has Correct Role
 				foreach ($this->auth_required as $role)
@@ -119,10 +119,14 @@ class Controller_PingApp extends Controller_Template {
 					$this->_login_required();
 				}
 			}
+			else
+			{
+				$this->_login_required();
+			}
 		}
 		else
 		{
-			$this->_login_required();
+			$this->user = Auth::instance()->get_user();
 		}
 
 		if ($this->auto_render)
@@ -139,13 +143,16 @@ class Controller_PingApp extends Controller_Template {
 				->bind('role', $role);
 			$nav->feedback_email = PingApp_Settings::get('feedback_email');
 
-			if ($this->user->has('roles', ORM::factory('Role')->where('name', '=', 'admin')->find() ))
+			if ( $this->user AND $this->user->loaded() )
 			{
-				$role = 'admin';
-			}
-			else
-			{
-				$role = 'member';
+				if ($this->user->has('roles', ORM::factory('Role')->where('name', '=', 'admin')->find() ))
+				{
+					$role = 'admin';
+				}
+				else
+				{
+					$role = 'member';
+				}
 			}
 		}
 	}
