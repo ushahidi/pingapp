@@ -26,11 +26,6 @@
 </div>
 <?php endif; ?>
 
-<?php if ($group->loaded()): ?>
-<a href="/people?group_id=<?php echo $group->id; ?>" class="small button" id="ping-add-contact">View Users</a>
-<a href="/groups/delete/<?php echo $group->id; ?>" class="small button alert" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
-<?php endif; ?>
-
 <?php echo Form::open(NULL, array('class' => 'custom')); ?>
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>

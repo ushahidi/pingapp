@@ -36,7 +36,7 @@ if ( $person->parent_id == 0 ): ?>
 <div class="panel">
 	Groups: 
 	<?php foreach ($groups as $group):?>
-	<span class="radius secondary label"><?php echo $group->name; ?></span></a>&nbsp;
+	<a href="/groups/view/<?php echo $group->id; ?>" class="radius secondary label"><?php echo $group->name; ?></a></a>&nbsp;
 	<?php endforeach; ?>
 </div>
 <?php endif; ?>
