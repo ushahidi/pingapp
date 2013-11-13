@@ -21,36 +21,6 @@ class Controller_Dashboard extends Controller_PingApp {
 		$this->template->footer->js = View::factory('pages/js/dashboard');
 	}
 
-	public function action_email()
-	{
-		$this->template = '';
-		$this->auto_render = FALSE;
-	 
-		// Use App's Email Setup to Send Mail
-		$driver = PingApp_Settings::get('email_outgoing_type');
-		$options = array(
-			'hostname' => PingApp_Settings::get('email_outgoing_host'),
-			'port' => PingApp_Settings::get('email_outgoing_port'),
-			'encryption' => (PingApp_Settings::get('email_outgoing_security') != 'none') 
-				? PingApp_Settings::get('email_outgoing_security') : '',
-			'username' => PingApp_Settings::get('email_outgoing_username'),
-			'password' => PingApp_Settings::get('email_outgoing_password')
-			);
-	 
-		$config = Kohana::$config->load('email');
-		$config->set('driver', $driver);
-		$config->set('options', $options);
-		
-		$body = View::factory('email/layout');
-	 
-		$email = Email::factory('Test Email', $body->render(), 'text/html')
-			->to('seth@ushahidi.com')
-			->from('seth@ushahidi.com', 'Seth')
-			->send();
-	 
-		echo $body;
-	}
-
 	/**
 	 * Use datatables to generate dashboard activity list
 	 */
