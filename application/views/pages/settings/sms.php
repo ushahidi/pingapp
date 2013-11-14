@@ -5,7 +5,7 @@
 	<li class="current"><a href="#">SMS</a></li>
 </ul>
 <?php if (isset($errors)): ?>
-<div data-alert class="alert-box alert">
+<div data-alert class="warning-alert-box">
 	<?php foreach ($errors as $error): ?>
 	<?php echo $error; ?><br />
 	<?php endforeach; ?>
@@ -14,7 +14,7 @@
 <?php endif; ?>
 
 <?php if ($done): ?>
-<div data-alert class="alert-box success">
+<div data-alert class="success-alert-box">
 	<?php echo __('Saved Successfully'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
@@ -24,9 +24,9 @@
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
 		<legend>SMS Provider</legend>
-		<div class="row">
-			<div class="large-6 columns">
-				<div class="switch round">
+		<div class="sms-provider-row">
+			<div class="sms-provider-switch">
+				<div class="switch  round">
 					<input id="z" name="settings[sms]" value="off" type="radio" <?php echo (( isset($post['settings']['sms']) AND $post['settings']['sms'] == 'off') OR ! isset($post['settings']['sms']) ) ? 'checked' : '' ?>>
 					<label for="z" onclick="">Off</label>
 
@@ -35,7 +35,7 @@
 					<span></span>
 				</div>				
 			</div>
-			<div class="large-6 columns">
+			<div class="sms-provider-select">
 				<?php echo Form::select('settings[sms_provider]', PingApp_Form::sms_providers(), (isset($post['settings']['sms_provider'])) ? $post['settings']['sms_provider'] : '', array("class" => "medium")) ;?>
 			</div>
 		</div>
@@ -46,13 +46,13 @@
 		<legend>
 			<?php echo $plugin['name']; ?> 
 			<?php if(isset($plugin['links']['signup'])): ?>
-				&nbsp;&nbsp;<a href="<?php echo $plugin['links']['signup']; ?>" target="_blank" class="button tiny secondary">Sign Up</a>
+				&nbsp;&nbsp;<a href="<?php echo $plugin['links']['signup']; ?>" target="_blank" class="plugin-signup-button">Sign Up</a>
 			<?php endif;?>
 		</legend>
 		
-		<div class="row">
+		<div class="sms-plugin-row">
 			<?php foreach ($plugin['options'] as $option => $label): ?>
-			<div class="large-4 columns">
+			<div class="sms-plugin-options">
 				<label><?php echo $label; ?></label>
 				<?php echo Form::input("settings[".$key."_".$option."]", (isset($post['settings'][$key."_".$option])) ? $post['settings'][$key."_".$option] : ''); ?>
 			</div>
@@ -61,7 +61,7 @@
 	</fieldset>
 	<?php endforeach; ?>
 
-	<div class="add-new-person-submit">
-		<button class="button  expand">Submit</button>
+	<div class="update-sms-settings">
+		<button class="update-sms-settings-button">Submit</button>
 	</div>
 <?php echo Form::close(); ?>

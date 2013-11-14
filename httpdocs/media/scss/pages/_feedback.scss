@@ -1,0 +1,58 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * CONTACT INFO...............contact info styles
+ * CONTACT INFO MESSAGE...............contact info message styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$CONTACT INFO
+\*------------------------------------*/
+
+.contact-info-row {
+	@include grid-row();
+}
+
+.contact-info-name {
+	@include grid-column(12);
+}
+
+.contact-info-email {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+	$CONTACT INFO MESSAGE
+\*------------------------------------*/
+
+.contact-info-message-row {
+	@include grid-row();
+}
+
+.contact-info-message {
+	@include grid-column(12);
+}
+
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.feedback-submit {
+	@extend %submit-wrapper;
+}
+
+.feedback-submit-button {
+	@extend %submit-button;
+}

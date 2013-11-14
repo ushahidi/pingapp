@@ -7,36 +7,50 @@
 	<?php endif; ?>
 	<li class="current"><a href="#"><?php echo $person->name; ?></a></li>
 </ul>
-<a href="/people/edit/<?php echo $person->id; ?>" class="small button" id="ping-add-contact">Edit</a>
-<?php
-// Make sure this isn't a secondary contact
-if ( $person->parent_id == 0 ): ?>
-<a href="/people/edit/?parent_id=<?php echo $person->id; ?>" class="small button" id="ping-add-contact">Add Secondary Contact</a>
-<?php endif;?>
-<a href="/people/delete/<?php echo $person->id; ?>" class="small button alert" id="ping-add-contact" onclick="return confirm('Delete This Person?');">Delete</a>
+
+
+<div class="edit-person-actions-wrapper">
+
+	<div class="edit-person">
+		<a href="/people/edit/<?php echo $person->id; ?>" class="edit-person-button" id="ping-add-contact">Edit</a>
+	</div>
+
+	<?php
+	// Make sure this isn't a secondary contact
+	if ( $person->parent_id == 0 ): ?>
+	<div class="add-secondary-contact">
+		<a href="/people/edit/?parent_id=<?php echo $person->id; ?>" class="add-secondary-contact-button" id="ping-add-contact">Add Contact</a>
+	</div>
+	<?php endif;?>
+	<div class="delete-contact">
+		<a href="/people/delete/<?php echo $person->id; ?>" class="delete-contact-button" id="ping-add-contact" onclick="return confirm('Delete This Person?');">Delete</a>
+	</div>
+
+</div>
+
 
 <?php if ( $person->parent_id == 0 ): ?>
-<div class="panel">
+<div class="people-status-panel">
 	Status: <a href="/people/status/<?php echo $person->id; ?>"><strong><?php echo strtoupper($person->status); ?></strong></a> <small><?php echo date('Y-m-d g:i a', strtotime($person->updated)); ?> [<a href="/people/status/<?php echo $person->id; ?>">change</a>]</small>
 	<?php if ($status->loaded() AND ! $my_status): ?>
 	<br /><br />
 		<?php if ($status->user_id):?>
-		<div data-alert class="alert-box alert radius">
+		<div data-alert class="warning-alert-box">
 			* status of this person was updated by another user
 		</div>
 		User <a href="#">#<?php echo $status->user_id; ?></a> added a note: <strong><?php echo $status->note; ?></strong>
 		<?php else: ?>
-		<div data-alert class="alert-box success radius">
+		<div data-alert class="success-box">
 			* status was updated when this person responded to another user
 		</div>
 		<?php endif; ?>
 	<?php endif; ?>
 </div>
 
-<div class="panel">
+<div class="people-groups-panel">
 	Groups: 
 	<?php foreach ($groups as $group):?>
-	<span class="radius secondary label"><?php echo $group->name; ?></span></a>&nbsp;
+	<a href="/people?group_id=<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>&nbsp;
 	<?php endforeach; ?>
 </div>
 <?php endif; ?>
@@ -45,7 +59,7 @@ if ( $person->parent_id == 0 ): ?>
 	<section class="active">
 		<p class="title" data-section-title><a href="#panel1">Pings</a></p>
 		<div class="content" data-section-content>
-			<table class="display dataTable" id="pings">
+			<table class="display  dataTable" id="pings">
 				<thead>
 					<tr>
 						<th>Contact</th>
@@ -60,7 +74,7 @@ if ( $person->parent_id == 0 ): ?>
 	<section>
 		<p class="title" data-section-title><a href="#panel2">Pongs</a></p>
 		<div class="content" data-section-content>
-			<table class="display dataTable" id="pongs">
+			<table class="display  dataTable" id="pongs">
 				<thead>
 					<tr>
 						<th>Contact</th>
@@ -78,7 +92,7 @@ if ( $person->parent_id == 0 ): ?>
 		<div class="content" data-section-content>
 			<div class="dashboard-display-table-wrapper">
 				<div class="dashboard-display-table">
-					<table class="display dataTable" id="secondary">
+					<table class="display  dataTable" id="secondary">
 						<thead>
 							<tr>
 								<th>Name</th>

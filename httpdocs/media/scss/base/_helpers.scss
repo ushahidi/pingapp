@@ -1,6 +1,21 @@
-/*Code Blocks*/
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * HELPER CLASSES...............general helper classes
+ * HEADER ACTIONS...............header actions %placeholders
+ * SUBMIT...............submit %placeholderS
+ */
 
-.highlight {
+
+
+ 
+/*------------------------------------*\
+	$HELPER CLASSES
+\*------------------------------------*/
+
+/*Code Blocks*/
+.codebox {
 	background: #073642;
 	padding: 10px 20px 20px 20px;
 	margin-bottom: 20px;
@@ -16,4 +31,109 @@
 	span {
 		color: #93A1A1;
 	}
+}
+
+/*------------------------------------*\
+    $HEADER ACTIONS
+\*------------------------------------*/
+
+%header-actions-wrapper {
+	@include grid-row();
+}
+
+/*to be used when there is only 1 action*/
+%header-action-position-1 {
+	@include grid-column(12, $collapse: true);
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+	}
+}
+
+/*to be used when there are 2 actions*/
+%header-action-position-1-of-2 {
+	@include grid-column(6);
+	padding-left: 0;
+	padding-right: 5px;
+	@media #{$small} {
+		@include grid-column(2);
+		padding-left: 0;
+		padding-right: 5px;
+	}
+}
+
+%header-action-position-2-of-2 {
+	@include grid-column(6);
+	padding-left: 5px;
+	padding-right: 0;
+	@media #{$small} {
+		@include grid-column(2);
+		padding-left: 5px;
+		padding-right: 0;
+	}
+}
+
+/*to be used when there are 3 actions*/
+%header-action-position-1-of-3 {
+	@include grid-column(12, $collapse: true);
+	@media #{$mobile-landscape} {
+		@include grid-column(4, $collapse: true);
+		padding-left: 0;
+		padding-right: 5px;
+	}
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+		padding-left: 0;
+		padding-right: 5px;
+	}
+}
+
+%header-action-position-2-of-3 {
+	@include grid-column(12, $collapse: true);
+	@media #{$mobile-landscape} {
+		@include grid-column(4, $collapse: true);
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+}
+
+%header-action-position-3-of-3 {
+	@include grid-column(12, $collapse: true);
+	@media #{$mobile-landscape} {
+		@include grid-column(4, $collapse: true);
+		padding-left: 5px;
+		padding-right: 0px;
+	}
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+		padding-left: 5px;
+		padding-right: 0;
+	}
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+%submit-wrapper {
+	@include grid-column(12, $collapse: true);
+	@media #{$mobile-landscape} {
+		@include grid-column(4, $collapse: true);
+		float: right;
+	}
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+		float: right;
+	}
+}
+
+%submit-button {
+	@include button($bg: $success-color, $radius: true, $full-width: true);
 }

@@ -16,7 +16,7 @@
 				<h2>Ping App</h2>
 			</div>
 			<?php if (isset($errors)): ?>
-			<div data-alert class="alert-box alert">
+			<div data-alert class="warning-alert-box">
 				<?php foreach ($errors as $error): ?>
 				<?php echo $error; ?><br />
 				<?php endforeach; ?>
@@ -40,7 +40,7 @@
 				</fieldset>
 				
 				<div class="login-action">
-					<button class="button expand">Login</button>
+					<button class="login-action-button">Login</button>
 				</div>
 				<div class="register-action">
 					<p>Don't have an account?<a onclick="window.location = '/register'; return false;"> Register</a></p>

@@ -11,7 +11,7 @@
 
 
 <?php if (isset($errors)): ?>
-<div data-alert class="alert-box alert">
+<div data-alert class="warning-alert-box">
 	<?php foreach ($errors as $error): ?>
 	<?php echo $error; ?><br />
 	<?php endforeach; ?>
@@ -20,15 +20,21 @@
 <?php endif; ?>
 
 <?php if ($done): ?>
-<div data-alert class="alert-box success">
+<div data-alert class="success-alert-box">
 	<?php echo __('Saved Successfully'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
 <?php endif; ?>
 
 <?php if ($group->loaded()): ?>
-<a href="/people?group_id=<?php echo $group->id; ?>" class="small button" id="ping-add-contact">View Users</a>
-<a href="/groups/delete/<?php echo $group->id; ?>" class="small button alert" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
+	<div class="group-actions-wrapper">
+		<div class="view-group-users-button-wrapper">
+			<a href="/people?group_id=<?php echo $group->id; ?>" class="view-group-users-button" id="ping-add-contact">View Users</a>
+		</div>
+		<div class="delete-group-button-wrapper">
+			<a href="/groups/delete/<?php echo $group->id; ?>" class="delete-group-button" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
+		</div>
+	</div>
 <?php endif; ?>
 
 <?php echo Form::open(NULL, array('class' => 'custom')); ?>
@@ -42,7 +48,7 @@
 		</div>
 	</fieldset>
 
-	<div class="add-new-person-submit">
-		<button class="button  expand">Submit</button>
+	<div class="add-new-group-submit">
+		<button class="add-new-group-submit-button">Submit</button>
 	</div>
 <?php echo Form::close(); ?>

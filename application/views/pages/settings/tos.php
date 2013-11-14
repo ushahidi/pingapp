@@ -5,7 +5,7 @@
 	<li class="current"><a href="#">Terms Of Service</a></li>
 </ul>
 <?php if (isset($errors)): ?>
-<div data-alert class="alert-box alert">
+<div data-alert class="warning-alert-box">
 	<?php foreach ($errors as $error): ?>
 	<?php echo $error; ?><br />
 	<?php endforeach; ?>
@@ -14,7 +14,7 @@
 <?php endif; ?>
 
 <?php if ($done): ?>
-<div data-alert class="alert-box success">
+<div data-alert class="success-alert-box">
 	<?php echo __('Saved Successfully'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
@@ -24,8 +24,8 @@
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
 		<legend>Terms Of Service</legend>
-		<div class="row">
-			<div class="large-12 columns">
+		<div class="terms-of-service-row">
+			<div class="terms-of-service">
 				<?php echo Form::textarea('settings[tos]', (isset($post['settings']['tos'])) ? $post['settings']['tos'] : ''); ?>
 			</div>
 		</div>
@@ -33,14 +33,14 @@
 
 	<fieldset>
 		<legend>Privacy Policy</legend>
-		<div class="row">
-			<div class="large-12 columns">
+		<div class="privacy-policy-row">
+			<div class="privacy-policy">
 				<?php echo Form::textarea('settings[privacy]', (isset($post['settings']['privacy'])) ? $post['settings']['privacy'] : ''); ?>
 			</div>
 		</div>
 	</fieldset>
 
-	<div class="add-new-person-submit">
-		<button class="button  expand">Submit</button>
+	<div class="update-tos-settings">
+		<button class="update-tos-settings-button">Submit</button>
 	</div>
 <?php echo Form::close(); ?>

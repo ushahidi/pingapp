@@ -1,0 +1,169 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * EMAIL PROVIDER...............email provider styles
+ * OUTGOING EMAIL SETTINGS...............outgoing email settings styles
+ * INCOMING EMAIL SETTINGS...............incoming email settings styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$EMAIL PROVIDER
+\*------------------------------------*/
+
+.email-provider-row {
+	@include grid-row();
+}
+
+.outgoing-email-switch {
+	@include grid-column(6);
+}
+
+.incoming-email-switch {
+	@include grid-column(6);
+}
+
+.email-provider-address {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6);
+	}
+}
+
+.email-provider-from-name {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6);
+	}
+}
+
+
+
+/*------------------------------------*\
+	$OUTGOING EMAIL SETTINGS
+\*------------------------------------*/
+
+.outgoing-email-settings-row {
+	@include grid-row();
+}
+
+.outgoing-email-settings-type {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.outgoing-email-settings-host {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.outgoing-email-settings-port {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.outgoing-email-settings-smtp {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(3);
+	}
+}
+
+.outgoing-email-settings-security {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(3);
+	}
+}
+
+.outgoing-email-settings-user-name {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(3);
+	}
+}
+
+.outgoing-email-settings-password {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(3);
+	}
+}
+
+
+
+
+/*------------------------------------*\
+	$INCOMING EMAIL SETTINGS
+\*------------------------------------*/
+
+.incoming-email-settings-row {
+	@include grid-row();
+}
+
+.incoming-email-settings-type {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.incoming-email-settings-server {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.incoming-email-settings-port {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.incoming-email-settings-security {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.incoming-email-settings-username {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.incoming-email-settings-password {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-email-settings {
+	@extend %submit-wrapper;
+}
+
+.update-email-settings-button {
+	@extend %submit-button;
+}

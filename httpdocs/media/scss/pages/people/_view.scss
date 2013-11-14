@@ -1,0 +1,64 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * ACTIONS...............header button styles
+ * PANELS...............panel styles
+ */
+
+
+
+
+/*------------------------------------*\
+     $ACTIONS
+ \*------------------------------------*/
+
+.edit-person-actions-wrapper {
+	@extend %header-actions-wrapper;
+}
+
+.edit-person {
+	@extend %header-action-position-1-of-3;
+}
+
+.edit-person-button {
+	@include button($padding: $button-sml, $radius: true, $full-width: true);
+	@media #{$mobile-landscape} {
+		@include button($padding: $button-sml, $radius: true);
+	}
+}
+
+.add-secondary-contact {
+	@extend %header-action-position-2-of-3;
+}
+
+.add-secondary-contact-button {
+	@include button($padding: $button-sml, $radius: true, $full-width: true);
+	@media #{$mobile-landscape} {
+		@include button($padding: $button-sml, $radius: true);
+	}
+}
+
+.delete-contact {
+	@extend %header-action-position-3-of-3;
+}
+
+.delete-contact-button {
+	@include button($padding: $button-sml, $bg: $alert-color, $radius: true, $full-width: true);
+	@media #{$mobile-landscape} {
+		@include button($padding: $button-sml, $bg: $alert-color, $radius: true);
+	}
+}
+
+
+/*------------------------------------*\
+	$PANELS
+\*------------------------------------*/
+
+.people-status-panel {
+	@include panel();
+}
+
+.people-groups-panel {
+	@include panel();
+}

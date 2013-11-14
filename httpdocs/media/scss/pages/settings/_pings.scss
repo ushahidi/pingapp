@@ -1,0 +1,45 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL STYLES...............general styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$GENERAL STYLES
+\*------------------------------------*/
+
+.ping-max-number-row {
+	@include grid-row();
+}
+
+.ping-max-number {
+	@include grid-column(12);
+}
+
+.ping-delay-row {
+	@include grid-row();
+}
+
+.ping-delay {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-ping-settings {
+	@extend %submit-wrapper;
+}
+
+.update-ping-settings-button {
+	@extend %submit-button;
+}

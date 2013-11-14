@@ -1,0 +1,48 @@
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL STYLES............general styles
+ */
+
+
+
+
+
+/*------------------------------------*\
+    GENERAL STYLES
+\*------------------------------------*/
+
+.register-first-name {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6);
+	}
+}
+
+.register-last-name {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6);
+	}
+}
+
+.register-username {
+	@include grid-column(12);
+}
+
+.register-email {
+	@include grid-column(12);
+}
+
+.register-password {
+	@include grid-column(12);
+}
+
+.register-action {
+	@include grid-column(12, $collapse: true);
+}
+
+.register-action-button {
+	@include button($radius: true, $full-width: true);
+}

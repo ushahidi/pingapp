@@ -1,0 +1,70 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * SMS PROVIDER...............sms provider styles
+ * PLUGINS...............plugin styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$SMS PROVIDER
+\*------------------------------------*/
+
+.sms-provider-row {
+	@include grid-row();
+}
+
+.sms-provider-switch {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6);
+	}
+}
+
+.sms-provider-select {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(6);
+	}
+}
+
+
+
+
+/*------------------------------------*\
+	$PLUGINS
+\*------------------------------------*/
+
+.sms-plugin-row {
+	@include grid-row();
+}
+
+.sms-plugin-options {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.plugin-signup-button {
+	@include button($padding: $button-tny, $bg: $secondary-color, $radius: true);
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-sms-settings {
+	@extend %submit-wrapper;
+}
+
+.update-sms-settings-button {
+	@extend %submit-button;
+}

@@ -4,15 +4,15 @@
 	<li class="current"><a href="#">Groups</a></li>
 </ul>
 
-<div class="dashboard-actions-wrapper">
-	<div class="new-message">
-		<a href="/groups/edit" class="button  expand">New Group [+]</a>
+<div class="groups-actions-wrapper">
+	<div class="new-group">
+		<a href="/groups/edit" class="new-group-button">New Group [+]</a>
 	</div>
 </div>
 
 <div class="dashboard-display-table-wrapper">
 	<div class="dashboard-display-table">
-		<table class="display dataTable" id="activity">
+		<table class="display  dataTable" id="activity">
 			<thead>
 				<tr>
 					<th>Group Name</th>
