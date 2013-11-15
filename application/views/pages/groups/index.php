@@ -22,7 +22,7 @@
 			<tbody>
 				<?php foreach ($groups as $group):?>
 				<tr>
-					<td><a href="/groups/edit/<?php echo $group->id; ?>"><strong><?php echo $group->name; ?></strong></a></td>
+					<td><a href="/groups/view/<?php echo $group->id; ?>"><strong><?php echo $group->name; ?></strong></a></td>
 					<td><span class="radius secondary label"><?php echo $group->people; ?></span></td>
 				</tr>
 				<?php endforeach; ?>

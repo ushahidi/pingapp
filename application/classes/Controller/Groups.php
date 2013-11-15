@@ -84,6 +84,30 @@ class Controller_Groups extends Controller_PingApp {
 	}
 
 	/**
+	 * View A Group
+	 * 
+	 * @return void
+	 */
+	public function action_view()
+	{
+		$this->template->content = View::factory('pages/groups/view')
+			->bind('group', $group);
+		$this->template->footer->js = View::factory('pages/groups/js/view')
+			->bind('group', $group);
+
+		$group_id = $this->request->param('id', 0);
+		$group = ORM::factory('Group')
+			->where('id', '=', $group_id)
+			->where('user_id', '=', $this->user->id)
+			->find();
+
+		if ( ! $group->loaded() )
+		{
+			HTTP::redirect('groups');
+		}
+	}
+
+	/**
 	 * Delete A Group
 	 * 
 	 * @return void

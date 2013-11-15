@@ -3,7 +3,8 @@ $(document).ready(function() {
 		"bJQueryUI": true,
 		"bProcessing": true,
 		"bServerSide": true,
-		"sAjaxSource": "/people/ajax_list",
-		"aaSorting": [[ 0, "asc" ]],
+		"sAjaxSource": "/users/ajax_list",
+		"aaSorting": [[ 4, "desc" ]],
+		"iDisplayLength": 50
 	});
 });

@@ -50,7 +50,7 @@
 <div class="people-groups-panel">
 	Groups: 
 	<?php foreach ($groups as $group):?>
-	<a href="/people?group_id=<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>&nbsp;
+	<a href="/groups/view/<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>&nbsp;
 	<?php endforeach; ?>
 </div>
 <?php endif; ?>
@@ -64,6 +64,7 @@
 					<tr>
 						<th>Contact</th>
 						<th>Message</th>
+						<th>Re-Pings</th>
 						<th>Date</th>
 					</tr>
 				</thead>
