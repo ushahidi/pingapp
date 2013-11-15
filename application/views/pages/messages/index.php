@@ -4,9 +4,9 @@
 	<li class="current"><a href="#">Messages</a></li>
 </ul>
 
-<div class="dashboard-actions-wrapper">
+<div class="messages-actions-wrapper">
 	<div class="new-message">
-		<a href="/messages/new" class="button   expand  success">Send A Message</a>
+		<a href="/messages/new" class="new-message-button">Send A Message</a>
 	</div>
 </div>
 

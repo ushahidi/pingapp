@@ -1,3 +1,18 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL STYLES...............general header styles
+ * LOGO...............logo styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$GENERAL STYLES
+\*------------------------------------*/
+
 .main-content-row {
 	@include grid-row();
 }
@@ -5,6 +20,13 @@
 .main-content {
 	@include grid-column(12);
 }
+
+
+
+
+/*------------------------------------*\
+	$LOGO
+\*------------------------------------*/
 
 .logo-image {
 	margin: 20px auto;
@@ -18,7 +40,7 @@
 	}
 }
 
-fieldset {
+/*fieldset {
 	border: solid 1px #ddd;
 	padding: 2em 1.25em 1em 1.25em;
 	margin: 1.125em 0;
@@ -26,4 +48,4 @@ fieldset {
 
 input[type="text"] {
 	margin: 0 0 2em 0;
-}
+}*/

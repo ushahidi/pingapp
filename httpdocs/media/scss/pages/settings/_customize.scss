@@ -1,0 +1,58 @@
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/**
+ * SMS............sms styles
+ * EMAIL...............email styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+
+
+/*------------------------------------*\
+    SMS
+\*------------------------------------*/
+
+.sms-tagline-row {
+	@include grid-row();
+}
+
+.sms-tagline {
+	@include grid-column(12, $collapse: true);
+}
+
+
+
+
+/*------------------------------------*\
+    SMS
+\*------------------------------------*/
+
+.email-template-row {
+	@include grid-row();
+}
+
+.email-template {
+	@include grid-column(12);
+}
+
+.email-template-textarea {
+	@include grid-column(12, $collapse: true);
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-custom-message-settings {
+	@extend %submit-wrapper;
+}
+
+.update-custom-message-settings-button {
+	@extend %submit-button;
+}

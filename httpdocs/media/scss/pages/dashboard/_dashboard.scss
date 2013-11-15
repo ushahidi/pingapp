@@ -1,0 +1,92 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL STYLES...............general styles
+ * TABLE...............table styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$GENERAL STYLES
+\*------------------------------------*/
+
+.dashboard-actions-wrapper {
+	@extend %header-actions-wrapper;
+}
+
+.dashboard-new-message {
+	@include grid-column(12, $collapse: true);
+		@media #{$mobile-landscape} {
+			@include grid-column(6);
+			padding-left: 0;
+		}
+		@media #{$small} {
+			@include grid-column(3);
+			padding-left: 0;
+		}
+}
+
+.dashboard-new-message-button {
+	@include button($padding: $button-med, $bg: $success-color, $radius: true, $full-width: true);
+}
+
+.dashboard-new-person {
+	@include grid-column(12, $collapse: true);
+		@media #{$mobile-landscape} {
+			@include grid-column(6);
+			padding-right: 0;
+		}
+		@media #{$small} {
+			@include grid-column(3);
+		}
+	}
+
+.dashboard-new-person-button {
+	@include button($padding: $button-med, $radius: true, $full-width: true);
+}
+
+
+
+
+/*------------------------------------*\
+    $TABLE
+\*------------------------------------*/
+
+.table-filter-row {
+	@include grid-row();
+}
+
+.records-per-page-filter {
+	@include grid-column(6, $collapse: true);
+		@media #{$small} {
+			@include grid-column(6, $collapse: true);
+		}
+}
+
+.search-names-filter {
+	@include grid-column(6, $collapse: true);
+		@media #{$small} {
+			@include grid-column(6, $collapse: true);
+		}
+}
+
+.dataTables_processing {
+	text-align: left;
+	float: right;
+	margin: 10px 0 15px 0;	
+}
+
+input[type="text"].table-search {
+	margin-bottom: 0;
+}
+
+.dashboard-display-table-wrapper {
+	@include grid-row();
+}
+
+.dashboard-display-table {
+	@include grid-column(12, $collapse: true);
+}

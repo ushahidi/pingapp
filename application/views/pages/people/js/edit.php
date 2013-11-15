@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('.add-contact').click(function() {
+	$('.add-contact-button').click(function() {
 		var clone = $('.contact-info-row:last').clone(true);
 		clone.find(':input').each(function(){
 			if ($(this).attr('type') == 'hidden') {

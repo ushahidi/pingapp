@@ -10,7 +10,7 @@
 </ul>
 
 <?php if (isset($errors)): ?>
-<div data-alert class="alert-box alert">
+<div data-alert class="warning-alert-box">
 	<?php foreach ($errors as $error): ?>
 	<?php echo $error; ?><br />
 	<?php endforeach; ?>
@@ -19,11 +19,11 @@
 <?php endif; ?>
 
 <?php if ($done): ?>
-<div data-alert class="alert-box success">
+<div data-alert class="success-alert-box">
 	<?php echo __('Saved Successfully'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
-<a href="/people/edit" class="small button" id="ping-add-contact">New Person [+]</a>
+<a href="/people/edit" class="new-person-button" id="ping-add-contact">New Person [+]</a>
 <?php endif; ?>
 
 <?php echo Form::open(NULL, array('class' => 'custom', 'id' => 'personForm')); ?>
@@ -42,11 +42,11 @@
 	<fieldset>
 		<legend>Groups</legend>
 		<?php $i = 0; foreach ($groups as $group): ?>
-		<?php if ($i == 0): ?><div class="row"><?php endif; ?>
-			<div class="large-3 columns">
+		<?php if ($i == 0): ?><div class="edit-groups-row"><?php endif; ?>
+			<div class="edit-groups">
 				<label for="group-<?php echo $group->id; ?>">
 				<?php echo Form::checkbox('group[]', $group->id,  ( isset($post['group']) AND in_array($group->id, $post['group'])) ? TRUE : FALSE, array("id" => "group-".$group->id, "style" => "display: none;")) ;?>
-				<span class="custom checkbox"></span> <?php echo $group->name; ?></label>
+				<span class="custom  checkbox"></span> <?php echo $group->name; ?></label>
 			</div>
 		<?php $i++; if ($i == 4): ?></div><?php $i = 0; endif; ?>
 		<?php endforeach; ?>
@@ -65,7 +65,7 @@
 				<?php echo Form::input("contact[0][contact]", (isset($post['contact'][0]['contact'])) ? $post['contact'][0]['contact'] : '', array("id" => "contact[0][contact]", "placeholder" => "Account", "minlength" => "3", "class" => "contact-account" )); ?>
 			</div>
 			<div class="remove-contact">
-				<a class="small button secondary ping-del-contact">Remove</a>
+				<a class="remove-contact-button  ping-del-contact">Remove</a>
 			</div>
 		</div>
 
@@ -83,18 +83,20 @@
 				<?php echo Form::input("contact[".$key."][contact]", (isset($post['contact'][$key]['contact'])) ? $post['contact'][$key]['contact'] : '', array("id" => "contact[".$key."][contact]", "placeholder" => "Account", "minlength" => "3", "class" => "contact-account" )); ?>			
 			</div>
 			<div class="remove-contact">
-				<a class="small button secondary ping-del-contact">Remove</a>
+				<a class="remove-contact-button  ping-del-contact">Remove</a>
 			</div>
 		</div>
 		<?php 
 		endforeach;
 		endif;
 		?>
-		<a class="add-contact small button secondary">Add Another Contact [+]</a>
+		<div class="add-contact">
+			<a class="add-contact-button">Add Another Contact [+]</a>
+		</div>
 	</fieldset>
 
 	<div class="add-new-person-submit">
-		<button class="button  expand">Submit</button>
+		<button class="add-new-person-submit-button">Submit</button>
 	</div>
 
 <?php echo Form::close(); ?>

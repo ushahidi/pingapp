@@ -1,0 +1,53 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * FEEDBACK...............feedback styles
+ * GOOGLE ANALYTICS ID...............google analytics id styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$FEEDBACK
+\*------------------------------------*/
+
+.feedback-email-address-row {
+	@include grid-row();
+}
+
+.feedback-email-address {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+	$GOOGLE ANALYTICS ID
+\*------------------------------------*/
+
+.google-analytics-id-row {
+	@include grid-row();
+}
+
+.google-analytics-id {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-extra-settings {
+	@extend %submit-wrapper;
+}
+
+.update-extra-settings-button {
+	@extend %submit-button;
+}

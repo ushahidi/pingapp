@@ -1,3 +1,18 @@
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL STYLES............general styles
+ */
+
+
+
+
+
+/*------------------------------------*\
+    GENERAL STYLES
+\*------------------------------------*/
+
 .main-content-login-row {
 	@include grid-row();
 }
@@ -8,6 +23,8 @@
 		@include grid-column(6, $center: true);
 	}
 }
+
+
 
 .login-box-username {
 	@include grid-column(12);
@@ -23,6 +40,10 @@
 
 .login-action {
 		@include grid-column(12, $collapse: true);
+}
+
+.login-action-button {
+	@include button($radius: true, $full-width: true);
 }
 
 

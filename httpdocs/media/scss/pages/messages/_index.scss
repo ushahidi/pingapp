@@ -1,0 +1,31 @@
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/**
+ * ACTIONS............header styles
+ */
+
+
+
+
+
+/*------------------------------------*\
+    $ACTIONS
+\*------------------------------------*/
+
+.messages-actions-wrapper {
+	@extend %header-actions-wrapper
+}
+
+.new-message {
+	@extend %header-action-position-1;
+}
+
+.new-message-button {
+	@include button($padding: $button-sml, $bg: $success-color, $radius: true, $full-width: true);
+	@media #{$mobile-landscape} {
+		@include button($padding: $button-sml, $bg: $success-color, $radius: true, $full-width: false);
+		width: 180px;
+	}
+}
+

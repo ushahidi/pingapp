@@ -1,0 +1,173 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * RECIPIENTS...............recipient styles
+ * MESSAGE TYPE...............message type styles
+ * MESSAGE BODY...............message body styles
+ * SUBMIT...............message submit
+ * MESSAGE CONFIRM...............message confirmation styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$RECIPIENTS
+\*------------------------------------*/
+
+.recipient-row {
+	@include grid-row();
+}
+
+.recipients {
+	@include grid-column(12);
+}
+
+.recipients-dropdown {
+	padding: 5px 0 20px 5px;
+	border: 1px solid #ccc;
+	&:focus {
+		background: #fafafa;
+		border-color: #999;
+		outline: none;
+		-webkit-box-shadow: 0 0 5px #999;
+		-moz-box-shadow: 0 0 5px #999;
+		box-shadow: 0 0 5px #999;
+	}
+}
+
+
+
+
+/*------------------------------------*\
+	$MESSAGE TYPE
+\*------------------------------------*/
+
+.message-type-row {
+	@include grid-row();
+}
+
+.message-type-sms {
+	@include grid-column(6);
+}
+
+.message-type-email {
+	@include grid-column(6);
+}
+
+.sms-panel {
+	@include panel();
+}
+
+.email-panel {
+	@include panel();
+}
+
+.email-title-row {
+	@include grid-row();
+}
+
+.email-title {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+	$MESSAGE BODY
+\*------------------------------------*/
+
+.message-row {
+	@include grid-row();	
+}
+
+.message {
+	@include grid-column(12);
+}
+
+.chars {
+	color: $alert-color;
+	text-align: right;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.new-message-next {
+	@include grid-column(12, $collapse: true);
+	@media #{$mobile-landscape} {
+		@include grid-column(4, $collapse: true);
+		float: right;
+	}
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+		float: right;
+	}
+}
+
+.new-message-submit {
+	@extend .new-message-next
+}
+
+.new-message-next-button {
+	@include button($padding: $button-med, $bg: $success-color, $radius: true, $full-width: true);
+}
+
+.new-message-submit-button {
+	@extend .new-message-next-button;
+}
+
+
+
+
+/*------------------------------------*\
+	$MESSAGE CONFIRM
+\*------------------------------------*/
+
+.calculating-row {
+	@include grid-row();
+}
+
+.message-row {
+	@include grid-row();
+}
+
+.sms-recipients-row {
+	@include grid-row();
+}
+
+.email-recipients-row {
+	@include grid-row();
+}
+
+.text-cost-row {
+	@include grid-row();
+}
+
+.calculating-panel {
+	@include panel($bg: $primary-color);
+}
+
+.message-panel {
+	@include panel();
+}
+
+.sms-recipients-panel {
+	@include panel();
+}
+
+.email-recipients-panel {
+	@include panel();
+}
+
+.text-cost-panel {
+	@include panel();
+}
+

@@ -11,7 +11,7 @@
 
 
 <?php if (isset($errors)): ?>
-<div data-alert class="alert-box alert">
+<div data-alert class="warning-alert-box">
 	<?php foreach ($errors as $error): ?>
 	<?php echo $error; ?><br />
 	<?php endforeach; ?>
@@ -20,7 +20,7 @@
 <?php endif; ?>
 
 <?php if ($done): ?>
-<div data-alert class="alert-box success">
+<div data-alert class="success-alert-box">
 	<?php echo __('Saved Successfully'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
@@ -37,7 +37,7 @@
 		</div>
 	</fieldset>
 
-	<div class="add-new-person-submit">
-		<button class="button  expand">Submit</button>
+	<div class="add-new-group-submit">
+		<button class="add-new-group-submit-button">Submit</button>
 	</div>
 <?php echo Form::close(); ?>
