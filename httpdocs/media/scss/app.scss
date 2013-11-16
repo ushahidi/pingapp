@@ -53,7 +53,6 @@
 
 /*common*/
 @import "common/header";
-@import "common/top-bar";
 
 /*pages*/
 @import "pages/feedback";
@@ -89,5 +88,7 @@
 @import "pages/settings/pings";
 @import "pages/settings/sms";
 @import "pages/settings/tos";
+
+@import "common/footer";
 
 
