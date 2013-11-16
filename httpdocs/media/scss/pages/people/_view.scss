@@ -62,3 +62,15 @@
 .people-groups-panel {
 	@include panel();
 }
+
+
+
+
+/*------------------------------------*\
+    $STATS SECTION
+\*------------------------------------*/
+
+.people-stats-tabs {
+	@extend %tabs-container;
+}
+

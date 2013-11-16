@@ -55,7 +55,7 @@
 </div>
 <?php endif; ?>
 
-<div class="section-container auto" data-section>
+<div class="people-stats-tabs auto" data-section="tabs">
 	<section class="active">
 		<p class="title" data-section-title><a href="#panel1">Pings</a></p>
 		<div class="content" data-section-content>

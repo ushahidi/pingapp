@@ -2,6 +2,7 @@
 	$CONTENTS
 \*------------------------------------*/
 /**
+ * GENERAL...............general styles
  * RECIPIENTS...............recipient styles
  * MESSAGE TYPE...............message type styles
  * MESSAGE BODY...............message body styles
@@ -10,6 +11,15 @@
  */
 
 
+
+
+ /*------------------------------------*\
+     $GENERAL
+ \*------------------------------------*/
+
+ .new-message-tabs {
+	@extend %tabs-container;
+}
 
  
 /*------------------------------------*\
