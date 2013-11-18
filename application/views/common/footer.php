@@ -8,6 +8,7 @@
 		      <div class="footer-links">
 		        <ul class="footer-links-list">
 		          <li><a href="/terms">Terms</a></li>
+		          <li>|</li>
 		          <li><a href="/privacy">Privacy</a></li>
 		        </ul>
 		      </div>
