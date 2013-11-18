@@ -64,6 +64,7 @@
 /*pages/groups*/
 @import "pages/groups/edit";
 @import "pages/groups/index";
+@import "pages/groups/view";
 
 /*pages/login*/
 @import "pages/login/login";
@@ -88,6 +89,10 @@
 @import "pages/settings/pings";
 @import "pages/settings/sms";
 @import "pages/settings/tos";
+
+/*pages/users*/
+@import "pages/users/index";
+@import "pages/users/view";
 
 @import "common/footer";
 

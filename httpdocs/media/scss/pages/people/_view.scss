@@ -33,7 +33,7 @@
 }
 
 .add-secondary-contact-button {
-	@include button($padding: $button-sml, $radius: true, $full-width: true);
+	@include button($padding: $button-sml, $bg: $secondary-color, $radius: true, $full-width: true);
 	@media #{$mobile-landscape} {
 		@include button($padding: $button-sml, $radius: true);
 	}
