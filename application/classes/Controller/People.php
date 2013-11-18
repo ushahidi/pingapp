@@ -19,14 +19,7 @@ class Controller_People extends Controller_PingApp {
 	{
 		$this->template->content = View::factory('pages/people/index')
 			->bind('group', $group);
-		$this->template->footer->js = View::factory('pages/people/js/index')
-			->bind('group_id', $group_id);
-
-		$group_id = (int) $this->request->query('group_id');
-		if ($group_id)
-		{
-			$group = ORM::factory('Group', $group_id);
-		}
+		$this->template->footer->js = View::factory('pages/people/js/index');
 	}
 
 	/**
@@ -410,7 +403,7 @@ class Controller_People extends Controller_PingApp {
 		}
 
 		// Ordering
-		if ( isset( $_GET['iSortCol_0'] ) AND $_GET['iSortCol_0'] != 0 )
+		if ( isset( $_GET['iSortCol_0'] ) )
 		{
 			$query->order_by($columns[$_GET['iSortCol_0']], $_GET['sSortDir_0']);
 		}

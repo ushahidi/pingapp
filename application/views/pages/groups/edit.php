@@ -26,17 +26,6 @@
 </div>
 <?php endif; ?>
 
-<?php if ($group->loaded()): ?>
-	<div class="group-actions-wrapper">
-		<div class="view-group-users-button-wrapper">
-			<a href="/people?group_id=<?php echo $group->id; ?>" class="view-group-users-button" id="ping-add-contact">View Users</a>
-		</div>
-		<div class="delete-group-button-wrapper">
-			<a href="/groups/delete/<?php echo $group->id; ?>" class="delete-group-button" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
-		</div>
-	</div>
-<?php endif; ?>
-
 <?php echo Form::open(NULL, array('class' => 'custom')); ?>
 	<?php echo Form::hidden('token', Security::token()); ?>
 	<fieldset>
