@@ -69,17 +69,17 @@ Then we style our semantic class with a Sass mixin
 
 ```
 .group-delete-button {
-  @include button($bg: $success-color, $radius: true, $full-width: true);
+  @include button($padding: $button-sml, $bg: $alert-color, $radius: true);
 }
 
 ```
 
-*** Please reference the [Foundation Docs](http://foundation.zurb.com/docs/) and the existing code base for more information ***
+*** Please reference the [Foundation Docs](http://foundation.zurb.com/docs/) and the existing code base as needed ***
 
 
 ####Example - grid:
 
-It is important to know that the PING grid markup is semantic and styled via the `.scss` files.. If you need to adjust or add to the grid, please markup with semantic classes and style with [Sass mixins provided by Foundation](http://foundation.zurb.com/docs/components/grid.html).
+The semanitic markup applys to the grid as well. If you need to adjust or add to the grid, please markup with semantic classes and style with [Sass mixins provided by Foundation](http://foundation.zurb.com/docs/components/grid.html).
 
 
 
