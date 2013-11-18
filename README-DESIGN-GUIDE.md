@@ -1,7 +1,7 @@
 Ping Design Guide
 ============
 
-PING'S UI is based on the all inclusive, crossbrowser, front-end framework [Foundation](http://foundation.zurb.com/docs/index.html) and utilizes [Sass](http://example.net/), which compiles to CSS via [Compass](http://example.net/). Foundation provides Sass mixins, which are an intergral part of PING'S grid and design.
+PING'S UI is based on the all inclusive, cross-browser, front-end framework [Foundation](http://foundation.zurb.com/docs/index.html) and utilizes [Sass](http://example.net/), which compiles to CSS via [Compass](http://example.net/). Foundation provides Sass mixins, which are an integral part of PING'S grid and design.
 
 ### How to get started?
 
@@ -23,10 +23,10 @@ PING'S UI is based on the all inclusive, crossbrowser, front-end framework [Foun
 
 ### Semantic HTML & SASS Mixins
 
-The PING codebase uses semantic HTML, [Sass mixins provided by Foundation](http://foundation.zurb.com/docs/components/grid.html) and custom [Sass placeholders](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#placeholder_selectors_).  
+The PING code base uses semantic HTML, [Sass mixins provided by Foundation](http://foundation.zurb.com/docs/components/grid.html) and custom [Sass placeholders](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#placeholder_selectors_).  
 
 >#####Semantic HTML is defined as:
->*1. the use of HTML markup to reinforce the semantics, or meaning, of the information in webpages rather than merely to define its presentation or look*
+>*1. the use of HTML markup to reinforce the semantics, or meaning, of the information in web pages rather than merely to define its presentation or look*
 
 ####Example - tab:
 
@@ -79,7 +79,7 @@ Then we style our semantic class with a Sass mixin
 
 ####Example - grid:
 
-The semanitic markup applys to the grid as well. If you need to adjust or add to the grid, please markup with semantic classes and style with [Sass mixins provided by Foundation](http://foundation.zurb.com/docs/components/grid.html).
+The semanitic markup applies to the grid as well. If you need to adjust or add to the grid, please markup with semantic classes and style with [Sass mixins provided by Foundation](http://foundation.zurb.com/docs/components/grid.html).
 
 
 
