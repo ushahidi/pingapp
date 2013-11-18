@@ -18,7 +18,7 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th width="150">Status</th>
+					<th width="100">Status</th>
 					<th width="50">Pings</th>
 				</tr>
 			</thead>
