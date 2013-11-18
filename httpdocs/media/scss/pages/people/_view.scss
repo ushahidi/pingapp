@@ -55,6 +55,10 @@
 	$PANELS
 \*------------------------------------*/
 
+.people-panel-row {
+	@include grid-row();
+}
+
 .people-status-panel {
 	@include panel();
 }
@@ -63,6 +67,36 @@
 	@include panel();
 }
 
+.people-groups-row {
+	@include grid-row();
+}
+
+.people-groups-label {
+	@include grid-column(12, $collapse: true);
+	margin-bottom: 10px;
+	@media #{$mobile-landscape} {
+		@include grid-column(4, $collapse: true);
+	}
+	@media #{$small} {
+		@include grid-column(2, $collapse: true);
+	}
+	.inline-label {
+		margin: 0;
+	}
+}
+
+/*.people-groups-label-grid {
+	@include block-grid($per-row: 2);
+	@media #{$mobile-landscape} {
+		@include block-grid($per-row: 3);
+	}
+	@media #{$small} {
+		@include block-grid($per-row: 6);
+	}
+	@media #{$medium} {
+		@include block-grid($per-row: 8);
+	}
+}*/
 
 
 
