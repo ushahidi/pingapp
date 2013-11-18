@@ -57,7 +57,7 @@
 	<div class="people-groups-row">
 			<?php foreach ($groups as $group):?>
 			  <div class="people-groups-label">
-			  	<a href="/people?group_id=<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>
+			  	<a href="/groups/view/<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>
 			  </div>
 			<?php endforeach; ?>
 	</div>
