@@ -1,0 +1,86 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL...............general styles
+ * UPDATE STATUS...............update status styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$GENERAL
+\*------------------------------------*/
+
+.update-status-row {
+	@include grid-row();
+}
+
+.update-status-note-row {
+	@include grid-row();
+}
+
+.status-panel {
+	@include panel();
+}
+
+
+
+
+/*------------------------------------*\
+	$UPDATE STATUS
+\*------------------------------------*/
+
+.okay-status {
+	@include grid-column(12);
+		@media #{$small} {
+			@include grid-column(4);
+		}
+}
+
+.okay-status-panel {
+	@include panel();
+}
+
+.notok-status {
+	@include grid-column(12);
+		@media #{$small} {
+			@include grid-column(4);
+		}
+}
+
+.notok-status-panel {
+	@include panel();
+}
+
+.unknown-status {
+	@include grid-column(12);
+		@media #{$small} {
+			@include grid-column(4);
+		}
+}
+
+.unknown-status-panel {
+	@include panel();
+}
+
+.update-status-note {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-status-submit {
+	@extend %submit-wrapper;	
+}
+
+.update-status-submit-button {
+	@extend %submit-button;
+}

@@ -74,8 +74,8 @@ $success-color: #73BF45;
 
 // Make sure border radius matches unless we want it different.
 
-// $global-radius: 3px;
-// $global-rounded: 1000px;
+$global-radius: 3px;
+$global-rounded: 1000px;
 
 // Inset shadow shiny edges and depressions.
 
@@ -113,16 +113,18 @@ $success-color: #73BF45;
 
 // Media Queries
 
-// $small-screen: 768px;
-// $medium-screen: 1280px;
-// $large-screen: 1440px;
+$mobile-landscape-screen: 420px;
+$small-screen: 768px;
+$medium-screen: 1280px;
+$large-screen: 1440px;
 
-// $screen: "only screen";
-// $small: "only screen and (min-width: #{$small-screen})";
-// $medium: "only screen and (min-width: #{$medium-screen})";
-// $large: "only screen and (min-width: #{$large-screen})";
-// $landscape: "only screen and (orientation: landscape)";
-// $portrait: "only screen and (orientation: portrait)";
+$screen: "only screen";
+$mobile-landscape: "only screen and (min-width: #{$mobile-landscape-screen})";
+$small: "only screen and (min-width: #{$small-screen})";
+$medium: "only screen and (min-width: #{$medium-screen})";
+$large: "only screen and (min-width: #{$large-screen})";
+$landscape: "only screen and (orientation: landscape)";
+$portrait: "only screen and (orientation: portrait)";
 
 //// Cursors
 
@@ -137,9 +139,9 @@ $success-color: #73BF45;
 // Grid Variables
 //
 
-// $row-width: emCalc(1000);
-// $column-gutter: emCalc(30);
-// $total-columns: 12;
+$row-width: emCalc(1000);
+$column-gutter: emCalc(30);
+$total-columns: 12;
 
 //
 // Block Grid Variables
@@ -478,41 +480,41 @@ $success-color: #73BF45;
 
 // We use this to control alert padding.
 
-// $alert-padding-top: emCalc(11);
-// $alert-padding-default-float: $alert-padding-top;
-// $alert-padding-opposite-direction: $alert-padding-top + emCalc(10);
-// $alert-padding-bottom: $alert-padding-top + emCalc(1);
+$alert-padding-top: emCalc(11);
+$alert-padding-default-float: $alert-padding-top;
+$alert-padding-opposite-direction: $alert-padding-top + emCalc(10);
+$alert-padding-bottom: $alert-padding-top + emCalc(1);
 
 // We use these to control text style.
 
-// $alert-font-weight: bold;
-// $alert-font-size: emCalc(14);
-// $alert-font-color: #fff;
-// $alert-font-color-alt: darken($secondary-color, 60%);
+$alert-font-weight: bold;
+$alert-font-size: emCalc(14);
+$alert-font-color: #fff;
+$alert-font-color-alt: darken($secondary-color, 60%);
 
 // We use this for close hover effect.
 
-// $alert-function-factor: 10%;
+$alert-function-factor: 10%;
 
 // We use these to control border styles.
 
-// $alert-border-style: solid;
-// $alert-border-width: 1px;
-// $alert-border-color: darken($primary-color, $alert-function-factor);
-// $alert-bottom-margin: emCalc(20);
+$alert-border-style: solid;
+$alert-border-width: 1px;
+$alert-border-color: darken($primary-color, $alert-function-factor);
+$alert-bottom-margin: emCalc(20);
 
 // We use these to style the close buttons
 
-// $alert-close-color: #333;
-// $alert-close-position: emCalc(5);
-// $alert-close-font-size: emCalc(22);
-// $alert-close-opacity: 0.3;
-// $alert-close-opacity-hover: 0.5;
-// $alert-close-padding: 5px 4px 4px;
+$alert-close-color: #333;
+$alert-close-position: emCalc(5);
+$alert-close-font-size: emCalc(22);
+$alert-close-opacity: 0.3;
+$alert-close-opacity-hover: 0.5;
+$alert-close-padding: 5px 4px 4px;
 
 // We use this to control border radius
 
-// $alert-radius: $global-radius;
+$alert-radius: $global-radius;
 
 
 //

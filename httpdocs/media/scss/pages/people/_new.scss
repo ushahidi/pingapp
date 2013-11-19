@@ -1,0 +1,123 @@
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/**
+ * ACTIONS............alert box & head styles
+ * NAME............new name styles
+ * CONTACT INFO...............contact info styles
+ * SUBMIT...............submit button
+ */
+
+
+
+
+ /*------------------------------------*\
+     $ACTIONS
+ \*------------------------------------*/
+
+.new-person {
+	@extend %header-action-position-1;
+}
+
+.new-person-button {
+	@include button($padding: $button-sml, $radius: true, $full-width: true);
+	@media #{$mobile-landscape} {
+		@include button($padding: $button-sml, $radius: true, $full-width: false);
+		width: 180px;
+	}
+}
+
+/*------------------------------------*\
+    $NAME
+\*------------------------------------*/
+
+.new-name-row {
+	@include grid-row();
+}
+
+.new-name-first {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.new-name-last {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+
+
+
+/*------------------------------------*\
+    $CONTACT INFO
+\*------------------------------------*/
+
+.contact-info-row {
+	@include grid-row();
+	border-bottom: 1px solid $secondary-color;
+	padding-bottom: 20px;
+	margin-bottom: 30px;
+	@media #{$small} {
+		border-bottom: 0px;
+		padding-bottom: 0;
+		margin-bottom: 0;
+	}
+}
+
+.contact-info-type {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.contact-info-account {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.remove-contact {
+	@include grid-column(12);
+	@media #{$small} {
+		@include grid-column(4);
+	}
+}
+
+.remove-contact-button {
+	@include button($padding: $button-sml, $bg: $secondary-color, $radius: true);
+}
+
+.add-contact {
+	@include grid-column(12, $collapse: true);
+	@media #{$small} {
+		@include grid-column(3, $collapse: true);
+	}
+}
+
+.add-contact-button {
+	@include button($padding: $button-sml, $bg: $secondary-color, $radius: true, $full-width: true);
+	@media #{$small} {
+		margin-left: 15px;
+	}
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.add-new-person-submit {
+	@extend %submit-wrapper;
+}
+
+.add-new-person-submit-button {
+	@extend %submit-button;
+}

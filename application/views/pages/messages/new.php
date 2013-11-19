@@ -1,5 +1,5 @@
 <?php if ( ! empty($errors)): ?>
-<div data-alert class="alert-box alert">
+<div data-alert class="warning-alert-box">
 	<?php foreach ($errors as $error): ?>
 	<?php echo $error; ?><br />
 	<?php endforeach; ?>
@@ -8,7 +8,7 @@
 <?php endif; ?>
 
 <?php if ($done): ?>
-<div data-alert class="alert-box success">
+<div data-alert class="success-alert-box">
 	<?php echo __('Your message has been queued for sending'); ?>
 	<a href="#" class="close">&times;</a>
 </div>
@@ -16,7 +16,7 @@
 
 <?php echo Form::open(NULL, array('class' => 'custom', 'method'=> 'post')); ?>
 	<?php echo Form::hidden('token', Security::token()); ?>
-	<div class="section-container auto" data-section>
+	<div class="section-container  auto" data-section>
 		<section class="active">
 			<p class="title" data-section-title><a href="#panel1">Message</a></p>
 			<div class="content" data-section-content>
@@ -27,26 +27,26 @@
 						<?php echo Form::select("recipients[]", PingApp_Form::people($user), (isset($post['recipients'])) ? $post['recipients'] : '', array("id" => "recipients[]", "minlength" => "3", "class" => "medium recipients-dropdown", "multiple" => "multiple")); ?>
 					</div>
 				</div>
-
-				<div class="row">
-					<div class="large-6 columns">
-						<div class="panel">
+	
+				<div class="message-type-row">
+					<div class="message-type-sms">
+						<div class="sms-panel">
 							<label for="type[sms]">
 							<?php echo Form::checkbox('type[]', 'sms',  ( ! isset($post['type']) OR (isset($post['type']) AND in_array('sms', $post['type'])) ) ? TRUE : FALSE, array("id" => "type[sms]", "style" => "display: none;")) ;?>
-							<span class="custom checkbox"></span> Send SMS</label>
+							<span class="custom  checkbox"></span> Send SMS</label>
 						</div>
 					</div>
-					<div class="large-6 columns">
-						<div class="panel">
+					<div class="message-type-email">
+						<div class="email-panel">
 							<label for="type[email]">
 							<?php echo Form::checkbox('type[]', 'email',  ( isset($post['type']) AND in_array('email', $post['type'])) ? TRUE : FALSE, array("id" => "type[email]", "style" => "display: none;")) ;?>
-							<span class="custom checkbox"></span> Send Email</label>
+							<span class="custom  checkbox"></span> Send Email</label>
 						</div>
 					</div>
 				</div>
 
-				<div class="row" id="rowTitle" style="display:none;">
-					<div class="large-12 columns">
+				<div class="email-title-row" id="rowTitle" style="display:none;">
+					<div class="email-title">
 						<label>Title: <small>* required for email pings</small></label>
 						<?php echo Form::input('title', $post['title'], array("maxlength" => "120")); ?>
 					</div>
@@ -60,8 +60,8 @@
 					</div>
 				</div>
 				<br />
-				<div class="new-message-submit">
-					<button id="btnNext" class="success expand button">Next &raquo;</button>
+				<div class="new-message-next">
+					<button id="btnNext" class="new-message-next-button">Next &raquo;</button>
 				</div>
 				<div style="clear:both;"></div>
 			</div>
@@ -69,35 +69,35 @@
 		<section>
 			<p class="title" data-section-title><a href="#panel2">Confirm</a></p>
 			<div class="content" data-section-content>
-				<div class="row" id="rowCalculating">
-					<div class="panel callout radius">
+				<div class="calculating-row" id="rowCalculating">
+					<div class="calculating-panel">
 						<h5>Calculating...</h5>
 					</div>
 				</div>
 				<div style="display:none;" id="rowConfirm">
-					<div class="row">
-						<div class="panel">
+					<div class="message-row">
+						<div class="message-panel">
 							<h5>Message:</h5>
 							<p id="txtMessage"></p>
 						</div>
 					</div>
-					<div class="row">
-						<div class="panel">
+					<div class="sms-recipients-row">
+						<div class="sms-recipients-panel">
 							<h5>SMS Recipients: <span id="txtSMS"></span></h5>
 						</div>
 					</div>
-					<div class="row">
-						<div class="panel">
+					<div class="email-recipients-row">
+						<div class="email-recipients-panel">
 							<h5>Email Recipients: <span id="txtEmail"></span></h5>
 						</div>
 					</div>
-					<div class="row">
-						<div class="panel">
+					<div class="text-cost-row">
+						<div class="text-cost-panel">
 							<h5>Cost: <span id="txtCost"></span></h5>
 						</div>
 					</div>
 					<div class="new-message-submit">
-						<button class="success expand button">SEND</button>
+						<button class="new-message-submit-button">SEND</button>
 					</div>
 					<div style="clear:both;"></div>
 				</div>

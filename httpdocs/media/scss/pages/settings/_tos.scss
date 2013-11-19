@@ -1,0 +1,45 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL STYLES...............general styles
+ * SUBMIT...............submit styles
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$GENERAL STYLES
+\*------------------------------------*/
+
+.terms-of-service-row {
+	@include grid-row();
+}
+
+.terms-of-service {
+	@include grid-column(12);
+}
+
+.privacy-policy-row {
+	@include grid-row();
+}
+
+.privacy-policy {
+	@include grid-column(12);
+}
+
+
+
+
+/*------------------------------------*\
+    $SUBMIT
+\*------------------------------------*/
+
+.update-tos-settings {
+	@extend %submit-wrapper;
+}
+
+.update-tos-settings-button {
+	@extend %submit-button;
+}

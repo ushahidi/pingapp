@@ -12,7 +12,7 @@
 <h4>Recipients</h4>
 <div class="dashboard-display-table-wrapper">
 	<div class="dashboard-display-table">
-		<table class="display dataTable" id="activity">
+		<table class="display  dataTable" id="activity">
 			<thead>
 				<tr>
 					<th>Name</th>

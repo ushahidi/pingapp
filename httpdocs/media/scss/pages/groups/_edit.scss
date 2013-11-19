@@ -1,0 +1,50 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ 	* ACTIONS...............header styles
+ 	* SUBMIT...............submit button
+ */
+
+
+
+
+ /*------------------------------------*\
+     $ACTIONS
+ \*------------------------------------*/
+
+.group-actions-wrapper {
+	@extend %header-actions-wrapper
+}
+
+.view-group-users-button-wrapper {
+	@extend %header-action-position-1-of-2;
+}
+
+.view-group-users-button {
+	@include button($padding: $button-sml, $radius: true, $full-width: true);
+}
+
+.delete-group-button-wrapper {
+	@extend %header-action-position-2-of-2;
+}
+
+.delete-group-button {
+	@include button($padding: $button-sml, $bg: $alert-color, $radius: true, $full-width: true);
+}
+
+
+
+
+
+/*------------------------------------*\
+	$SUBMIT
+\*------------------------------------*/
+
+.add-new-group-submit {
+	@extend %submit-wrapper;
+}
+
+.add-new-group-submit-button {
+	@extend %submit-button;
+}

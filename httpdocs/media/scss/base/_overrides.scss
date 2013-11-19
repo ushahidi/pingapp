@@ -1,3 +1,19 @@
+/*------------------------------------*\
+	$CONTENTS
+\*------------------------------------*/
+/**
+ * GENERAL OVERRIDES...............general foundation overrides
+ * LABELS...............foundation label overrides
+ * ALERT BOXES...............foundation alert boxes overrides
+ */
+
+
+
+ 
+/*------------------------------------*\
+	$GENERAL OVERRIDES
+\*------------------------------------*/
+
 form.custom .custom.dropdown.medium {
 	max-width: 100%;
 }
@@ -8,4 +24,55 @@ form.custom .custom.dropdown.open.medium ul {
 
 textarea {
 	height: auto;
+}
+
+
+
+/*------------------------------------*\
+	$LABELS
+\*------------------------------------*/
+
+.header-label {
+	@include label ($padding: emCalc(7), $text-size: emCalc(11), $bg: $primary-color, $radius: 7px);
+	font-weight: normal;
+	position: relative;
+	top: -2px;
+	margin-left: 10px;
+}
+
+.inline-label {
+	@include label ($padding: emCalc(7), $text-size: emCalc(14), $bg: $primary-color, $radius: 7px);
+	font-weight: normal;
+	margin-left: 5px;
+}
+
+/*------------------------------------*\
+    $ALERT BOXES
+\*------------------------------------*/
+
+%alert-box {
+	@include radius($global-radius);
+	.close {
+		@include alert-close;
+	}
+}
+
+.alert-box {
+	@include alert($primary-color);
+	@extend %alert-box;
+}
+
+.success-alert-box {
+	@include alert($success-color);
+	@extend %alert-box;
+}
+
+.warning-alert-box {
+	@include alert($alert-color);
+	@extend %alert-box;
+}
+
+.secondary-alert-box {
+	@include alert($secondary-color);
+	@extend %alert-box;
 }

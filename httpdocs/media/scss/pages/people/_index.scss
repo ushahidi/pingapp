@@ -1,0 +1,8 @@
+
+.people-actions-wrapper {
+	@extend %header-actions-wrapper;
+}
+
+.new-person-button {
+	@include button($padding: $button-sml, $radius: true, $full-width: true);
+}
