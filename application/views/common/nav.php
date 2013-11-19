@@ -6,6 +6,7 @@
 	</ul>
 	<section class="top-bar-section">
 		<ul class="right">
+			<?php if ( $user AND $user->loaded() ): ?>
 			<li class="divider hide-for-small"></li>
 			<li><a href="/people">People</a></li>
 			<li><a href="/groups">Groups</a></li>
@@ -30,6 +31,9 @@
 					<li class="signout"><a href="/logout">Sign Out</a></li>
 				</ul>
 			</li>
+			<?php else: ?>
+			<li class=""><a href="/login">Log In</a></li>
+			<?php endif; ?>
 		</ul>
 	</section>
 </nav>
