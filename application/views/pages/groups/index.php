@@ -16,7 +16,7 @@
 			<thead>
 				<tr>
 					<th>Group Name</th>
-					<th width="100">Members</th>
+					<th>Members</th>
 				</tr>
 			</thead>
 			<tbody>

@@ -18,8 +18,8 @@
 			<thead>
 				<tr>
 					<th class="sorting">Name</th>
-					<th class="sorting" width="150">Status</th>
-					<th class="sorting" width="50">Pings</th>
+					<th class="sorting">Status</th>
+					<th class="sorting">Pings</th>
 				</tr>
 			</thead>
 			<tbody></tbody>

@@ -3,7 +3,7 @@
 		    <hr />
 		    <div class="inner-footer-wrap">
 		      <div class="copyright">
-		        <p>&copy;2013 <a href="http://ushahidi.com" target="_blank">Ushahidi</a></p>
+		        <p>&copy;<?php echo date('Y'); ?> <a href="http://ushahidi.com" target="_blank">Ushahidi</a></p>
 		      </div>
 		      <div class="footer-links">
 		        <ul class="footer-links-list">

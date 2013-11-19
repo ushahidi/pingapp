@@ -12,7 +12,7 @@
 					<th class="sorting">Name</th>
 					<th class="sorting">Email</th>
 					<th class="sorting">Username</th>
-					<th class="sorting" width="50">Messages</th>
+					<th class="sorting">Messages</th>
 					<th class="sorting">Created</th>
 				</tr>
 			</thead>

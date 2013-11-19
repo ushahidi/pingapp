@@ -1,0 +1,7 @@
+table.dataTable {
+    table-layout: fixed; /* This enforces the "col" widths. */
+}
+table.dataTable th, table.dataTable td {
+    overflow: hidden;
+    white-space: nowrap;
+}

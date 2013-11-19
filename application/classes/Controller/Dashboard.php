@@ -96,7 +96,7 @@ class Controller_Dashboard extends Controller_PingApp {
 			$action = ($item['parent_id']) ? 'RE-PING' : $item['action'];
 			$row = array(
 				0 => '<a href="/people/view/'.$item['person_id'].'"><strong>'.strtoupper($item['name']).'</strong></a>',
-				1 => Text::limit_chars(strtoupper($item['contact']), '8', '...'),
+				1 => strtoupper($item['contact']),
 				2 => '<span class="radius label secondary">'.strtoupper($item['type']).'</status>',
 				3 => '<span class="radius label '.$pong_label.'">'.strtoupper($action).'</status>',
 				4 => date('Y-m-d g:i a', strtotime($item['created_on'])),
