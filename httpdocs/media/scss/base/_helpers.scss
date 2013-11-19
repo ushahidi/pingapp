@@ -4,7 +4,8 @@
 /**
  * HELPER CLASSES...............general helper classes
  * HEADER ACTIONS...............header actions %placeholders
- * SUBMIT...............submit %placeholderS
+ * TABS...............tabs %placeholders
+ * SUBMIT...............submit %placeholders
  */
 
 
@@ -113,6 +114,20 @@
 		padding-left: 5px;
 		padding-right: 0;
 	}
+}
+
+
+
+
+/*------------------------------------*\
+    $TABS
+\*------------------------------------*/
+
+ %tabs-container {
+ 	@include section-container($section-type: tabs);
+ 	& > section {
+ 		@include section($section-type:tabs); 
+ 	}
 }
 
 

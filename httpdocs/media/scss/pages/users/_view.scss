@@ -1,17 +1,18 @@
 /*------------------------------------*\
-	$CONTENTS
+    CONTENTS
 \*------------------------------------*/
 /**
- * TOP BAR...............general top-bar styles
+ * STATS............stat tab styles
  */
 
 
 
- 
+
+
 /*------------------------------------*\
-	$TOP BAR
+    $STATS
 \*------------------------------------*/
 
-.top-bar {
-	margin-bottom: emCalc(20);
+.user-message-stats-tabs {
+	@extend %tabs-container;
 }

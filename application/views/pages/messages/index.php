@@ -10,7 +10,7 @@
 	</div>
 </div>
 
-<div class="section-container auto" data-section>
+<div class="message-stats-tabs" data-section="tabs">
 	<section class="active">
 		<p class="title" data-section-title><a href="#panel1">SMS</a></p>
 		<div class="content" data-section-content>

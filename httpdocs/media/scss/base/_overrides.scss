@@ -26,6 +26,13 @@ textarea {
 	height: auto;
 }
 
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+	@include radius($global-radius);
+}
+
 
 
 /*------------------------------------*\

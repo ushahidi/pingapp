@@ -1,0 +1,22 @@
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/**
+ * ACTIONS............header action styles
+ */
+
+
+
+
+
+/*------------------------------------*\
+    $ACTIONS
+\*------------------------------------*/
+
+.group-edit-button {
+	@include button($padding: $button-sml, $radius: true);
+}
+
+.group-delete-button {
+	@include button($padding: $button-sml, $bg: $alert-color, $radius: true);
+}

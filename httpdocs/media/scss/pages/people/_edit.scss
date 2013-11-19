@@ -17,5 +17,12 @@
 }
 
 .edit-groups {
-	@include grid-column(3)
+	@include grid-column(12);
+	margin-bottom: 10px;
+	&:last-child {
+		margin-bottom: 0px;
+	}
+	@media #{$small} {
+		@include grid-column(3);
+	}
 }

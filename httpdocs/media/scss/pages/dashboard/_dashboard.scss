@@ -76,7 +76,7 @@
 .dataTables_processing {
 	text-align: left;
 	float: right;
-	margin: 10px 0 15px 0;	
+	
 }
 
 input[type="text"].table-search {
@@ -89,4 +89,5 @@ input[type="text"].table-search {
 
 .dashboard-display-table {
 	@include grid-column(12, $collapse: true);
+	margin-top: 20px;
 }
