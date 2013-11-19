@@ -214,7 +214,7 @@ class PingApp_Ping {
 		$body->message = $ping->message->message;
 		$body->sender = $ping->message->user;
 		$body->tracking_id = $tracking_id;
-		$body->site_url = PingApp_Settings::get('site_url');
+		$body->site_url = rtrim(PingApp_Settings::get('site_url'), '/');
 
 
 		$from = PingApp_Settings::get('email_from');
