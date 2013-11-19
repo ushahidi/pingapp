@@ -30,8 +30,13 @@
 
 
 <?php if ( $person->parent_id == 0 ): ?>
-<div class="people-status-panel">
-	Status: <a href="/people/status/<?php echo $person->id; ?>"><strong><?php echo strtoupper($person->status); ?></strong></a> <small><?php echo date('Y-m-d g:i a', strtotime($person->updated)); ?> [<a href="/people/status/<?php echo $person->id; ?>">change</a>]</small>
+<div class="people-status-panel"> 
+	<h6>Status:
+		<a href="/people/status/<?php echo $person->id; ?>"><strong><?php echo strtoupper($person->status); ?></strong></a>
+	</h6>
+	<small><?php echo date('Y-m-d g:i a', strtotime($person->updated)); ?>
+	<br />
+	[<a href="/people/status/<?php echo $person->id; ?>">change</a>]</small>
 	<?php if ($status->loaded() AND ! $my_status): ?>
 	<br /><br />
 		<?php if ($status->user_id):?>
@@ -48,14 +53,18 @@
 </div>
 
 <div class="people-groups-panel">
-	Groups: 
-	<?php foreach ($groups as $group):?>
-	<a href="/groups/view/<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>&nbsp;
-	<?php endforeach; ?>
+	<h6>Groups:</h6>
+	<div class="people-groups-row">
+			<?php foreach ($groups as $group):?>
+			  <div class="people-groups-label">
+			  	<a href="/groups/view/<?php echo $group->id; ?>"><span class="inline-label"><?php echo $group->name; ?></span></a>
+			  </div>
+			<?php endforeach; ?>
+	</div>
 </div>
 <?php endif; ?>
 
-<div class="section-container auto" data-section>
+<div class="people-stats-tabs auto" data-section="tabs">
 	<section class="active">
 		<p class="title" data-section-title><a href="#panel1">Pings</a></p>
 		<div class="content" data-section-content>

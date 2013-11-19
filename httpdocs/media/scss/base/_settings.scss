@@ -1025,39 +1025,39 @@ $alert-radius: $global-radius;
 
 // We use these to set padding and hover factor
 
-// $section-title-padding: emCalc(15);
-// $section-content-padding: emCalc(15);
-// $section-function-factor: 10%;
+$section-title-padding: emCalc(15);
+$section-content-padding: emCalc(15);
+$section-function-factor: 10%;
 
 // These style the titles
 
-// $section-title-color: #333;
-// $section-title-color-active: #333;
-// $section-title-bg: #efefef;
-// $section-title-bg-active: darken($section-title-bg, $section-function-factor);
-// $section-title-bg-active-tabs: #fff;
-// $section-title-bg-hover: darken($section-title-bg, $section-function-factor / 2);
+$section-title-color: #333;
+$section-title-color-active: #333;
+$section-title-bg: #efefef;
+$section-title-bg-active: #fff;
+$section-title-bg-active-tabs: #fff;
+$section-title-bg-hover: darken($section-title-bg, $section-function-factor / 2);
 
 // Want to control border size, here ya go!
 
-// $section-border-size: 1px;
-// $section-border-style: solid;
-// $section-border-color: #ccc;
+$section-border-size: 1px;
+$section-border-style: solid;
+$section-border-color: #ccc;
 
 // Font controls
 
-// $section-font-size: emCalc(14);
+$section-font-size: emCalc(14);
 
 // Control the color of the background and some size options
 
-// $section-content-bg: #fff;
-// $section-vertical-nav-min-width: emCalc(200);
-// $section-vertical-tabs-title-width: emCalc(200);
-// $section-bottom-margin: emCalc(20);
+$section-content-bg: #fff;
+$section-vertical-nav-min-width: emCalc(200);
+$section-vertical-tabs-title-width: emCalc(200);
+$section-bottom-margin: emCalc(20);
 
-// $title-selector: ".title";
-// $content-selector: ".content";
-// $active-region-selector: ".active";
+$title-selector: ".title";
+$content-selector: ".content";
+$active-region-selector: ".active";
 
 //
 // Side Nav Variables
@@ -1160,34 +1160,34 @@ $switch-negative-color: #f5f5f5;
 
 // These control the background color for the table and even rows
 
-// $table-bg: #fff;
-// $table-even-row-bg: #f9f9f9;
+$table-bg: #fff;
+$table-even-row-bg: #f9f9f9;
 
 // These control the table cell border style
 
-// $table-border-style: solid;
-// $table-border-size: 1px;
-// $table-border-color: #ddd;
+$table-border-style: solid;
+$table-border-size: 1px;
+$table-border-color: #ddd;
 
 // These control the table head styles
 
-// $table-head-bg: #f5f5f5;
-// $table-head-font-size: emCalc(14);
-// $table-head-font-color: #222;
-// $table-head-font-weight: bold;
-// $table-head-padding: emCalc(8, 10, 10);
+$table-head-bg: #f5f5f5;
+$table-head-font-size: emCalc(14);
+$table-head-font-color: #222;
+$table-head-font-weight: bold;
+$table-head-padding: emCalc(8, 10, 10);
 
 // These control the row padding and font styles
 
-// $table-row-padding: emCalc(9, 10);
-// $table-row-font-size: emCalc(14);
-// $table-row-font-color: #222;
-// $table-line-height: emCalc(18);
+$table-row-padding: emCalc(9, 10);
+$table-row-font-size: emCalc(14);
+$table-row-font-color: #222;
+$table-line-height: emCalc(18);
 
 // These are for controlling the display and margin of tables
 
-// $table-display: table-cell;
-// $table-margin-bottom: emCalc(20);
+$table-display: table-cell;
+$table-margin-bottom: emCalc(20);
 
 //
 // Image Thumbnail Variables
@@ -1236,12 +1236,12 @@ $switch-negative-color: #f5f5f5;
 
 // Background color for the top bar
 
-// $topbar-bg: #111;
+$topbar-bg: #414042;
 
 // Height and margin
 
 // $topbar-height: 45px;
-// $topbar-margin-bottom: emCalc(30);
+$topbar-margin-bottom: emCalc(30);
 
 // Control Input height for top bar
 
@@ -1289,14 +1289,14 @@ $switch-negative-color: #f5f5f5;
 
 // Transitions and breakpoint styles
 
-// $topbar-transition-speed: 300ms;
-// $topbar-breakpoint: emCalc(940); // Change to 9999px for always mobile layout
-// $topbar-media-query: "only screen and (min-width: #{$topbar-breakpoint})";
+$topbar-transition-speed: 150ms;
+$topbar-breakpoint: emCalc(767); // Change to 9999px for always mobile 
+$topbar-media-query: "only screen and (min-width: #{$topbar-breakpoint})";
 
 // Divider Styles
 
-// $topbar-divider-border-bottom: solid 1px lighten($topbar-bg, 10%);
-// $topbar-divider-border-top: solid 1px darken($topbar-bg, 10%);
+$topbar-divider-border-bottom: solid 1px lighten($topbar-bg, 10%);
+$topbar-divider-border-top: solid 1px darken($topbar-bg, 10%);
 
 // Sticky Class
 

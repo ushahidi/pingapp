@@ -4,8 +4,8 @@
 	<li><a href="/groups">Groups</a></li>
 	<li class="current"><a href="#"><?php echo $group->name; ?></a></li>
 </ul>
-<a href="/groups/edit/<?php echo $group->id; ?>" class="small button" id="ping-add-contact">Edit</a>
-<a href="/groups/delete/<?php echo $group->id; ?>" class="small button alert" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
+<a href="/groups/edit/<?php echo $group->id; ?>" class="group-edit-button" id="ping-add-contact">Edit</a>
+<a href="/groups/delete/<?php echo $group->id; ?>" class="group-delete-button" id="ping-add-contact" onclick="return confirm('Delete This Group?');">Delete</a>
 
 <div class="dashboard-display-table-wrapper">
 	<div class="dashboard-display-table">

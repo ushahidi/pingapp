@@ -16,7 +16,7 @@
 
 <?php echo Form::open(NULL, array('class' => 'custom', 'method'=> 'post')); ?>
 	<?php echo Form::hidden('token', Security::token()); ?>
-	<div class="section-container  auto" data-section>
+	<div class="new-message-tabs" data-section="tabs">
 		<section class="active">
 			<p class="title" data-section-title><a href="#panel1">Message</a></p>
 			<div class="content" data-section-content>

@@ -1,0 +1,25 @@
+footer {
+	@include grid-row();
+}
+
+.outer-footer-wrap {
+	@include grid-column(12, $collapse: true);
+	font-size: emCalc(14);
+}
+
+.inner-footer {
+	@include grid-row();
+}
+
+.copyright {
+	@include grid-column(6, $collapse: true);
+}
+
+.footer-links {
+	@include grid-column(6, $collapse: true);
+}
+
+.footer-links-list {
+	@include inline-list;
+	float: right;
+}

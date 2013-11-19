@@ -1,7 +1,8 @@
 <h4>People <?php if ( $group AND $group->loaded() ): ?> <span class="header-label"><?php echo $group->name; ?><?php endif; ?></span></h4>
 <ul class="breadcrumbs">
 	<li><a href="/">Home</a></li>
-	<li><a href="/people">People</a></li>
+	<?php if ( $group == FALSE): ?><li class="current"><a href="/people">People</a></li><?php endif; ?>
+	<?php if ( $group AND $group->loaded() ): ?><li><a href="/people">People</a></li><?php endif; ?>
 	<?php if ( $group AND $group->loaded() ): ?><li class="current"><a href="#"><?php echo $group->name; ?></a></li><?php endif; ?>
 </ul>
 
