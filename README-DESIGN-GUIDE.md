@@ -1,4 +1,4 @@
-Ping Design Guide
+	Ping Design Guide
 ============
 
 PING'S UI is based on the all inclusive, cross-browser, front-end framework [Foundation](http://foundation.zurb.com/docs/index.html) and utilizes [Sass](http://example.net/), which compiles to CSS via [Compass](http://example.net/). Foundation provides Sass mixins, which are an integral part of PING'S grid and design.
@@ -101,9 +101,13 @@ The semanitic markup applies to the grid as well. If you need to adjust or add t
 }
 ```
 
-*** Please reference the [Foundation Docs](http://foundation.zurb.com/docs/) and the existing code base for more information ***
+*** * Please reference the [Foundation Docs](http://foundation.zurb.com/docs/) and the existing code base for more information ***
 
-***If you have any questions feel free to contact Seth Hall*** 
+*** * Always double space between classes in your HTML. This makes it easier to read when scanning the HTML ***
+
+*** * It is ok to reference existing code, but don't just copy and paste code, be sure each element has it's own, appropriate semantic class ***
+
+*** If you have any questions feel free to contact Seth Hall ***
 
 * middle8media on Skype
 * seth(at)ushahidi.com
